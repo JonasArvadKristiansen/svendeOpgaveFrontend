@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
+$font-family: "Inter", sans-serif;
+
+$heading-sizes: (
+  1: 2.986rem,
+  2: 2.488rem,
+  3: 2.074rem,
+  4: 1.728rem,
+  5: 1.44rem,
+  6: 1.2rem,
+);
+
+@each $level, $size in $heading-sizes {
+  .heading-#{$level} {
+    font-size: $size;
+    font-weight: bold;
+    font-family: $font-family;
+  }
+}
+
+$bread-sizes: (
+  "lg": 1.2rem,
+  "md": 1rem,
+);
+
+@each $level, $size in $bread-sizes {
+  .bread-#{$level} {
+    font-size: $size;
+    font-family: $font-family;
+  }
+}
+
+$color: (
+  "dark-blue": #0b2159,
+  "dark-blue-66": rgba(11, 32, 89, 0.66),
+  "dark-blue-33": rgba(11, 32, 89, 0.33),
+  "red": #9a140c,
+  "green": #085018,
+  "white": #ffffff,
+);
+
+$spacing: (
+  "4px": 0.25rem,
+  "8px": 0.5rem,
+  "16px": 1rem,
+  "24px": 1.5rem,
+  "32px": 2rem,
+);

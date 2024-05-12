@@ -1,0 +1,70 @@
+@import "variables.scss";
+
+body {
+  box-sizing: border-box;
+  font-size: map-get($bread-sizes, "md");
+  font-family: $font-family;
+  color: map-get($color, "dark-blue");
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: map-get($color, "dark-blue");
+  text-decoration: underline;
+  text-decoration-color: map-get($color, 'white');
+  text-decoration-thickness: 2px;
+  transition: text-decoration 250ms ease-in-out;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color: map-get($color, 'dark-blue');
+  }
+}
+
+input {
+  color: map-get($color, "dark-blue");
+  padding: map-get($spacing, '16px');
+  padding-inline: map-get($spacing, '16px');
+  width: 100%;
+  border-color: map-get($color, 'dark-blue-66');
+  border-width: 1px;
+  &::placeholder {
+    font-weight: bold;
+  }
+}
+
+button {
+  background-color: map-get($color, "white");
+  border: 1px solid map-get($color, "dark-blue-66");
+  border-radius: 10px;
+  padding: map-get($spacing, "16px") map-get($spacing, "24px");
+  padding: 16px 24px;
+  color: map-get($color, "dark-blue");
+  font-weight: bold;
+  font-family: $font-family;
+
+  text-decoration: underline;
+  text-decoration-color: map-get($color, 'white');
+  text-decoration-thickness: 2px;
+
+  transition: text-decoration-color 250ms ease;
+  
+  &:hover {
+    text-decoration-color: map-get($color, "dark-blue");
+  }
+
+  &:active {
+    color: map-get($color, 'white');
+    background-color: map-get($color, 'dark-blue' );
+    text-decoration-color: map-get($color, 'white');
+
+    border-color: map-get($color, 'white');
+  }
+}

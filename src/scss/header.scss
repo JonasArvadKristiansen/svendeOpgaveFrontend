@@ -1,0 +1,54 @@
+@import 'variables.scss';
+
+header {
+  border-bottom: 1px solid map-get($color, 'dark-blue-66');
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: map-get($spacing, '16px');
+  padding-bottom: map-get($spacing, '16px');
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: map-get($spacing, '32px');
+
+    &__list {
+      display: flex;
+      gap: map-get($spacing, '16px');
+    }  
+  }
+
+  &__login {
+    display: flex;
+    align-items: center;
+    gap: map-get($spacing, '24px');
+  }
+}  
+
+
+.under-header {
+  background-color: map-get($color, "dark-blue");
+  height: 90px;
+  padding-top: map-get($spacing, '16px');
+  padding-bottom: map-get($spacing, '16px');
+
+  .search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: map-get($spacing, '16px');
+  } 
+
+  &__search {
+    display: flex;
+    button {
+      border-radius: 0px 10px 10px 0px;
+    }
+  } 
+
+
+}
