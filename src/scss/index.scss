@@ -20,7 +20,8 @@ a {
   text-decoration-color: map-get($color, 'white');
   text-decoration-thickness: 2px;
   transition: text-decoration 250ms ease-in-out;
-
+  font-weight: bold;
+  
   &:hover {
     text-decoration: underline;
     text-decoration-thickness: 2px;
@@ -35,12 +36,13 @@ input {
   width: 100%;
   border-color: map-get($color, 'dark-blue-66');
   border-width: 1px;
+  border-radius: 10px;
   &::placeholder {
     font-weight: bold;
   }
 }
 
-button {
+.action-button {
   background-color: map-get($color, "white");
   border: 1px solid map-get($color, "dark-blue-66");
   border-radius: 10px;
@@ -55,7 +57,7 @@ button {
   text-decoration-thickness: 2px;
 
   transition: text-decoration-color 250ms ease;
-  
+
   &:hover {
     text-decoration-color: map-get($color, "dark-blue");
   }
@@ -64,7 +66,6 @@ button {
     color: map-get($color, 'white');
     background-color: map-get($color, 'dark-blue' );
     text-decoration-color: map-get($color, 'white');
-
     border-color: map-get($color, 'white');
   }
 }

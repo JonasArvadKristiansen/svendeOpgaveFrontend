@@ -1,11 +1,12 @@
 import Footer from "./components/Footer"
 import Header from "./components/Header"
+import { Outlet } from "react-router-dom"
 
 function App() {
   return (
     <>  
       <Header/>
-      <p>hello world</p>
+      <Outlet/>
       <Footer/>
     </>
   )

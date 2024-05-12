@@ -1,0 +1,52 @@
+@import "variables.scss";
+
+.login {
+  position: absolute;
+  background-color: map-get($color, "white");
+  width: min(544px, 100%);
+  box-shadow: 0px 0px 12px 5px;
+  margin-top: map-get($spacing, "32px");
+  padding: map-get($spacing, "32px");
+
+  &__input {
+    display: flex;
+    flex-direction: column;
+    gap: map-get($spacing, "32px");
+    padding-bottom: map-get($spacing, "32px");
+    margin-bottom: map-get($spacing, "32px");
+    border-bottom: 1px solid map-get($color, "dark-blue-66");
+
+    &__error {
+      width: 100%;
+      background-color: map-get($color, "error");
+      padding: map-get($spacing, '16px');
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: map-get($spacing, "32px");
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        background-color: map-get($color, "white");
+        border: none;
+        border-bottom: 2px solid map-get($color, "white");
+
+        &:hover {
+          border-bottom: 2px solid map-get($color, "dark-blue");
+        }
+      }
+    }
+  }
+
+  a {
+    display: flex;
+    justify-content: center;
+  }
+}

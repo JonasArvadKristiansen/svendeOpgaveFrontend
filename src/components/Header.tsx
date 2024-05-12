@@ -1,15 +1,30 @@
-import Button from "./Button";
-import "../css/header.css";
 import { useState } from "react";
+import "../css/header.css";
+import Button from "./Elements/Button";
+import Login from "./LoginPopUp";
 
 function Header() {
   const [isCompany, setIsCompany] = useState(false);
-  const [isLogedInd, setIsLogedInd] = useState(true);
+  const [isLogedInd, setIsLogedInd] = useState(false);
+  const [isLogedIndPopup, setIsLogedIndPopup] = useState(false);
   const [canSearch, setCanSearch] = useState(true);
 
   return (
     <>
       <header>
+        {isLogedIndPopup && (
+          <>
+            <div className="blackout"></div>
+            <div className="container-sm login-popup">
+              <Login
+                onClick={() => {
+                  setIsLogedIndPopup(!isLogedIndPopup);
+                }}
+              />
+            </div>
+          </>
+        )}
+
         <div className="container-sm header">
           <div className="header__nav">
             <div>
@@ -18,10 +33,10 @@ function Header() {
             </div>
             <ul className="header__nav__list">
               <li>
-                <a href="#">Jobopslag</a>
+                <a href="/">Jobopslag</a>
               </li>
               <li>
-                <a href="#">Virksomheder</a>
+                <a href="/">Virksomheder</a>
               </li>
 
               {isCompany && (
@@ -34,7 +49,9 @@ function Header() {
 
           {isLogedInd && (
             <div className="header__login">
-              <a href="#"><img src="/profile.svg" alt="Profile icon" /></a>
+              <a href="#">
+                <img src="/profile.svg" alt="Profile ikon" />
+              </a>
 
               <Button
                 onClick={() => {
@@ -48,26 +65,31 @@ function Header() {
 
           {!isLogedInd && (
             <Button
+              arialExpanded={isLogedIndPopup}
+              arialHaspopup={true}
               onClick={() => {
-                console.log("Logind");
+                setIsLogedIndPopup(!isLogedIndPopup);
               }}
             >
               Log ind
             </Button>
           )}
         </div>
+
         {canSearch && (
-        <div className="under-header">
-          
+          <div className="under-header">
             <div className="container-sm search">
               <div className="under-header__search">
-                <input type="text" placeholder="Søg efter virksomheder" aria-label="Søg efter virksomheder"/>
+                <input
+                  type="text"
+                  placeholder="Søg efter virksomheder"
+                  aria-label="Søg efter virksomheder"
+                />
                 <Button>Søg</Button>
               </div>
               <Button>Filtere</Button>
             </div>
-          
-        </div>
+          </div>
         )}
       </header>
     </>
