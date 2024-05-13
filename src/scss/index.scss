@@ -34,17 +34,23 @@ input {
   padding: map-get($spacing, '16px');
   padding-inline: map-get($spacing, '16px');
   width: 100%;
-  border-color: map-get($color, 'dark-blue-66');
-  border-width: 1px;
+  border: 2px solid map-get($color, 'dark-blue-66');
+
   border-radius: 10px;
   &::placeholder {
     font-weight: bold;
   }
+
+  &[type="checkbox"] {
+    accent-color: map-get($color, "dark-blue" );
+  }
 }
+
+
 
 .action-button {
   background-color: map-get($color, "white");
-  border: 1px solid map-get($color, "dark-blue-66");
+  border: 2px solid map-get($color, "dark-blue-66");
   border-radius: 10px;
   padding: map-get($spacing, "16px") map-get($spacing, "24px");
   padding: 16px 24px;
@@ -68,4 +74,29 @@ input {
     text-decoration-color: map-get($color, 'white');
     border-color: map-get($color, 'white');
   }
+}
+
+.create-password {
+  display: flex; 
+  flex-direction: column;
+  gap: map-get($spacing, "16px");
+}
+
+.jobtype {
+  border: 1px solid map-get($color, "dark-blue-66");
+  border-radius: 10px;
+  padding: map-get($spacing, "8px");
+  display: flex;
+  gap: map-get($spacing, "8px");
+
+  button {
+    background: map-get($color, 'white');
+    border: none;
+    border-bottom: 1px solid map-get($color, "white");
+
+    transition: border-bottom 250ms ease-in-out;
+    :hover {
+      border-bottom: 1px solid map-get($color, "dark-blue-66");
+    }
+  } 
 }

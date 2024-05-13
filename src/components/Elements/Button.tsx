@@ -1,5 +1,6 @@
 interface props {
   children: string;
+  type: "submit" | "button";
   onClick?: () => void;
 
   arialHaspopup?: boolean;
@@ -9,6 +10,7 @@ interface props {
 function Button(prop: props) {
   return (
     <button
+      type={prop.type}
       aria-haspopup={prop.arialHaspopup}
       aria-expanded={prop.arialExpanded}
       className="action-button"

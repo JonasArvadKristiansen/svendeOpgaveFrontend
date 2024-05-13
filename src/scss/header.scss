@@ -40,27 +40,27 @@ header {
   padding-top: map-get($spacing, "16px");
   padding-bottom: map-get($spacing, "16px");
 
-  .search {
+  &__search-container {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: map-get($spacing, "16px");
-  }
-
-  &__search {
-    display: flex;
-    input {
-      border-radius: 10px 0px 0px 10px;
-    }
-    button {
-      border-radius: 0px 10px 10px 0px;
+  
+    &__input {
+      display: flex;
+      input {
+        border-radius: 10px 0px 0px 10px;
+      }
+      button {
+        border-radius: 0px 10px 10px 0px;
+      }
     }
   }
 }
 
 .blackout {
-  position: absolute;
+  position: fixed;
   background-color: map-get($color, "blackout");
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }

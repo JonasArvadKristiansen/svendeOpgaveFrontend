@@ -1,16 +1,14 @@
 interface props {
-  id: string;
   children: string;
   type: string;
   name: string;
-  placeholder: string;
 } 
 
 function Input(prop: props) {
   return (
     <div>
-      <label htmlFor={prop.id}>{prop.children}</label>
-      <input id={prop.id} type={prop.type} name={prop.name} placeholder={prop.placeholder} />
+      <label htmlFor={prop.name}>{prop.children}</label>
+      <input id={prop.name} type={prop.type} name={prop.name} placeholder={prop.children} />
     </div>
   );
 }

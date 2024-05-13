@@ -18,6 +18,7 @@ function Header() {
             <div className="container-sm login-popup">
               <Login
                 onClick={() => {
+
                   setIsLogedIndPopup(!isLogedIndPopup);
                 }}
               />
@@ -38,7 +39,6 @@ function Header() {
               <li>
                 <a href="/">Virksomheder</a>
               </li>
-
               {isCompany && (
                 <li>
                   <a href="#">Opret jobopslag</a>
@@ -47,24 +47,24 @@ function Header() {
             </ul>
           </div>
 
-          {isLogedInd && (
+          {isLogedInd? (
             <div className="header__login">
               <a href="#">
                 <img src="/profile.svg" alt="Profile ikon" />
               </a>
 
               <Button
-                onClick={() => {
-                  console.log("Logind");
+            type="button"
+            onClick={() => {
+                  console.log("logud");
                 }}
               >
                 Log ud
               </Button>
             </div>
-          )}
-
-          {!isLogedInd && (
+          ): (
             <Button
+            type="button"
               arialExpanded={isLogedIndPopup}
               arialHaspopup={true}
               onClick={() => {
@@ -78,16 +78,16 @@ function Header() {
 
         {canSearch && (
           <div className="under-header">
-            <div className="container-sm search">
-              <div className="under-header__search">
+            <div className="container-sm under-header__search-container">
+              <div className="under-header__search-container__input">
                 <input
                   type="text"
                   placeholder="Søg efter virksomheder"
                   aria-label="Søg efter virksomheder"
                 />
-                <Button>Søg</Button>
+                <Button type="button">Søg</Button>
               </div>
-              <Button>Filtere</Button>
+              <Button type="button">Filtere</Button>
             </div>
           </div>
         )}

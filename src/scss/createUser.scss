@@ -1,0 +1,68 @@
+@import "variables.scss";
+
+.reg-user {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  margin-top: map-get($spacing, "40px");
+
+  &__container {
+    grid-column: 4/10;
+
+    h1 {
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: map-get($spacing, "16px");
+      padding: map-get($spacing, "16px");
+      
+      .failed {
+        border-color: map-get($color, "error" );
+        margin-bottom: map-get($spacing, "8px" );
+      }
+
+      .failed__text {
+        color: map-get($color, "red" );
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    &__jobtype-input {
+      display: flex;
+      gap: map-get($spacing, "8px");
+    }
+
+    &__jobtype-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: map-get($spacing, "16px");
+      margin-top: map-get($spacing, "8px");
+    }
+
+    &__selecter {
+      display: flex;
+      justify-content: space-around;
+      padding: map-get($spacing, "16px");
+      border-bottom: 1px solid map-get($color, "dark-blue-66");
+      
+      &--selected {
+        background-color: map-get($color, "dark-blue");
+        color: map-get($color, "white");
+      }
+
+      div {
+        display: flex;
+        align-items: center;
+        gap: map-get($spacing, "16px");
+        border: 1px solid map-get($color, "dark-blue-66");
+        border-radius: 10px ;
+        padding: map-get($spacing, "8px");
+      }
+    }
+  }
+}
