@@ -1,4 +1,4 @@
-import Input from "./Input";
+import Input from "../UI/Input";
 
 interface props {
   password: string;
@@ -23,12 +23,13 @@ function CreatePassword(prop: props) {
             type="text"
             name="password"
             placeholder="Adgangskode"
+            required
           />
           {!prop.isPasswordValid && (
             <p className="failed__text">Adgangskoden opfylder ikke kravene.</p>
           )}
         </div>
-        <Input type="password" name="repeatPassword">
+        <Input type="password" name="repeatPassword" required={true}>
           Gentage adgangskode
         </Input>
       </div>

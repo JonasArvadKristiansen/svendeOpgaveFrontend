@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
-import "../css/login.css";
-import Button from "./Elements/Button";
-import Input from "./Elements/Input";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+import "../../css/login.css"
+import { Button, CloseButton } from "../UI/Buttons";
+import Input from "../UI/Input";
 
 interface props {
   onClick: () => void;
@@ -10,22 +12,20 @@ interface props {
 function Login(prop: props) {
   const [isLoading, setIsLoading] = useState(false);
   const [didLoginFail, setDidLoginFail] = useState(false);
-
+  
   return (
-    <div className="login" role="dialog" aria-modal="true">
+    <div className="login" role="dialog" aria-modal="true" aria-label="Log ind som bruger popup">
       {!isLoading && (
         <>
           <div className="login__input">
             <div className="login__input__header">
               <h2 className="heading-2">Log ind som bruger</h2>
-              <button aria-label="Luk login popup" onClick={prop.onClick}>
-                <img src="/exit.svg" alt="Luk login popup" />
-              </button>
+              <CloseButton onClick={prop.onClick} arialLabel="Luk login popup" src="src\assets\exit.svg" alt="Luk ikon"/> 
             </div>
 
             <form action="#">
               {didLoginFail && (
-                <div className="login__input__error">
+                <div className="login__input--error">
                   <p>
                     Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                     Eligendi velit ab, quidem, molestiae quia placeat tenetur
@@ -36,28 +36,21 @@ function Login(prop: props) {
                 </div>
               )}
 
-              <Input id="email" type="text" name="email" placeholder="E-mail">
+              <Input type="text" name="email" placeholder="E-mail">
                 E-mail
               </Input>
-              <Input
-                id="password"
-                type="password"
-                name="password"
-                placeholder="Adgangskode"
-              >
+              <Input type="password" name="password" placeholder="Adgangskode">
                 Adgnagskode
               </Input>
-              <Button>Log ind</Button>
+              <Button type="button">Log ind</Button>
             </form>
 
-            <a href="#">Glemt adgangskode?</a>
+            <Link to="#">Glemt adgangskode?</Link>
           </div>
 
-          <a href="/reg-user">Opret en ny bruger</a>
+          <Link to="/registerUser">Opret en ny bruger</Link>
         </>
       )}
-
-      {isLoading && <p></p>}
     </div>
   );
 }

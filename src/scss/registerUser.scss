@@ -8,7 +8,12 @@
   &__container {
     grid-column: 4/10;
 
-    h1 {
+    &__error {
+      background-color: map-get($color, "error" );
+      padding:  map-get($spacing, "8px" );
+    }
+
+    &__title {
       text-align: center;
     }
 

@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import CreateUser from "./components/Sites/CreateUser.tsx";
+import RegisterUser from "./pages/RegisterUser.tsx";
 
 
 const router = createBrowserRouter([
@@ -13,8 +13,8 @@ const router = createBrowserRouter([
   
     children: [
       {
-        path: "reg-user",
-        element: <CreateUser/>
+        path: "registerUser",
+        element: <RegisterUser/>
       }
     ]
   }

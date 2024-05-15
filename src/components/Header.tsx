@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import "../css/header.css";
-import Button from "./Elements/Button";
-import Login from "./LoginPopUp";
+import { Button } from "./UI/Buttons";
+import Login from "./Elements/LoginPopUp";
 
 function Header() {
   const [isCompany, setIsCompany] = useState(false);
@@ -18,7 +20,6 @@ function Header() {
             <div className="container-sm login-popup">
               <Login
                 onClick={() => {
-
                   setIsLogedIndPopup(!isLogedIndPopup);
                 }}
               />
@@ -34,10 +35,10 @@ function Header() {
             </div>
             <ul className="header__nav__list">
               <li>
-                <a href="/">Jobopslag</a>
+                <Link to="/">Jobopslag</Link>
               </li>
               <li>
-                <a href="/">Virksomheder</a>
+                <Link to="/">Virksomheder</Link>
               </li>
               {isCompany && (
                 <li>
@@ -47,24 +48,24 @@ function Header() {
             </ul>
           </div>
 
-          {isLogedInd? (
+          {isLogedInd ? (
             <div className="header__login">
               <a href="#">
                 <img src="/profile.svg" alt="Profile ikon" />
               </a>
 
               <Button
-            type="button"
-            onClick={() => {
+                type="button"
+                onClick={() => {
                   console.log("logud");
                 }}
               >
                 Log ud
               </Button>
             </div>
-          ): (
+          ) : (
             <Button
-            type="button"
+              type="button"
               arialExpanded={isLogedIndPopup}
               arialHaspopup={true}
               onClick={() => {
