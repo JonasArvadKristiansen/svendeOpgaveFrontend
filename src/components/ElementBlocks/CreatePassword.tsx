@@ -1,12 +1,12 @@
-import Input from "../UI/Input";
+import Input from "../UiElements/Input";
 
-interface props {
+interface Props {
   password: string;
   isPasswordValid: boolean;
   passwordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function CreatePassword(prop: props) {
+function CreatePassword(prop: Props) {
   return (
     <>
       <div className="create-password">

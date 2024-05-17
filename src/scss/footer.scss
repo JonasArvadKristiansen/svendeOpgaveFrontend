@@ -1,0 +1,37 @@
+@import "variables.scss";
+
+@mixin flexDisplay($gap) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+footer {
+  border-top: 1px solid  map-get($color, "dark-blue-33");
+  padding-top: map-get($spacing, "40px");
+  padding-bottom: map-get($spacing, "40px");
+
+  .footer-container {
+    display: flex;
+    justify-content: space-between;
+
+    &__section-brows,
+    &__section-contact {
+      @include flexDisplay(map-get($spacing, "16px"));
+
+      &__info {
+        @include flexDisplay(map-get($spacing, "8px"));
+      }
+
+      &__info-container {
+        @include flexDisplay(map-get($spacing, "16px"));
+
+        &__info {
+          display: flex;
+          flex-wrap: wrap;
+          gap: map-get($spacing, "16px");
+        }
+      }
+    }
+  }
+}

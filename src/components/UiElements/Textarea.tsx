@@ -1,4 +1,4 @@
-interface props {
+interface Props {
   children: string;
   name: string;
 
@@ -6,7 +6,7 @@ interface props {
   required?: boolean;
 } 
 
-function Textarea(prop: props) {
+function Textarea(prop: Props) {
   return (
     <div>
       <label htmlFor={prop.name}>{prop.children}</label>

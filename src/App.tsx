@@ -1,13 +1,13 @@
-import Footer from "./components/Footer"
-import Header from "./components/Header"
-import { Outlet } from "react-router-dom"
+import Footer from "./components/SematicElements/Footer"
+import Header from "./components/SematicElements/Header"
+import DeafultLayout from "./layout/DeafultLayout"
 
 function App() {
   return (
     <>  
-      <Header/>
-      <Outlet/>
-      <Footer/>
+      <DeafultLayout>
+        <p>test</p>
+      </DeafultLayout>
     </>
   )
 }

@@ -1,4 +1,4 @@
-interface props {
+interface Props {
   children: string;
   type: "text" | "password" | "number" | "tel" | "email"; 
   name: string;
@@ -17,7 +17,7 @@ interface props {
   max?: string;
 }
 
-function Input(prop: props) {
+function Input(prop: Props) {
   return (
     <div>
       <label htmlFor={prop.name}>{prop.children}</label>

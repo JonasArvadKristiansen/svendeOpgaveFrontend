@@ -1,4 +1,4 @@
-interface propsButton {
+interface PropsButton {
   children: string;
   type: "submit" | "button";
   onClick?: () => void;
@@ -7,7 +7,7 @@ interface propsButton {
   arialExpanded?: boolean;
 }
 
-interface propsCloseButton {
+interface PropsCloseButton {
   onClick?: () => void;
 
   arialLabel: string;
@@ -15,7 +15,7 @@ interface propsCloseButton {
   alt: string;
 }
 
-function Button(prop: propsButton) {
+function Button(prop: PropsButton) {
   return (
     <>
         <button
@@ -32,7 +32,7 @@ function Button(prop: propsButton) {
   );
 }
 
-function CloseButton(prop: propsCloseButton) {
+function CloseButton(prop: PropsCloseButton) {
   return (
     <>
         <button

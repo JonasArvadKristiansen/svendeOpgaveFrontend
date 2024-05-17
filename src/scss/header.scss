@@ -37,8 +37,7 @@ header {
 .under-header {
   background-color: map-get($color, "dark-blue");
   height: 90px;
-  padding-top: map-get($spacing, "16px");
-  padding-bottom: map-get($spacing, "16px");
+  padding: map-get($spacing, "16px") 0;
 
   &__search-container {
     display: flex;

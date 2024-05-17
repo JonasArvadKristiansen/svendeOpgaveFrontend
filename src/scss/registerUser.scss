@@ -3,15 +3,10 @@
 .reg-user {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  margin-top: map-get($spacing, "40px");
+  padding: map-get($spacing, "40px") 0;
 
   &__container {
     grid-column: 4/10;
-
-    &__error {
-      background-color: map-get($color, "error" );
-      padding:  map-get($spacing, "8px" );
-    }
 
     &__title {
       text-align: center;
@@ -30,10 +25,6 @@
 
       .failed__text {
         color: map-get($color, "red" );
-      }
-
-      p {
-        margin: 0;
       }
     }
 
