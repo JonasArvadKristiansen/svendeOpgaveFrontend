@@ -1,6 +1,6 @@
 interface Props {
-  isJobseeker: boolean;
-  toggleUserSelect: () => void;
+  isBoolean: boolean;
+  toggleSelect:() => void;
 }
 
 function ToggleUserType(prop: Props) {
@@ -8,7 +8,7 @@ function ToggleUserType(prop: Props) {
     <div className="toggle-selector">
       <div
         className={
-          prop.isJobseeker
+          prop.isBoolean
             ? "toggle-selector__container toggle-selector__container--selected"
             : "toggle-selector__container"
         }
@@ -17,14 +17,14 @@ function ToggleUserType(prop: Props) {
         <input
           id="jobseeker"
           type="checkbox"
-          checked={prop.isJobseeker}
-          onChange={prop.toggleUserSelect}
+          checked={prop.isBoolean}
+          onChange={prop.toggleSelect}
         />
       </div>
 
       <div
         className={
-          !prop.isJobseeker
+          !prop.isBoolean
             ? "toggle-selector__container toggle-selector__container--selected"
             : "toggle-selector__container"
         }
@@ -33,8 +33,8 @@ function ToggleUserType(prop: Props) {
         <input
           id="company"
           type="checkbox"
-          checked={!prop.isJobseeker}
-          onChange={prop.toggleUserSelect}
+          checked={!prop.isBoolean}
+          onChange={prop.toggleSelect}
         />
       </div>
     </div>

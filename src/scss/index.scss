@@ -57,6 +57,9 @@ input, textarea {
     accent-color: map-get($color, "dark-blue" );
   }
 }
+label {
+  //font-weight: bold;
+}
 
 
 // Button.tsx component
@@ -87,6 +90,34 @@ input, textarea {
     border-color: map-get($color, 'white');
   }
 }
+
+.delete-button{
+  background-color: map-get($color, "white");
+  border: 1px solid map-get($color, "red");
+  border-radius: 10px;
+  padding: map-get($spacing, "16px") map-get($spacing, "24px");
+  padding: 16px 24px;
+  color: map-get($color, "red");
+  font-weight: bold;
+  font-family: $font-family;
+
+  text-decoration: underline;
+  text-decoration-color: map-get($color, 'white');
+  text-decoration-thickness: 2px;
+
+  transition: text-decoration-color 250ms ease;
+  &:hover {
+    text-decoration-color: map-get($color, "red");
+  }
+
+  &:active {
+    color: map-get($color, 'white');
+    background-color: map-get($color, 'red' );
+    text-decoration-color: map-get($color, 'white');
+    border-color: map-get($color, 'white');
+  }
+}
+
 
 .close-button {
   background-color: map-get($color, "white");

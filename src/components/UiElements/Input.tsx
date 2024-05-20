@@ -1,13 +1,13 @@
 interface Props {
   children: string;
-  type: "text" | "password" | "number" | "tel" | "email"; 
+  type: "text" | "password" | "number" | "tel" | "email";
   name: string;
-  
+
   placeholder?: string;
   required?: boolean;
 
   onchange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string; 
+  value?: string;
 
   //tlf type
   pattern?: string;
@@ -22,20 +22,11 @@ function Input(prop: Props) {
     <div>
       <label htmlFor={prop.name}>{prop.children}</label>
       <input
-        {...(prop.type === "number" && {
-          min: prop.min, 
-          max: prop.max,
-        })}
-        {...(prop.type === "tel" && {
-          pattern: prop.pattern,
-        })}
-        {...(prop.onchange && {
-          onChange: prop.onchange,
-        })}
-        {...(prop.value && {
-          value: prop.value,
-        })}
-
+        max={prop.max}
+        min={prop.min}
+        pattern={prop.pattern}
+        onChange={prop.onchange}
+        value={prop.value}
         id={prop.name}
         type={prop.type}
         name={prop.name}

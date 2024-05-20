@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
   erroMessage: string;
   failed: boolean;

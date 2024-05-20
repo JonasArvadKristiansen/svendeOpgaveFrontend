@@ -3,6 +3,8 @@ interface PropsButton {
   type: "submit" | "button";
   onClick?: () => void;
 
+  delete?: boolean;
+
   arialHaspopup?: boolean;
   arialExpanded?: boolean;
 }
@@ -14,7 +16,7 @@ interface PropsCloseButton {
   src: string;
   alt: string;
 }
-
+//action-button
 function Button(prop: PropsButton) {
   return (
     <>
@@ -22,7 +24,7 @@ function Button(prop: PropsButton) {
           type={prop.type}
           aria-haspopup={prop.arialHaspopup}
           aria-expanded={prop.arialExpanded}
-          className="action-button"
+          className={prop.delete? "delete-button": "action-button"}
           onClick={prop.onClick}
         >
           {prop.children}
@@ -35,15 +37,14 @@ function Button(prop: PropsButton) {
 function CloseButton(prop: PropsCloseButton) {
   return (
     <>
-        <button
-          type="button"
-          className="close-button"
-          aria-label={prop.arialLabel}
-          onClick={prop.onClick}
-        >
-          <img src={prop.src} alt={prop.alt} />
-        </button>
-      
+      <button
+        type="button"
+        className="close-button"
+        aria-label={prop.arialLabel}
+        onClick={prop.onClick}
+      >
+        <img src={prop.src} alt={prop.alt} />
+      </button>
     </>
   );
 }

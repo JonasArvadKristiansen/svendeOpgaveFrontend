@@ -1,5 +1,5 @@
-import Header from '../components/SematicElements/Header'
-import Footer from '../components/SematicElements/Footer'
+import Header from '../components/layout/Header'
+import Footer from '../components/layout/Footer'
 
 interface Props {
   children: any

@@ -1,4 +1,4 @@
-import Icon from "../UiElements/Icon";
+import Icon from "../uiElements/Icon";
 
 interface Props {
   children: string;

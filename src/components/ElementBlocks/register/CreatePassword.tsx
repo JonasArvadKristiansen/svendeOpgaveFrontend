@@ -1,12 +1,26 @@
-import Input from "../UiElements/Input";
+import Input from "../../uiElements/Input";
 
 interface Props {
-  password: string;
-  isPasswordValid: boolean;
-  passwordChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setIsPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;
+  isPasswordValid: boolean
+
+  setPasswordValue: React.Dispatch<React.SetStateAction<string>>;
+  passwordValue: string;
 }
 
 function CreatePassword(prop: Props) {
+  //Checks to see if password is valid
+  const passwordOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    if (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value)) {
+      prop.setIsPasswordValid(false);
+    } else {
+      prop.setIsPasswordValid(true);
+    }
+    prop.setPasswordValue(value);
+  };
+
+
   return (
     <>
       <div className="create-password">
@@ -17,8 +31,8 @@ function CreatePassword(prop: Props) {
           </label>
           <input
             className={!prop.isPasswordValid ? "failed" : ""}
-            value={prop.password}
-            onChange={prop.passwordChange}
+            value={prop.passwordValue}
+            onChange={passwordOnChange}
             id="password"
             type="text"
             name="password"

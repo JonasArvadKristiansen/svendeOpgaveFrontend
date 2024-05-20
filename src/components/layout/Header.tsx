@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 
-
 import "../../css/header.css";
-import { Button } from "../UiElements/Buttons";
+import { Button } from "../uiElements/Buttons";
 import Login from "../ElementBlocks/LoginPopUp";
-import Icon from "../UiElements/Icon";
+import Icon from "../uiElements/Icon";
 
 interface ExtraJwtInfo {
   user: {
@@ -85,7 +84,7 @@ function Header() {
         <div className="header__nav">
           <div>
             <h1 className="heading-1">JobConnect</h1>
-            <p>Fin din nye career i dag</p>
+            <p>Fin din nye karriere i dag</p>
           </div>
           <ul className="header__nav__list">
             <li>

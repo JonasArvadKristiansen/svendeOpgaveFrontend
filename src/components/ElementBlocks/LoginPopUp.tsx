@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import "../../css/login.css";
-import { Button, CloseButton } from "../UiElements/Buttons";
-import Input from "../UiElements/Input";
-import ErrorMessage from "../UiElements/ErrorMessage";
+import { Button, CloseButton } from "../uiElements/Buttons";
+import Input from "../uiElements/Input";
+import ErrorMessage from "../uiElements/ErrorMessage";
 import endpoint from "../../config.json";
 import ToggleUserType from "./ToggleUserType";
 
@@ -63,13 +63,13 @@ function Login(prop: Props) {
       //Decides with fetch request it needs to run
       let response;
       if (isJobseeker) {
-        response = await fetch(`${endpoint.path}loginUser`, {
+        response = await fetch(`${endpoint.path}api/user/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(jsonBody),
         });
       } else {
-        response = await fetch(`${endpoint.path}loginCompanyUser`, {
+        response = await fetch(`${endpoint.path}api/loginCompanyUser`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(jsonBody),
@@ -77,13 +77,15 @@ function Login(prop: Props) {
       }
 
       const jsonData = await response.json();
+      console.log(jsonData.message);
+      
 
       if (!response.ok) {
         throw new Error(jsonData);
       }
 
       //sets cokie of jwt and return to frontpage
-      setCookie("jwt-cookie", jsonData, {
+      setCookie("jwt-cookie", jsonData.token, {
         sameSite: "none",
         secure: true,
       });
@@ -120,7 +122,7 @@ function Login(prop: Props) {
 
         <ErrorMessage erroMessage={erroMessage} failed={failed} />
 
-        <ToggleUserType isJobseeker={isJobseeker} toggleUserSelect={toggleUserSelect}/>
+        <ToggleUserType isBoolean={isJobseeker} toggleSelect={toggleUserSelect}/>
 
         <form method="post" onSubmit={submitLoginForm}>
           <Input type="email" name="email" required={true}>

@@ -7,7 +7,7 @@ function Footer() {
       <div className="footer-container container-sm ">
         <div className="footer-container__section-title">
           <h1 className="heading-1">JobConnect</h1>
-          <p>Fin din nye career i dag</p>
+          <p>Fin din nye karriere i dag</p>
         </div>
 
         <div className="footer-container__section-brows">
