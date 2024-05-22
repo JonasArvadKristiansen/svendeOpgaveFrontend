@@ -20,16 +20,15 @@ interface PropsCloseButton {
 function Button(prop: PropsButton) {
   return (
     <>
-        <button
-          type={prop.type}
-          aria-haspopup={prop.arialHaspopup}
-          aria-expanded={prop.arialExpanded}
-          className={prop.delete? "delete-button": "action-button"}
-          onClick={prop.onClick}
-        >
-          {prop.children}
-        </button>
-      
+      <button
+        type={prop.type}
+        aria-haspopup={prop.arialHaspopup}
+        aria-expanded={prop.arialExpanded}
+        className={prop.delete ? "delete-button" : "action-button"}
+        onClick={prop.onClick}
+      >
+        {prop.children}
+      </button>
     </>
   );
 }
@@ -49,4 +48,4 @@ function CloseButton(prop: PropsCloseButton) {
   );
 }
 
-export {Button, CloseButton};
+export { Button, CloseButton };

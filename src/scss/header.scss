@@ -57,9 +57,3 @@ header {
   }
 }
 
-.blackout {
-  position: fixed;
-  background-color: map-get($color, "blackout");
-  width: 100%;
-  height: 100%;
-}

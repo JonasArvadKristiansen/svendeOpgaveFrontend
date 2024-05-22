@@ -1,55 +1,346 @@
+import { useState, useEffect } from "react";
+
 import Input from "../../uiElements/Input";
 import { Button } from "../../uiElements/Buttons";
 import Jobtype from "../Jobtype";
+import ErrorMessage from "../../uiElements/ErrorMessage";
+
+import endpoint from "../../../config.json";
 
 interface Props {
-  deleteSubmit: () => void
+  deleteSubmit: () => void;
+  editUserComplete: () => void;
+  token: string;
+  data: CompanyData;
+}
+
+interface ErrorInfo {
+  hasError: boolean;
+  errorMesseage: string;
+}
+
+interface CompanyData {
+  companyName?: string;
+  email?: string;
+  phonenumber?: number;
+  city?: string;
+  address?: string;
+  numberOfEmployees?: number;
+  cvrNumber?: number;
+  jobtypes?: string | string[];
 }
 
 function CompanyProfil(prop: Props) {
+  //Saves the orginal info
+  const [originalInfo, setOriginalInfo] = useState<CompanyData>({
+    companyName: "",
+    email: "",
+    phonenumber: 0,
+    city: "",
+    address: "",
+    numberOfEmployees: 0,
+    cvrNumber: 0,
+    jobtypes: "",
+  });
+
+  //Set new value for inputs
+  const [userInfo, setUserInfo] = useState<CompanyData>({
+    companyName: "",
+    email: "",
+    phonenumber: 0,
+    city: "",
+    address: "",
+    numberOfEmployees: 0,
+    cvrNumber: 0,
+    jobtypes: "",
+  });
+
+  //Chekcs the new and old joblist for change later
+  const [jobtypesList, setJobtypesList] = useState<string[]>([]);
+  const [originalJobtypesList, setOriginalJobtypesList] = useState<string[]>(
+    []
+  );
+
+  // New input value to add a new jobtype
+  const [jobtypeValue, setJobtypeValue] = useState<string>("");
+
+  //Checks for failer in user
+  const [userFailed, setUserFailed] = useState<ErrorInfo>({
+    hasError: false,
+    errorMesseage: "",
+  });
+
+  //Set values from parent to the usestate
+  useEffect(() => {
+    const dataInfo = prop.data;
+
+    if (
+      dataInfo.jobtypes != undefined &&
+      typeof dataInfo.jobtypes == "string"
+    ) {
+      setJobtypesList(dataInfo.jobtypes.split(","));
+      setOriginalJobtypesList(dataInfo.jobtypes.split(","));
+    }
+
+    setOriginalInfo(prop.data);
+    setUserInfo(prop.data);
+  }, [prop.data]);
+
+  //Remove jobtypeValue from an array of jobs
+  const removeJobElement = (index: number) => {
+    setJobtypesList((jobtypesList) => {
+      return jobtypesList.filter((_, i) => i !== index);
+    });
+  };
+
+  //Add jobtypeValue into an array of jobs
+  const addJobElement = () => {
+    const value = jobtypeValue.trim();
+    if (value.length < 1) {
+      setJobtypeValue("");
+      return;
+    }
+    setJobtypesList((jobtypesList) => [...jobtypesList, jobtypeValue]);
+    setJobtypeValue("");
+  };
+
+  //Change jobtypeValue input value
+  const changeJobValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setJobtypeValue(event.target.value);
+  };
+
+  //Makes it able to change input values after being given new ones
+  const handleInputChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const target = event.target;
+      const inputName = target.name;
+      const newValue = target.value;
+
+      switch (inputName) {
+        case "companyName":
+          setUserInfo({ ...userInfo, companyName: newValue });
+          break;
+        case "email":
+          setUserInfo({ ...userInfo, email: newValue });
+          break;
+        case "phonenumber":
+          if (newValue.length <= 8) {
+            setUserInfo({ ...userInfo, phonenumber: parseInt(newValue) });
+          }
+          break;
+        case "city":
+          setUserInfo({ ...userInfo, city: newValue });
+          break;
+        case "address":
+          setUserInfo({ ...userInfo, address: newValue });
+          break;
+        case "numberOfEmployees":
+          setUserInfo({ ...userInfo, numberOfEmployees: parseInt(newValue) });
+          break;
+        case "cvrNumber":
+          setUserInfo({ ...userInfo, cvrNumber: parseInt(newValue) });
+          break;
+        default:
+          throw new Error(`Dette input ${inputName} existere ikke`);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setUserFailed({
+          hasError: true,
+          errorMesseage: error.message,
+        });
+        console.error(error.message);
+      }
+    }
+  };
+
+  //Checks what inputs have changed to opdate info
+  const submitInputChange = async (event: React.FormEvent<HTMLFormElement>) => {
+    try {
+      event.preventDefault();
+      const target = new FormData(event.currentTarget);
+
+      const jsonBody: CompanyData = {};
+
+      for (const pair of target.entries()) {
+        switch (pair[0]) {
+          case "companyName":
+            if (pair[1] != originalInfo.companyName) {
+              jsonBody.companyName = String(pair[1]);
+            }
+            break;
+          case "email":
+            if (pair[1] != originalInfo.email) {
+              jsonBody.email = String(pair[1]);
+            }
+            break;
+          case "phonenumber":
+            if (pair[1] != String(originalInfo.phonenumber)) {
+              jsonBody.phonenumber = parseInt(String(pair[1]));
+            }
+            break;
+          case "city":
+            if (pair[1] != originalInfo.city) {
+              jsonBody.city = String(pair[1]);
+            }
+            break;
+          case "address":
+            if (pair[1] != originalInfo.address) {
+              jsonBody.address = String(pair[1]);
+            }
+            break;
+          case "numberOfEmployees":
+            if (pair[1] != String(originalInfo.numberOfEmployees)) {
+              jsonBody.numberOfEmployees = parseInt(String(pair[1]));
+            }
+            break;
+          case "cvrNumber":
+            if (pair[1] != String(originalInfo.cvrNumber)) {
+              jsonBody.cvrNumber = parseInt(String(pair[1]));
+            }
+            break;
+          case "jobtypes":
+            if (originalJobtypesList.join() != jobtypesList.join()) {
+              jsonBody.jobtypes = jobtypesList;
+            }
+            console.log("done jobtype");
+            break;
+          default:
+            throw new Error(`Dette input ${pair[0]} existere ikke`);
+        }
+      }
+
+      if (Object.keys(jsonBody).length <= 0) {
+        throw new Error("Du har ikke lavet nogen ændinger!");
+      }
+
+      const response = await fetch(`${endpoint.path}company/update`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${prop.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(jsonBody),
+      });
+
+      const jsonData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(jsonData);
+      }
+
+      prop.editUserComplete();
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setUserFailed({
+          hasError: true,
+          errorMesseage: error.message,
+        });
+        console.error(error.message);
+      }
+    }
+  };
+
   return (
-    <div className="profile__user" >
-      <Input type="text" name="companyName">
+    <form className="profile__user" onSubmit={submitInputChange}>
+      <ErrorMessage failed={userFailed.hasError} erroMessage={userFailed.errorMesseage}></ErrorMessage>
+
+      <Input
+        type="text"
+        name="companyName"
+        value={userInfo.companyName}
+        onchange={handleInputChanges}
+      >
         Company name
       </Input>
 
-      <Input type="email" name="email">
+      <Input
+        type="email"
+        name="email"
+        value={userInfo.email}
+        onchange={handleInputChanges}
+      >
         E-mail
       </Input>
 
-      <Input type="tel" name="phone">
+      <Input
+        pattern="[0-9]{8}"
+        type="tel"
+        name="phonenumber"
+        required={true}
+        value={String(userInfo.phonenumber)}
+        onchange={handleInputChanges}
+      >
         Telefon nummer
       </Input>
 
-      <Input type="text" name="city">
+      <Input
+        type="text"
+        name="city"
+        value={userInfo.city}
+        onchange={handleInputChanges}
+      >
         By
       </Input>
 
-      <Input type="text" name="address">
+      <Input
+        type="text"
+        name="address"
+        value={userInfo.address}
+        onchange={handleInputChanges}
+      >
         Addresse
       </Input>
 
-      <Input type="number" name="employee">
+      <Input
+        type="number"
+        name="numberOfEmployees"
+        value={String(userInfo.numberOfEmployees)}
+        onchange={handleInputChanges}
+      >
         Number af medarbejder
       </Input>
 
-      <Input type="number" name="cvr">
+      <Input
+        type="number"
+        name="cvrNumber"
+        value={String(userInfo.cvrNumber)}
+        onchange={handleInputChanges}
+      >
         CVR
       </Input>
 
-      <Jobtype
-        deleteJobtype={() => {
-          console.log("aaa");
-        }}
-      >
-        test
-      </Jobtype>
+      <div>
+        <label htmlFor="jobtypes">Jobtyper</label>
+        <div className="reg-user__container__jobtype-input">
+          <input
+            name="jobtypes"
+            id="jobtypes"
+            type="text"
+            value={jobtypeValue}
+            onChange={changeJobValue}
+            placeholder="Jobtyper"
+          />
+          <Button type="button" onClick={addJobElement}>
+            Opret
+          </Button>
+        </div>
+        <div className="reg-user__container__jobtype-list">
+          {jobtypesList.map((jobType, index) => (
+            <Jobtype key={index} deleteJobtype={() => removeJobElement(index)}>
+              {jobType}
+            </Jobtype>
+          ))}
+        </div>
+      </div>
 
       <div className="profile__user__actions">
-      <Button onClick={prop.deleteSubmit} delete={true} type="button">Slet din bruger</Button>
-        <Button type="button">Opdatere din bruger</Button>
+        <Button onClick={prop.deleteSubmit} delete={true} type="button">
+          Slet din bruger
+        </Button>
+        <Button type="submit">Opdatere din bruger</Button>
       </div>
-    </div>
+    </form>
   );
 }
 

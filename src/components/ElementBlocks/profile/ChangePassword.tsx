@@ -2,7 +2,6 @@ import { useState } from "react";
 import { json, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-
 import Input from "../../uiElements/Input";
 import { Button } from "../../uiElements/Buttons";
 import ErrorMessage from "../../uiElements/ErrorMessage";
@@ -24,7 +23,7 @@ function ChangePassword(prop: Props) {
   const [cookie, setCookie, removeCookie] = useCookies(["jwt-cookie"]);
 
   //Checks if password is valid to be used
-  const [isValid, setIsValid] = useState<boolean>(false);
+  const [isValid, setIsValid] = useState<boolean>(true);
   const [newPassword, setNewPassword] = useState<string>("");
 
   //Fail check and messeage
@@ -54,15 +53,17 @@ function ChangePassword(prop: Props) {
 
       switch (prop.userType) {
         case "Normal user":
-          response = await fetch(`${endpoint.path}api/user/password`, {
+          response = await fetch(`${endpoint.path}user/password`, {
             method: "PUT",
-            headers: { Authorization: `Bearer ${prop.token}` },
+            headers: { 
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${prop.token}` },
             body: JSON.stringify(jsonBody),
           });
           break;
 
         case "Company user":
-          response = await fetch(`${endpoint.path}api/company/password`, {
+          response = await fetch(`${endpoint.path}company/password`, {
             method: "PUT",
             headers: {
               'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ function ChangePassword(prop: Props) {
         default:
           throw new Error("Bruger type eksistere ikke");
       }
-      
+
       const jsonData = await response.json();
 
       if (!response.ok) {
@@ -96,11 +97,15 @@ function ChangePassword(prop: Props) {
   //Checks to see if password is valid
   const validate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
+    console.log(value);
+    
     if (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value)) {
       setIsValid(false);
     } else {
       setIsValid(true);
     }
+    console.log(isValid);
+    
     setNewPassword(value);
   };
 
@@ -109,7 +114,7 @@ function ChangePassword(prop: Props) {
       <ErrorMessage erroMessage={erroMessage} failed={failed}></ErrorMessage>
 
       <form className="profile__changepass__form" onSubmit={changePassword}>
-        <Input type="text" name="oldPassword">
+        <Input type="text" name="oldPassword" required={true}>
           Gammel Adgangskode
         </Input>
         <div>
@@ -125,10 +130,11 @@ function ChangePassword(prop: Props) {
             type="text"
             name="newPassword"
             placeholder="Ny adgangskode"
+            required
           />
         </div>
         {!isValid && (
-          <p className="failed__text">Adgangskoden opfylder ikke kravene</p>
+          <p className="profile__changepass__form--failed">Adgangskoden opfylder ikke kravene</p>
         )}
         <Input type="password" name="repeatNewPassword" required={true}>
           Gentage adgangskode

@@ -1,5 +1,43 @@
 @import "../variables.scss";
 
+.delete-user {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacing, "16px");
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+   
+  }  
+}
+
+.edit-user {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacing, "16px");
+  text-align: center;
+  &__buttons {
+    display: flex;
+  }  
+}
+
+.ban-user {
+  display: flex;
+  flex-direction: column;
+  gap: map-get($spacing, "16px");
+  
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+  
+    &__options {
+      display: flex;
+      gap: map-get($spacing, "16px");
+
+    }
+  }  
+}
+
 .profile {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -29,6 +67,11 @@
       display: flex;
       flex-direction: column;
       gap: map-get($spacing, "16px");  
+
+      &--failed {
+        background-color: map-get($color, "error" );
+        padding: map-get($spacing, "8px");
+      }
     }
 
     &--error {

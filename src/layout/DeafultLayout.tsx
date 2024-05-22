@@ -1,11 +1,12 @@
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
+import React from 'react'
 
 interface Props {
-  children: any
+  children: React.ReactNode;
 }
 
-function testLayout(prop: Props) {
+function DeafultLayout(prop: Props) {
   return (
     <>
       <Header/>
@@ -15,4 +16,4 @@ function testLayout(prop: Props) {
   )
 }
 
-export default testLayout
+export default DeafultLayout

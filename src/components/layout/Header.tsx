@@ -64,7 +64,7 @@ function Header() {
           setIsCompany(true);
         }
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
     }
   }, [cookies]);

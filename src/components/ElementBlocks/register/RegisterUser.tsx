@@ -20,7 +20,7 @@ interface Props {
   isPasswordValid: boolean;
 }
 
-function regusterUser(prop: Props) {
+function RegisterUser(prop: Props) {
   return (
     <form method="post" onSubmit={prop.submitCreateUser}>
       <Input type="text" name="fullName" required={true}>
@@ -50,4 +50,4 @@ function regusterUser(prop: Props) {
   );
 }
 
-export default regusterUser;
+export default RegisterUser;

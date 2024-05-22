@@ -4,6 +4,8 @@ import Textarea from "../../uiElements/Textarea";
 import Jobtype from "../Jobtype";
 import CreatePassword from "./CreatePassword";
 
+
+
 interface Props {
   //Submit function
   submitCreateUser: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -20,18 +22,19 @@ interface Props {
   setIsPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;
   isPasswordValid: boolean;
 
-
+  //Sets job list op
   setJobtypesList: React.Dispatch<React.SetStateAction<string[]>>;
   jobtypesList: string[];
   setJobtypeValue: React.Dispatch<React.SetStateAction<string>>;
   jobtypeValue: string;
 
+  //Funcktion for joblist
   removeJobElement: (key: number) => void;
   addJobElement: () => void;
   changeJobValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function registerCompany(prop: Props) {
+function RegisterCompany(prop: Props) {
   return (
     <form method="post" onSubmit={prop.submitCreateUser}>
       <Input type="text" name="companyName" required={true}>
@@ -102,4 +105,4 @@ function registerCompany(prop: Props) {
   );
 }
 
-export default registerCompany;
+export default RegisterCompany;
