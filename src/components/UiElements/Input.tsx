@@ -1,6 +1,6 @@
 interface Props {
   children: string;
-  type: "text" | "password" | "number" | "tel" | "email";
+  type: "text" | "password" | "number" | "tel" | "email" | "date";
   name: string;
 
   placeholder?: string;

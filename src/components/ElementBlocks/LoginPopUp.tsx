@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import "../../css/login.css";
+import "../../scss/login.scss";
 import { Button, CloseButton } from "../uiElements/Buttons";
 import Input from "../uiElements/Input";
 import ErrorMessage from "../uiElements/ErrorMessage";

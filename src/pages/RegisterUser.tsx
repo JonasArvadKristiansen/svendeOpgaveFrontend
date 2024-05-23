@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import "../css/RegisterUser.css";
+import "../scss/pages/registerUser.scss";
 import DeafultLayout from "../layout/DeafultLayout";
 
 import ErrorMessage from "../components/uiElements/ErrorMessage";

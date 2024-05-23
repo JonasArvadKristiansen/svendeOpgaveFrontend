@@ -1,11 +1,9 @@
-import DeafultLayout from "./layout/DeafultLayout"
+import Company from "./pages/Company"
 
 function App() {
   return (
     <>  
-      <DeafultLayout>
-        <p>test</p>
-      </DeafultLayout>
+      <Company/>
     </>
   )
 }

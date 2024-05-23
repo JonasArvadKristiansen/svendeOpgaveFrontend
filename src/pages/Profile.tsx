@@ -12,7 +12,7 @@ import UserProfil from "../components/ElementBlocks/profile/UserProfil";
 import ShowPopup from "../components/ElementBlocks/ShowPopup";
 
 import endpoint from "../config.json";
-import "../css/profile.css";
+import "../scss/pages/profile.scss";
 
 interface ExtraJwtInfo {
   user: {

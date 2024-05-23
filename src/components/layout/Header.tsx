@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 
-import "../../css/header.css";
+import "../../scss/header.scss";
+
 import { Button } from "../uiElements/Buttons";
 import Login from "../ElementBlocks/LoginPopUp";
 import Icon from "../uiElements/Icon";
@@ -88,14 +89,14 @@ function Header() {
           </div>
           <ul className="header__nav__list">
             <li>
-              <Link to="/">Jobopslag</Link>
+              <Link to="/">Virksomheder</Link>
             </li>
             <li>
-              <Link to="/">Virksomheder</Link>
+              <Link to="/jobposting">Jobopslag</Link>
             </li>
             {isCompany && (
               <li>
-                <Link to="#">Opret jobopslag</Link>
+                <Link to="/createJobpost">Opret jobopslag</Link>
               </li>
             )}
           </ul>

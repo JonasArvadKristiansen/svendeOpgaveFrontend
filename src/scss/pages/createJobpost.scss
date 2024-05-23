@@ -1,0 +1,15 @@
+@import "../variables.scss";
+
+.display-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: map-get($spacing, "32px");
+  
+  &__container {
+    padding: map-get($spacing, "40px" ) 0;
+    grid-column: 4/10;
+    display: flex;
+    flex-direction: column;
+    gap: map-get($spacing, "16px");
+  }
+}
