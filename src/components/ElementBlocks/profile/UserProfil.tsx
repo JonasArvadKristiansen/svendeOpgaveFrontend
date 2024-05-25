@@ -24,6 +24,8 @@ interface UserData {
 }
 
 function UserProfil(prop: Props) {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
   //Saves the orginal info
   const [originalInfo, setOriginalInfo] = useState<UserData>({
     fullName: "",
@@ -32,7 +34,7 @@ function UserProfil(prop: Props) {
   });
 
   //Replaces the new inputs from the user
-  const [userInfo , setUserInfo ] = useState<UserData>({
+  const [userInfo, setUserInfo] = useState<UserData>({
     fullName: "",
     email: "",
     phonenumber: 0,
@@ -46,7 +48,8 @@ function UserProfil(prop: Props) {
 
   //Set values from parent to the usestate
   useEffect(() => {
-    const dataInfo = prop.data;
+    const dataInfo = prop.data;    
+
     setOriginalInfo(dataInfo);
     setUserInfo(dataInfo);
   }, [prop.data]);
@@ -84,15 +87,13 @@ function UserProfil(prop: Props) {
     }
   };
 
-  //Checks to see if any value has change form the original data 
-  const submitInputChange = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  //Checks to see if any value has change form the original data
+  const submitInputChange = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
       const target = new FormData(event.currentTarget);
 
-      const jsonBody: UserData = {};
+      const jsonBody: UserData = { fullName: "", email: "", phonenumber: 0 };
 
       for (const pair of target.entries()) {
         switch (pair[0]) {
@@ -126,6 +127,7 @@ function UserProfil(prop: Props) {
         headers: {
           Authorization: `Bearer ${prop.token}`,
           "Content-Type": "application/json",
+          access_token: accessToken,
         },
         body: JSON.stringify(jsonBody),
       });

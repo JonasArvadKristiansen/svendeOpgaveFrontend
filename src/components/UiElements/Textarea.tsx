@@ -1,16 +1,26 @@
 interface Props {
-  children: string;
+  label: string;
+  children?: string;
   name: string;
 
   placeholder?: string;
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void
   required?: boolean;
-} 
+}
 
 function Textarea(prop: Props) {
   return (
     <div>
-      <label htmlFor={prop.name}>{prop.children}</label>
-      <textarea id={prop.name}  name={prop.name} placeholder={!prop.placeholder? prop.children: prop.placeholder} required={prop.required} />
+      <label htmlFor={prop.name}>{prop.label}</label>
+      <textarea
+        id={prop.name}
+        name={prop.name}
+        placeholder={prop.label}
+        required={prop.required}
+        value={prop.children}
+        onChange={prop.onChange}
+      />
+      
     </div>
   );
 }

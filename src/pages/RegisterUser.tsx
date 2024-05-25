@@ -26,7 +26,7 @@ interface JsonBodyCompany {
   phonenumber: number;
   address: string;
   city: string;
-  companyDescription: string;
+  description: string;
   cvrNumber: number;
   numberOfEmployees: number;
   jobtypes: string[];
@@ -40,6 +40,8 @@ interface ErrorInfo {
 }
 
 function CreateUser() {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
   //Cookie and redirect
   const navigate = useNavigate();
   const [cookie, setCookie] = useCookies(["jwt-cookie"]);
@@ -66,7 +68,7 @@ function CreateUser() {
 
   //Toggle between users to create
   const toggleUserSelect = () => {
-    setRegisterFailed({ hasError: false, errorMesseage: '' });
+    setRegisterFailed({ hasError: false, errorMesseage: "" });
     setIsJobseeker(!isJobseeker);
   };
 
@@ -146,7 +148,10 @@ function CreateUser() {
       //Send the post request
       const response = await fetch(`${endpoint.path}user/create`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          access_token: accessToken,
+        },
         body: JSON.stringify(jsonBody),
       });
 
@@ -188,7 +193,7 @@ function CreateUser() {
         phonenumber: 0,
         address: "",
         city: "",
-        companyDescription: "",
+        description: "",
         cvrNumber: 0,
         numberOfEmployees: 0,
         jobtypes: [""],
@@ -214,8 +219,8 @@ function CreateUser() {
           case "city":
             jsonBody.city = String(pair[1]);
             break;
-          case "companyDescription":
-            jsonBody.companyDescription = String(pair[1]);
+          case "description":
+            jsonBody.description = String(pair[1]);
             break;
           case "cvrNumber":
             jsonBody.cvrNumber = parseInt(String(pair[1]));
@@ -244,7 +249,10 @@ function CreateUser() {
       //Send the post request
       const response = await fetch(`${endpoint.path}company/create`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          access_token: accessToken,
+        },
         body: JSON.stringify(jsonBody),
       });
 
@@ -265,8 +273,8 @@ function CreateUser() {
         console.error(error);
         setRegisterFailed({
           hasError: true,
-          errorMesseage: error.message
-        })
+          errorMesseage: error.message,
+        });
       }
     }
   };
@@ -282,7 +290,10 @@ function CreateUser() {
             toggleSelect={toggleUserSelect}
           />
 
-          <ErrorMessage failed={registerFailed.hasError} erroMessage={registerFailed.errorMesseage} />
+          <ErrorMessage
+            failed={registerFailed.hasError}
+            erroMessage={registerFailed.errorMesseage}
+          />
 
           {isJobseeker ? (
             <RegisterUser

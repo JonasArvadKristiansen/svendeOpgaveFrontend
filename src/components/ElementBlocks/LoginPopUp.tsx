@@ -15,6 +15,8 @@ interface Props {
 }
 
 function LoginPopUp(prop: Props) {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
   //Are user loggin ind as a Jobseeker or company
   const [isJobseeker, setIsJobseeker] = useState<boolean>(true);
 
@@ -63,13 +65,17 @@ function LoginPopUp(prop: Props) {
       if (isJobseeker) {
         response = await fetch(`${endpoint.path}user/login`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+          access_token: accessToken,
+           },
           body: JSON.stringify(jsonBody),
         });
       } else {
         response = await fetch(`${endpoint.path}company/login`, {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+          access_token: accessToken,
+           },
           body: JSON.stringify(jsonBody),
         });
       }

@@ -20,7 +20,7 @@ const router = createBrowserRouter([
     errorElement: <h1>Error</h1>,
   },
   {
-    path: "companyInfo",
+    path: "companyInfo/:id",
     element: <CompanyInfo/>
   },
   {
@@ -31,21 +31,27 @@ const router = createBrowserRouter([
     path: "profile",
     element: <Profile/>
   },
+
+
   {
     path: "jobposting",
     element: <JobPosting/>
   },
   {
-    path: "jobpostingInfo",
+    path: "jobpostingInfo/:id/editJobpost",
+    element: <EditJobpost/>
+  },
+
+
+
+
+  {
+    path: "jobpostingInfo/:id",
     element: <JobpostingInfo/>
   },
   {
     path: "createJobpost",
     element: <CreateJobpost/>
-  },
-  {
-    path: "editJobpost",
-    element: <EditJobpost/>
   },
 
 ]);

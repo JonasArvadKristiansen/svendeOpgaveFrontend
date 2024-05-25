@@ -1,20 +1,70 @@
-
 import DeafultLayout from "../layout/DeafultLayout";
 import JobPostingCard from "../components/ElementBlocks/content/jobPostingCard";
+import endpoint from "../config.json";
 
 import "../scss/pages/content.scss";
+import { useEffect, useState } from "react";
+
+interface JobPostingObject {
+  id: number;
+  companyName: string;
+  title: string;
+  deadline: string;
+  address: string;
+  description: string;
+}
 
 function JobPosting() {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
+  const [jobpostList, setJobpostList] = useState<JobPostingObject[]>([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await fetch(`${endpoint.path}jobpost/all`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            access_token: accessToken,
+          },
+        });
+
+        const jsonData = await response.json();
+
+        if (!response.ok) {
+          throw new Error(jsonData);
+        }
+
+        setJobpostList(jsonData.jobpostings);
+
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(error.message);
+        }
+      }
+    };
+
+    getData();
+  }, []);
+
   return (
     <DeafultLayout>
       <div className="container-sm content">
         <h1 className="heading-1 title">Jobopslag</h1>
-
         <div className=" content__blocks">
-          <JobPostingCard />
-          <JobPostingCard />
-          <JobPostingCard />
-          <JobPostingCard />
+          {Object.keys(jobpostList).length > 0 &&
+            jobpostList.map((job, index) => (
+              <JobPostingCard
+                key={index}
+                id={job.id}
+                companyName={job.companyName}
+                title={job.title}
+                deadline={job.deadline}
+                address={job.address}
+                description={job.description}
+              ></JobPostingCard>
+            ))}
         </div>
       </div>
     </DeafultLayout>

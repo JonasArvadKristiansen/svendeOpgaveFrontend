@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import Input from "../../uiElements/Input";
 import { Button } from "../../uiElements/Buttons";
@@ -6,6 +6,7 @@ import Jobtype from "../Jobtype";
 import ErrorMessage from "../../uiElements/ErrorMessage";
 
 import endpoint from "../../../config.json";
+import Textarea from "../../uiElements/Textarea";
 
 interface Props {
   deleteSubmit: () => void;
@@ -24,6 +25,7 @@ interface CompanyData {
   email?: string;
   phonenumber?: number;
   city?: string;
+  description?: string;
   address?: string;
   numberOfEmployees?: number;
   cvrNumber?: number;
@@ -31,12 +33,15 @@ interface CompanyData {
 }
 
 function CompanyProfil(prop: Props) {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
   //Saves the orginal info
   const [originalInfo, setOriginalInfo] = useState<CompanyData>({
     companyName: "",
     email: "",
     phonenumber: 0,
     city: "",
+    description: "",
     address: "",
     numberOfEmployees: 0,
     cvrNumber: 0,
@@ -49,6 +54,7 @@ function CompanyProfil(prop: Props) {
     email: "",
     phonenumber: 0,
     city: "",
+    description: "",
     address: "",
     numberOfEmployees: 0,
     cvrNumber: 0,
@@ -74,6 +80,7 @@ function CompanyProfil(prop: Props) {
   useEffect(() => {
     const dataInfo = prop.data;
 
+    
     if (
       dataInfo.jobtypes != undefined &&
       typeof dataInfo.jobtypes == "string"
@@ -107,6 +114,32 @@ function CompanyProfil(prop: Props) {
   //Change jobtypeValue input value
   const changeJobValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setJobtypeValue(event.target.value);
+  };
+
+  const handleTextareaChanges = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    try {
+      const target = event.target;
+      const inputName = target.name;
+      const newValue = target.value;
+
+      switch (inputName) {
+        case "description":
+          setUserInfo({ ...userInfo, description: newValue });
+          break;
+        default:
+          throw new Error(`Dette input ${inputName} existere ikke`);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setUserFailed({
+          hasError: true,
+          errorMesseage: error.message,
+        });
+        console.error(error.message);
+      }
+    }
   };
 
   //Makes it able to change input values after being given new ones
@@ -160,7 +193,17 @@ function CompanyProfil(prop: Props) {
       event.preventDefault();
       const target = new FormData(event.currentTarget);
 
-      const jsonBody: CompanyData = {};
+      const jsonBody: CompanyData = {
+        companyName: "",
+        email: "",
+        phonenumber: 0,
+        city: "",
+        description: "",
+        address: "",
+        numberOfEmployees: 0,
+        cvrNumber: 0,
+        jobtypes: "",
+      };
 
       for (const pair of target.entries()) {
         switch (pair[0]) {
@@ -184,6 +227,11 @@ function CompanyProfil(prop: Props) {
               jsonBody.city = String(pair[1]);
             }
             break;
+          case "description":
+            if (pair[1] != originalInfo.description) {
+              jsonBody.description = String(pair[1]);
+            }
+            break;
           case "address":
             if (pair[1] != originalInfo.address) {
               jsonBody.address = String(pair[1]);
@@ -203,7 +251,6 @@ function CompanyProfil(prop: Props) {
             if (originalJobtypesList.join() != jobtypesList.join()) {
               jsonBody.jobtypes = jobtypesList;
             }
-            console.log("done jobtype");
             break;
           default:
             throw new Error(`Dette input ${pair[0]} existere ikke`);
@@ -219,6 +266,7 @@ function CompanyProfil(prop: Props) {
         headers: {
           Authorization: `Bearer ${prop.token}`,
           "Content-Type": "application/json",
+          access_token: accessToken,
         },
         body: JSON.stringify(jsonBody),
       });
@@ -243,7 +291,10 @@ function CompanyProfil(prop: Props) {
 
   return (
     <form className="profile__user" onSubmit={submitInputChange}>
-      <ErrorMessage failed={userFailed.hasError} erroMessage={userFailed.errorMesseage}></ErrorMessage>
+      <ErrorMessage
+        failed={userFailed.hasError}
+        erroMessage={userFailed.errorMesseage}
+      ></ErrorMessage>
 
       <Input
         type="text"
@@ -282,6 +333,16 @@ function CompanyProfil(prop: Props) {
       >
         By
       </Input>
+
+      <Textarea
+        name="description"
+        label="Beskrivelse"
+        onChange={handleTextareaChanges}
+      >
+        {userInfo.description === undefined
+          ? ""
+          : userInfo.description}
+      </Textarea>
 
       <Input
         type="text"
@@ -325,6 +386,7 @@ function CompanyProfil(prop: Props) {
             Opret
           </Button>
         </div>
+
         <div className="reg-user__container__jobtype-list">
           {jobtypesList.map((jobType, index) => (
             <Jobtype key={index} deleteJobtype={() => removeJobElement(index)}>

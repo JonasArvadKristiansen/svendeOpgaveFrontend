@@ -59,9 +59,7 @@ function RegisterCompany(prop: Props) {
       <Input type="text" name="city" required={true}>
         By
       </Input>
-      <Textarea name="companyDescription" required={true}>
-        Beskrivelse
-      </Textarea>
+      <Textarea name="description" label="Beskrivelse" placeholder="Beskrivelse" required={true}></Textarea>
       <Input type="number" name="cvrNumber" min="1" required={true}>
         CVR nummer
       </Input>

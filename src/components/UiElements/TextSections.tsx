@@ -1,6 +1,6 @@
 interface Props {
   header: string;
-  text: string;
+  text: string | number;
 }
 
 function TextSections(prop: Props) {

@@ -37,6 +37,7 @@ interface CompanyData {
   email: string;
   phonenumber: number;
   city: string;
+  description: string;
   address: string;
   numberOfEmployees: number;
   cvrNumber: number;
@@ -44,6 +45,8 @@ interface CompanyData {
 }
 
 function Profile() {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
   //Make use of cookie and can navigate
   const [cookies, setCookie, removeCookie] = useCookies();
   const navigate = useNavigate();
@@ -85,6 +88,7 @@ function Profile() {
     email: "",
     phonenumber: 0,
     city: "",
+    description: "",
     address: "",
     numberOfEmployees: 0,
     cvrNumber: 0,
@@ -103,24 +107,26 @@ function Profile() {
     const fetchData = async (userType: string) => {
       try {
         let response;
-
+        
         //Go though the type the user are to get that users info
         switch (userType) {
           case "Normal user":
-            response = await fetch(`${endpoint.path}user/info`, {
+            response = await fetch(`${endpoint.path}user/profile`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
+                access_token: accessToken,
               },
             });
             break;
           case "Company user":
-            response = await fetch(`${endpoint.path}company/info`, {
+            response = await fetch(`${endpoint.path}company/profile`, {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
+                access_token: accessToken,
               },
             });
             break;
@@ -207,6 +213,7 @@ function Profile() {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
+              access_token: accessToken,
             },
           });
           break;
@@ -216,6 +223,7 @@ function Profile() {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
+              access_token: accessToken,
             },
           });
           break;
@@ -224,8 +232,6 @@ function Profile() {
           throw new Error("Bruger type eksistere ikke");
       }
 
-      const test = response.json();
-      console.log(test);
 
       if (!response.ok) {
         throw new Error("cringe");
@@ -248,6 +254,7 @@ function Profile() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
+          access_token: accessToken,
         },
         body: JSON.stringify({ email: adminSelectedEmail }),
       });

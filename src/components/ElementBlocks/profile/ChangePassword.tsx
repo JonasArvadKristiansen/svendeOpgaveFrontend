@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
 import Input from "../../uiElements/Input";
@@ -18,6 +18,8 @@ type JsonBody = {
 };
 
 function ChangePassword(prop: Props) {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
   //Remove cookie and navigate
   const navigate = useNavigate();
   const [cookie, setCookie, removeCookie] = useCookies(["jwt-cookie"]);
@@ -55,9 +57,11 @@ function ChangePassword(prop: Props) {
         case "Normal user":
           response = await fetch(`${endpoint.path}user/password`, {
             method: "PUT",
-            headers: { 
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${prop.token}` },
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${prop.token}`,
+              access_token: accessToken,
+            },
             body: JSON.stringify(jsonBody),
           });
           break;
@@ -66,8 +70,10 @@ function ChangePassword(prop: Props) {
           response = await fetch(`${endpoint.path}company/password`, {
             method: "PUT",
             headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${prop.token}` },
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${prop.token}`,
+              access_token: accessToken,
+            },
             body: JSON.stringify(jsonBody),
           });
           break;
@@ -79,12 +85,11 @@ function ChangePassword(prop: Props) {
       const jsonData = await response.json();
 
       if (!response.ok) {
-        throw new Error(jsonData)
+        throw new Error(jsonData);
       }
 
-      removeCookie("jwt-cookie")
+      removeCookie("jwt-cookie");
       navigate("/");
-
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -97,15 +102,13 @@ function ChangePassword(prop: Props) {
   //Checks to see if password is valid
   const validate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    console.log(value);
-    
+
     if (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value)) {
       setIsValid(false);
     } else {
       setIsValid(true);
     }
-    console.log(isValid);
-    
+
     setNewPassword(value);
   };
 
@@ -134,7 +137,9 @@ function ChangePassword(prop: Props) {
           />
         </div>
         {!isValid && (
-          <p className="profile__changepass__form--failed">Adgangskoden opfylder ikke kravene</p>
+          <p className="profile__changepass__form--failed">
+            Adgangskoden opfylder ikke kravene
+          </p>
         )}
         <Input type="password" name="repeatNewPassword" required={true}>
           Gentage adgangskode
