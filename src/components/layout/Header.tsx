@@ -37,7 +37,7 @@ function Header() {
 
   //Logout as a user and deletes cookie
   const logout = () => {
-    removeCookie("jwt-cookie");
+    removeCookie("Authorization");
     setIsLogedInd(false);
     navigate("/");
   };
@@ -49,7 +49,7 @@ function Header() {
   useEffect(() => {
     //Tries to decode the jwt
     try {
-      const token = cookies["jwt-cookie"];
+      const token = cookies["Authorization"];
       if (token != undefined) {
         const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 

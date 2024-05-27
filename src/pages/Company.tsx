@@ -21,6 +21,7 @@ function Company() {
       try {
         const response = await fetch(`${endpoint.path}company/all`, {
           method: "GET",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
             "access_token": accessToken,

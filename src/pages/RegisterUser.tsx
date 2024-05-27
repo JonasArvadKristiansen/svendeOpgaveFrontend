@@ -44,7 +44,7 @@ function CreateUser() {
 
   //Cookie and redirect
   const navigate = useNavigate();
-  const [cookie, setCookie] = useCookies(["jwt-cookie"]);
+  const [cookie, setCookie] = useCookies(["Authorization"]);
 
   //Set password value and chceck if they are valid
   const [passwordValue, setPasswordValue] = useState<string>("");
@@ -148,6 +148,7 @@ function CreateUser() {
       //Send the post request
       const response = await fetch(`${endpoint.path}user/create`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           access_token: accessToken,
@@ -161,11 +162,7 @@ function CreateUser() {
         throw new Error(jsonData);
       }
 
-      //Makes the cookie with the jwt and navigatie to the frontpage
-      setCookie("jwt-cookie", jsonData.token, {
-        sameSite: "none",
-        secure: true,
-      });
+ 
       navigate("/");
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -249,6 +246,7 @@ function CreateUser() {
       //Send the post request
       const response = await fetch(`${endpoint.path}company/create`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           access_token: accessToken,
@@ -262,11 +260,6 @@ function CreateUser() {
         throw new Error(jsonData);
       }
 
-      //Makes the cookie with the jwt and navigatie to the frontpage
-      setCookie("jwt-cookie", jsonData.token, {
-        sameSite: "none",
-        secure: true,
-      });
       navigate("/");
     } catch (error: unknown) {
       if (error instanceof Error) {

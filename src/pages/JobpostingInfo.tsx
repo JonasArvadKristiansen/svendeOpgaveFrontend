@@ -44,7 +44,7 @@ function JobpostingInfo() {
   });
 
   useEffect(() => {
-    const token = cookies["jwt-cookie"];
+    const token = cookies["Authorization"];
     setToken(token);
 
     const getData = async () => {
@@ -53,6 +53,7 @@ function JobpostingInfo() {
           `${endpoint.path}jobpost/info?jobpostingId=${params.id}`,
           {
             method: "GET",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
@@ -82,6 +83,7 @@ function JobpostingInfo() {
     try {
       const response = await fetch(`${endpoint.path}jobpost/delete`, {
         method: "DELETE",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

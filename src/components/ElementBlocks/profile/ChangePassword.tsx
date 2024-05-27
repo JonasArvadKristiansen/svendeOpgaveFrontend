@@ -22,7 +22,7 @@ function ChangePassword(prop: Props) {
 
   //Remove cookie and navigate
   const navigate = useNavigate();
-  const [cookie, setCookie, removeCookie] = useCookies(["jwt-cookie"]);
+  const [cookie, setCookie, removeCookie] = useCookies(["Authorization"]);
 
   //Checks if password is valid to be used
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -57,6 +57,7 @@ function ChangePassword(prop: Props) {
         case "Normal user":
           response = await fetch(`${endpoint.path}user/password`, {
             method: "PUT",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${prop.token}`,
@@ -69,6 +70,7 @@ function ChangePassword(prop: Props) {
         case "Company user":
           response = await fetch(`${endpoint.path}company/password`, {
             method: "PUT",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${prop.token}`,
@@ -88,7 +90,7 @@ function ChangePassword(prop: Props) {
         throw new Error(jsonData);
       }
 
-      removeCookie("jwt-cookie");
+      removeCookie("Authorization");
       navigate("/");
     } catch (error: unknown) {
       if (error instanceof Error) {

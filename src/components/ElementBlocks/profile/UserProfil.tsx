@@ -124,6 +124,7 @@ function UserProfil(prop: Props) {
       //Updates the users new values
       const response = await fetch(`${endpoint.path}user/update`, {
         method: "PUT",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${prop.token}`,
           "Content-Type": "application/json",

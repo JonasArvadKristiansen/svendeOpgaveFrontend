@@ -25,7 +25,7 @@ function LoginPopUp(prop: Props) {
   const [erroMessage, setErroMessage] = useState<string>("");
 
   //Sets cookie and redirect
-  const [cookie, setCookie] = useCookies(["jwt-cookie"]);
+  const [cookie] = useCookies(["Authorization"]);
   const navigate = useNavigate();
 
   //Toggle between users to create
@@ -65,16 +65,18 @@ function LoginPopUp(prop: Props) {
       if (isJobseeker) {
         response = await fetch(`${endpoint.path}user/login`, {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json",
-          access_token: accessToken,
+          accesstoken: accessToken,
            },
           body: JSON.stringify(jsonBody),
         });
       } else {
         response = await fetch(`${endpoint.path}company/login`, {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json",
-          access_token: accessToken,
+          accesstoken: accessToken,
            },
           body: JSON.stringify(jsonBody),
         });
@@ -82,15 +84,11 @@ function LoginPopUp(prop: Props) {
 
       const jsonData = await response.json();
 
+      console.log(jsonData);
+      
       if (!response.ok) {
         throw new Error(jsonData);
       }
-
-      //sets cokie of jwt and return to frontpage
-      setCookie("jwt-cookie", jsonData.token, {
-        sameSite: "none",
-        secure: true,
-      });
 
       prop.closePopup();
       navigate("/");

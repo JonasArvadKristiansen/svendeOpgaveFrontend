@@ -37,7 +37,7 @@ function CreateJobposting() {
   const submitJobpost = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      const token = cookies["jwt-cookie"];
+      const token = cookies["Authorization"];
 
       const target = new FormData(event.currentTarget);
       const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
@@ -77,6 +77,7 @@ function CreateJobposting() {
       //Send the post request
       const response = await fetch(`${endpoint.path}jobpost/create`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,

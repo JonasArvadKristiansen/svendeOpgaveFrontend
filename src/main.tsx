@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./scss/index.scss"
+import "./scss/index.scss";
 
 import App from "./App.tsx";
 import RegisterUser from "./pages/RegisterUser.tsx";
@@ -11,53 +11,68 @@ import JobPosting from "./pages/JobPosting.tsx";
 import JobpostingInfo from "./pages/JobpostingInfo.tsx";
 import CreateJobpost from "./pages/CreateJobpost.tsx";
 import EditJobpost from "./pages/EditJobpost.tsx";
-
+import PrivateRoute from "./pages/PrivateRoute.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: <App />,
     errorElement: <h1>Error</h1>,
   },
   {
-    path: "companyInfo/:id",
-    element: <CompanyInfo/>
+    path: "jobposting",
+    element: <JobPosting />,
   },
   {
     path: "registerUser",
-    element: <RegisterUser/>
+    element: <RegisterUser />,
   },
   {
     path: "profile",
-    element: <Profile/>
-  },
-
-
-  {
-    path: "jobposting",
-    element: <JobPosting/>
+    element: (
+      <PrivateRoute
+        component={<Profile />}
+        roles={["Normal user", "Company user", "Admin"]}
+      />
+    ),
   },
   {
     path: "jobpostingInfo/:id/editJobpost",
-    element: <EditJobpost/>
+    element: (
+      <PrivateRoute component={<EditJobpost />} roles={["Company user"]} />
+    ),
   },
-
-
-
-
   {
     path: "jobpostingInfo/:id",
-    element: <JobpostingInfo/>
+    element: (
+      <PrivateRoute
+        component={<JobpostingInfo />}
+        roles={["Normal user", "Company user", "Admin"]}
+      />
+    ),
+  },
+  {
+    path: "companyInfo/:id",
+    element: (
+      <PrivateRoute
+        component={<CompanyInfo />}
+        roles={["Normal user", "Company user", "Admin"]}
+      />
+    ),
   },
   {
     path: "createJobpost",
-    element: <CreateJobpost/>
+    element: (
+      <PrivateRoute
+        component={<CreateJobpost />}
+        roles={["Company user", "Admin"]}
+      />
+    ),
   },
-
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <RouterProvider router={router} />
   </React.StrictMode>
 );

@@ -96,7 +96,7 @@ function Profile() {
   });
 
   useEffect(() => {
-    const token = cookies["jwt-cookie"];
+    const token = cookies["Authorization"];
     setToken(token);
 
     const decodeToken = jwtDecode<ExtraJwtInfo>(token);
@@ -113,6 +113,7 @@ function Profile() {
           case "Normal user":
             response = await fetch(`${endpoint.path}user/profile`, {
               method: "GET",
+              credentials: "include",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -123,6 +124,7 @@ function Profile() {
           case "Company user":
             response = await fetch(`${endpoint.path}company/profile`, {
               method: "GET",
+              credentials: "include",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
@@ -210,6 +212,7 @@ function Profile() {
         case "Normal user":
           response = await fetch(`${endpoint.path}user/delete`, {
             method: "DELETE",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
@@ -220,6 +223,7 @@ function Profile() {
         case "Company user":
           response = await fetch(`${endpoint.path}company/delete`, {
             method: "DELETE",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
@@ -237,7 +241,7 @@ function Profile() {
         throw new Error("cringe");
       }
 
-      removeCookie("jwt-cookie");
+      removeCookie("Authorization");
       navigate("/");
     } catch (error: unknown) {
       if (error instanceof Error) {

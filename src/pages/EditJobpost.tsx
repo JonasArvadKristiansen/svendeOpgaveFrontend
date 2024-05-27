@@ -56,7 +56,7 @@ function EditJobpost() {
   });
 
   useEffect(() => {
-    const token = cookies["jwt-cookie"];
+    const token = cookies["Authorization"];
     setToken(token);
 
     const getData = async () => {
@@ -65,6 +65,7 @@ function EditJobpost() {
           `${endpoint.path}jobpost/info?jobpostingId=${params.id}`,
           {
             method: "GET",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
@@ -141,6 +142,7 @@ function EditJobpost() {
 
       const response = await fetch(`${endpoint.path}jobpost/update`, {
         method: "PUT",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

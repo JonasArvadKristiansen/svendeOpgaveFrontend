@@ -24,6 +24,7 @@ function JobPosting() {
       try {
         const response = await fetch(`${endpoint.path}jobpost/all`, {
           method: "GET",
+          credentials: "include",
           headers: {
             "Content-Type": "application/json",
             access_token: accessToken,

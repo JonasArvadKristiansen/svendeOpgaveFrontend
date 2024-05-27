@@ -263,6 +263,7 @@ function CompanyProfil(prop: Props) {
 
       const response = await fetch(`${endpoint.path}company/update`, {
         method: "PUT",
+        credentials: "include",
         headers: {
           Authorization: `Bearer ${prop.token}`,
           "Content-Type": "application/json",

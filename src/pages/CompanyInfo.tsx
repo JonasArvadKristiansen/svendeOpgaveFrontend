@@ -52,7 +52,7 @@ function CompanyInfo() {
   const [cookies] = useCookies();
 
   useEffect(() => {
-    const token = cookies["jwt-cookie"];
+    const token = cookies["Authorization"];
 
     const getData = async () => {
       try {
@@ -60,6 +60,7 @@ function CompanyInfo() {
           `${endpoint.path}company/info?companyID=${params.id}`,
           {
             method: "GET",
+            credentials: "include",
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
