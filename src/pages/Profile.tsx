@@ -9,7 +9,7 @@ import AdminProfil from "../components/ElementBlocks/profile/AdminProfil";
 import ChangePassword from "../components/ElementBlocks/profile/ChangePassword";
 import CompanyProfil from "../components/ElementBlocks/profile/CompanyProfil";
 import UserProfil from "../components/ElementBlocks/profile/UserProfil";
-import ShowPopup from "../components/ElementBlocks/ShowPopup";
+import ShowPopup from "../components/ElementBlocks/popups/ShowPopup";
 
 import endpoint from "../config.json";
 import "../scss/pages/profile.scss";

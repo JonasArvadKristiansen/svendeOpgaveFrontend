@@ -7,9 +7,9 @@ import "../../scss/header.scss";
 import endpoint from "../../config.json";
 
 import { Button } from "../uiElements/Buttons";
-import LoginPopUp from "../ElementBlocks/LoginPopUp";
+import FilterPopup from "../ElementBlocks/popups/FilterPopup";
 import Icon from "../uiElements/Icon";
-import FilterPopup from "../ElementBlocks/FilterPopup";
+import LoginPopUp from "../ElementBlocks/popups/LoginPopUp";
 
 interface Props {
   serchOnClickCompany?: (data: CompanyObject[]) => void;
@@ -33,6 +33,11 @@ interface JobPostingObject {
   description: string;
 }
 
+interface ErrorInfo {
+  hasError: boolean;
+  errorMesseage: string;
+}
+
 interface ExtraJwtInfo {
   user: {
     id: number;
@@ -42,37 +47,24 @@ interface ExtraJwtInfo {
 
 function FilterHeader(prop: Props) {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
-
-  //Checks if user logged in are companyes
-  const [isCompany, setIsCompany] = useState<boolean>(false);
-
   const [serachValue, setSerachValue] = useState<string>("");
-
-  //Checks if useres are logged in
-  const [isLogedInd, setIsLogedInd] = useState<boolean>(false);
-
-  //Enable login popup
-  const [isLogedIndPopup, setIsLogedIndPopup] = useState<boolean>(false);
   const [isFilterPopup, setIsFilterPopup] = useState<boolean>(false);
 
-  //Enables the under header with serach
-  const [canSearch, setCanSearch] = useState<boolean>(true);
+  const [filterFailed, setFilterFailed] = useState<ErrorInfo>({
+    hasError: false,
+    errorMesseage: "",
+  });
 
-  //Get, set and remove cookies
-  const [cookies, setCookie, removeCookie] = useCookies();
-
-  //Redirect
+  //To use cookies and redirect
+  const [cookies, , removeCookie] = useCookies();
   const navigate = useNavigate();
 
-  //Logout as a user and deletes cookie
-  const logout = () => {
-    removeCookie("Authorization");
-    setIsLogedInd(false);
-    navigate("/");
-  };
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isCompanyUser, setIsCompanyUser] = useState<boolean>(false);
+
+  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);
 
   const closePopup = () => {
-    setIsLogedIndPopup(false);
     setIsFilterPopup(false);
   };
 
@@ -80,11 +72,22 @@ function FilterHeader(prop: Props) {
     setSerachValue(event.target.value);
   };
 
+  //Handles the logout state for the user
+  const handleLogout = () => {
+    removeCookie("Authorization");
+    setIsLoggedIn(false);
+    navigate("/");
+  };
+
+  //Handles the
+  const handleTogglePopup = () => {
+    setShowLoginPopup(!showLoginPopup);
+  };
+
   useEffect(() => {
-    //Tries to decode the jwt
     try {
       const token = cookies["Authorization"];
-      if (token != undefined) {
+      if (token) {
         const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
         if (
@@ -92,11 +95,11 @@ function FilterHeader(prop: Props) {
             decodeToken.user.type
           )
         ) {
-          setIsLogedInd(true);
+          setIsLoggedIn(true);
         }
 
         if (decodeToken.user.type == "Company user") {
-          setIsCompany(true);
+          setIsCompanyUser(true);
         }
       }
     } catch (error: unknown) {
@@ -163,7 +166,6 @@ function FilterHeader(prop: Props) {
 
       //Add values from form in a key, value
       for (const pair of target.entries()) {
-        console.log(pair);
         switch (pair[0]) {
           case "jobtype":
             if (pair[1] !== "") {
@@ -174,7 +176,7 @@ function FilterHeader(prop: Props) {
             if (pair[1] !== "") {
               jsonQury += `deadlineFirst=${String(pair[1])}&`;
             }
-            break
+            break;
           case "deadlineLast":
             if (pair[1] !== "") {
               jsonQury += `deadlineLast=${String(pair[1])}&`;
@@ -190,44 +192,47 @@ function FilterHeader(prop: Props) {
         }
       }
 
-      console.log(jsonQury);
+      if (jsonQury === "") {
+        throw new Error("Du har ikke udfyldt nogen a punkterne");
+      }
 
-       if (prop.isCompany) {
-        console.log('iscompany');
-        
-        response = await fetch(
-          `${endpoint.path}company/filter?${jsonQury}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              accesstoken: accessToken,
-            },
-          }
-        );
+      if (
+        !jsonQury.includes("deadlineFirst") &&
+        jsonQury.includes("deadlineLast")
+      ) {
+        throw new Error("Deadline fra er ikke sat!");
+      } else if (
+        jsonQury.includes("deadlineFirst") &&
+        !jsonQury.includes("deadlineLast")
+      ) {
+        throw new Error("Deadline til er ikke sat!");
+      }
+
+      if (prop.isCompany) {
+        response = await fetch(`${endpoint.path}company/filter?${jsonQury}`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            accesstoken: accessToken,
+          },
+        });
       } else {
-        response = await fetch(
-          `${endpoint.path}jobpost/filter?${jsonQury}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              accesstoken: accessToken,
-            },
-          }
-        );
+        response = await fetch(`${endpoint.path}jobpost/filter?${jsonQury}`, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            accesstoken: accessToken,
+          },
+        });
       }
 
       const jsonData = await response.json();
 
       if (!response.ok) {
-        throw new Error(jsonData)        
+        throw new Error(jsonData);
       }
-
-      console.log(jsonData);
-      
 
       if (prop.serchOnClickCompany) {
         prop.serchOnClickCompany(jsonData.companys);
@@ -235,9 +240,15 @@ function FilterHeader(prop: Props) {
       if (prop.serchOnClickJobtype) {
         prop.serchOnClickJobtype(jsonData.jobpostings);
       }
+
+      popupToggle();
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log(error.message);
+        setFilterFailed({
+          hasError: true,
+          errorMesseage: error.message,
+        });
+        console.error(error.message);
       }
     }
   };
@@ -247,30 +258,25 @@ function FilterHeader(prop: Props) {
   };
 
   return (
-    <header>
-      {isLogedIndPopup && (
+    <>
+      {showLoginPopup && (
         <>
-          <div className="blackout"></div>
-          <div className="container-sm login-popup">
-            <LoginPopUp closePopup={closePopup} />
-          </div>
+          <LoginPopUp closePopup={handleTogglePopup} />
         </>
       )}
 
       {isFilterPopup && (
         <>
-          <div className="blackout"></div>
-          <div className="container-sm login-popup">
-            <FilterPopup
-              filterSubmit={filterSubmit}
-              isForCompany={prop.isCompany ? prop.isCompany : false}
-              closePopup={closePopup}
-            />
-          </div>
+          <FilterPopup
+            failed={filterFailed}
+            filterSubmit={filterSubmit}
+            isForCompany={prop.isCompany ? prop.isCompany : false}
+            closePopup={closePopup}
+          />
         </>
       )}
 
-      <div className="container-sm header">
+<div className="container-sm header">
         <div className="header__nav">
           <div>
             <h1 className="heading-1">JobConnect</h1>
@@ -283,7 +289,7 @@ function FilterHeader(prop: Props) {
             <li>
               <Link to="/jobposting">Jobopslag</Link>
             </li>
-            {isCompany && (
+            {isCompanyUser && (
               <li>
                 <Link to="/createJobpost">Opret jobopslag</Link>
               </li>
@@ -291,53 +297,49 @@ function FilterHeader(prop: Props) {
           </ul>
         </div>
 
-        {isLogedInd ? (
+        {isLoggedIn ? (
           <div className="header__login">
             <Link to="/profile">
               <Icon src="profile.svg" alt="Profile ikon" />
             </Link>
 
-            <Button type="button" onClick={logout}>
+            <Button type="button" onClick={handleLogout}>
               Log ud
             </Button>
           </div>
         ) : (
           <Button
             type="button"
-            arialExpanded={isLogedIndPopup}
+            arialExpanded={showLoginPopup}
             arialHaspopup={true}
-            onClick={() => {
-              setIsLogedIndPopup(!isLogedIndPopup);
-            }}
+            onClick={handleTogglePopup}
           >
             Log ind
           </Button>
         )}
       </div>
 
-      {canSearch && (
-        <div className="under-header">
-          <div className="container-sm under-header__search-container">
-            <form
-              className="under-header__search-container__input"
-              onSubmit={searching}
-            >
-              <input
-                type="text"
-                placeholder="Søg efter virksomheder"
-                aria-label="Søg efter virksomheder"
-                value={serachValue}
-                onChange={setNewSearchValue}
-              />
-              <Button type="submit">Søg</Button>
-            </form>
-            <Button type="button" onClick={popupToggle}>
-              Filtere
-            </Button>
-          </div>
+      <div className="under-header">
+        <div className="container-sm under-header__search-container">
+          <form
+            className="under-header__search-container__input"
+            onSubmit={searching}
+          >
+            <input
+              type="text"
+              placeholder="Søg efter virksomheder"
+              aria-label="Søg efter virksomheder"
+              value={serachValue}
+              onChange={setNewSearchValue}
+            />
+            <Button type="submit">Søg</Button>
+          </form>
+          <Button type="button" onClick={popupToggle}>
+            Filtere
+          </Button>
         </div>
-      )}
-    </header>
+      </div>
+    </>
   );
 }
 

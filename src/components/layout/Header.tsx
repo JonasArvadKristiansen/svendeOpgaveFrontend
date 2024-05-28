@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 
 import "../../scss/header.scss";
-import endpoint from "../../config.json";
 
 import { Button } from "../uiElements/Buttons";
-import Login from "../ElementBlocks/LoginPopUp";
+import LoginPopup from "../ElementBlocks/popups/LoginPopUp";
 import Icon from "../uiElements/Icon";
+
+interface Props {
+  children?: React.ReactNode;
+}
 
 interface ExtraJwtInfo {
   user: {
@@ -17,49 +20,35 @@ interface ExtraJwtInfo {
   };
 }
 
-function Header() {
-  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
-
-  //Checks if user logged in are companyes
-  const [isCompany, setIsCompany] = useState<boolean>(false);
-
-  const [serachValue, setSerachValue] = useState<string>("");
-
-  //Checks if useres are logged in
-  const [isLogedInd, setIsLogedInd] = useState<boolean>(false);
-
-  //Enable login popup
-  const [isLogedIndPopup, setIsLogedIndPopup] = useState<boolean>(false);
-
-  //Enables the under header with serach
-  const [canSearch, setCanSearch] = useState<boolean>(true);
-
-  //Get, set and remove cookies
-  const [cookies, setCookie, removeCookie] = useCookies();
-
-  //Redirect
+function Header(prop: Props) {
+  //To use cookies and redirect
+  const [cookies, , removeCookie] = useCookies();
   const navigate = useNavigate();
 
-  //Logout as a user and deletes cookie
-  const logout = () => {
+  //Checkes diffrent states depending on the user
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [isCompanyUser, setIsCompanyUser] = useState<boolean>(false);
+
+  //Enables popup to show
+  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);  
+
+ 
+  //Handles the logout state for the user
+  const handleLogout = () => {
     removeCookie("Authorization");
-    setIsLogedInd(false);
+    setIsLoggedIn(false);
     navigate("/");
   };
 
-  const closePopup = () => {
-    setIsLogedIndPopup(false);
-  };
-
-  const setNewSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSerachValue(event.target.value);
+  //Handles the
+  const handleTogglePopup = () => {
+    setShowLoginPopup(!showLoginPopup);
   };
 
   useEffect(() => {
-    //Tries to decode the jwt
     try {
       const token = cookies["Authorization"];
-      if (token != undefined) {
+      if (token) {
         const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
         if (
@@ -67,11 +56,11 @@ function Header() {
             decodeToken.user.type
           )
         ) {
-          setIsLogedInd(true);
+          setIsLoggedIn(true);
         }
 
         if (decodeToken.user.type == "Company user") {
-          setIsCompany(true);
+          setIsCompanyUser(true);
         }
       }
     } catch (error: unknown) {
@@ -81,14 +70,7 @@ function Header() {
 
   return (
     <header>
-      {isLogedIndPopup && (
-        <>
-          <div className="blackout"></div>
-          <div className="container-sm login-popup">
-            <Login closePopup={closePopup} />
-          </div>
-        </>
-      )}
+      {showLoginPopup && <LoginPopup closePopup={handleTogglePopup} />}
 
       <div className="container-sm header">
         <div className="header__nav">
@@ -103,7 +85,7 @@ function Header() {
             <li>
               <Link to="/jobposting">Jobopslag</Link>
             </li>
-            {isCompany && (
+            {isCompanyUser && (
               <li>
                 <Link to="/createJobpost">Opret jobopslag</Link>
               </li>
@@ -111,29 +93,29 @@ function Header() {
           </ul>
         </div>
 
-        {isLogedInd ? (
+        {isLoggedIn ? (
           <div className="header__login">
             <Link to="/profile">
               <Icon src="profile.svg" alt="Profile ikon" />
             </Link>
 
-            <Button type="button" onClick={logout}>
+            <Button type="button" onClick={handleLogout}>
               Log ud
             </Button>
           </div>
         ) : (
           <Button
             type="button"
-            arialExpanded={isLogedIndPopup}
+            arialExpanded={showLoginPopup}
             arialHaspopup={true}
-            onClick={() => {
-              setIsLogedIndPopup(!isLogedIndPopup);
-            }}
+            onClick={handleTogglePopup}
           >
             Log ind
           </Button>
         )}
       </div>
+
+      {prop.children}
     </header>
   );
 }

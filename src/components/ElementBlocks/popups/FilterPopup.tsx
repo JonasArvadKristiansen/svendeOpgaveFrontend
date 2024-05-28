@@ -1,36 +1,46 @@
 import ShowPopup from "./ShowPopup";
-import { Button, CloseButton } from "../uiElements/Buttons";
-import ToggleUserType from "./ToggleUserType";
-import { useState } from "react";
-import Input from "../uiElements/Input";
+import { Button, CloseButton } from "../../uiElements/Buttons";
+import Input from "../../uiElements/Input";
+import ErrorMessage from "../../uiElements/ErrorMessage";
 
 interface Props {
   closePopup: () => void;
   filterSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   isForCompany: boolean;
+  failed: ErrorInfo;
+}
+
+interface ErrorInfo {
+  hasError: boolean;
+  errorMesseage: string;
 }
 
 function FilterPopup(prop: Props) {
   return (
     <ShowPopup>
       <div
-        className="login"
+        className="popup"
         role="dialog"
         aria-modal="true"
         aria-label="Filtere popup"
       >
-        <div className="login__input">
-          <div className="login__input__header">
+        <div className="popup__input">
+          <div className="popup__input__header">
             <h2 className="heading-2">Filtere</h2>
             <CloseButton
               onClick={prop.closePopup}
-              arialLabel="Luk login popup"
+              arialLabel="Luk filter popup"
               src="src\assets\exit.svg"
               alt="Luk ikon"
             />
           </div>
 
           <form onSubmit={prop.filterSubmit}>
+            <ErrorMessage
+              failed={prop.failed.hasError}
+              erroMessage={prop.failed.errorMesseage}
+            ></ErrorMessage>
+
             {prop.isForCompany ? (
               <Input name="jobtype" type="text">
                 Jobtype
@@ -38,10 +48,10 @@ function FilterPopup(prop: Props) {
             ) : (
               <>
                 <Input name="deadlineFirst" type="date">
-                  Deadline
+                  Deadline fra
                 </Input>
                 <Input name="deadlineLast" type="date">
-                  Deadline
+                  Deadline til
                 </Input>
                 <Input name="minSalary" type="number" min="0">
                   Minimum løn

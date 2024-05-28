@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
 
-import "../../scss/login.scss";
-import { Button, CloseButton } from "../uiElements/Buttons";
-import Input from "../uiElements/Input";
-import ErrorMessage from "../uiElements/ErrorMessage";
-import endpoint from "../../config.json";
-import ToggleUserType from "./ToggleUserType";
+import "../../../scss/popup.scss";
+
+import { Button, CloseButton } from "../../uiElements/Buttons";
+import Input from "../../uiElements/Input";
+import ErrorMessage from "../../uiElements/ErrorMessage";
+import endpoint from "../../../config.json";
+import ToggleUserType from "../ToggleUserType";
 import ShowPopup from "./ShowPopup";
 
 interface Props {
@@ -24,8 +24,7 @@ function LoginPopUp(prop: Props) {
   const [failed, setFailed] = useState<boolean>(false);
   const [erroMessage, setErroMessage] = useState<string>("");
 
-  //Sets cookie and redirect
-  const [cookie] = useCookies(["Authorization"]);
+  //Helps to redirect
   const navigate = useNavigate();
 
   //Toggle between users to create
@@ -66,26 +65,26 @@ function LoginPopUp(prop: Props) {
         response = await fetch(`${endpoint.path}user/login`, {
           method: "POST",
           credentials: "include",
-          headers: { "Content-Type": "application/json",
-          accesstoken: accessToken,
-           },
+          headers: {
+            "Content-Type": "application/json",
+            accesstoken: accessToken,
+          },
           body: JSON.stringify(jsonBody),
         });
       } else {
         response = await fetch(`${endpoint.path}company/login`, {
           method: "POST",
           credentials: "include",
-          headers: { "Content-Type": "application/json",
-          accesstoken: accessToken,
-           },
+          headers: {
+            "Content-Type": "application/json",
+            accesstoken: accessToken,
+          },
           body: JSON.stringify(jsonBody),
         });
       }
 
       const jsonData = await response.json();
 
-      console.log(jsonData);
-      
       if (!response.ok) {
         throw new Error(jsonData);
       }
@@ -104,13 +103,13 @@ function LoginPopUp(prop: Props) {
   return (
     <ShowPopup>
       <div
-        className="login"
+        className="popup"
         role="dialog"
         aria-modal="true"
         aria-label="Log ind som bruger popup"
       >
-        <div className="login__input">
-          <div className="login__input__header">
+        <div className="popup__input">
+          <div className="popup__input__header">
             <h2 className="heading-2">Log ind som bruger</h2>
             <CloseButton
               onClick={prop.closePopup}

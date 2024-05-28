@@ -1,11 +1,11 @@
 import JobPostingCard from "../components/ElementBlocks/content/jobPostingCard";
 import endpoint from "../config.json";
-
 import "../scss/pages/content.scss";
 import { useEffect, useState } from "react";
 
 import FilterHeader from "../components/layout/FilterHeader";
 import Footer from "../components/layout/Footer";
+import DeafultLayout from "../layout/DeafultLayout";
 
 interface JobPostingObject {
   id: number;
@@ -55,7 +55,7 @@ function JobPosting() {
   }
 
   return (
-    <>
+    <DeafultLayout>
     <FilterHeader isCompany={false} serchOnClickJobtype={serchOnClick}/>
       <div className="container-sm content">
         <h1 className="heading-1 title">Jobopslag</h1>
@@ -75,7 +75,7 @@ function JobPosting() {
         </div>
       </div>
       <Footer/>
-    </>
+    </DeafultLayout>
   );
 }
 

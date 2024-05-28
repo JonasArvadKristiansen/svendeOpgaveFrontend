@@ -190,28 +190,7 @@ input, textarea {
   }
 }
 
-//for popups
-.blackout-back {
-  position: fixed;
-  z-index: 1;
-  background-color: map-get($color, "blackout");
-  backdrop-filter: blur(5px);
-  width: 100%;
-  height: 100%;
 
-  &__popup {
-    margin-top: map-get($spacing, "32px" );
-    display: flex;  
-    justify-content: center;
-    
-    &__content {
-      padding: map-get($spacing, "32px");
-      box-shadow: 0px 0px 12px 5px;
-      width: min(544px, 100%);
-      background-color: white;
-    }
-  }
-}
 
 .text-section {
   display: flex;

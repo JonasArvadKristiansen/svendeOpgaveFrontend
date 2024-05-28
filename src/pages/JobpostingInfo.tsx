@@ -98,7 +98,6 @@ function JobpostingInfo() {
         throw new Error(jsonData);
       }
 
-      console.log("complete delte");
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);

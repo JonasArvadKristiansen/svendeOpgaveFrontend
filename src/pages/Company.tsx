@@ -52,7 +52,7 @@ function Company() {
 
   return (
     <>
-      <FilterHeader isCompany={true} serchOnClickCompany={serchOnClick}/>
+      <FilterHeader serchOnClickCompany={serchOnClick} isCompany={true}/>
       <div className="container-sm content">
         <h1 className="heading-1 title">Virksomheder</h1>
         <div className=" content__blocks">
@@ -69,7 +69,7 @@ function Company() {
         </div>
       </div>
       <Footer/>
-      </>
+    </>
   );
 }
 
