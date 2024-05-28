@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
@@ -7,7 +7,9 @@ interface Props {
   children: React.ReactNode;
 }
 
-function DeafultLayout(prop: Props) {
+function SearchLayout(prop: Props) {
+  const [searchData, setSearchData] = useState()
+
   return (
     <>
       <Header/>
@@ -17,4 +19,4 @@ function DeafultLayout(prop: Props) {
   )
 }
 
-export default DeafultLayout
+export default SearchLayout

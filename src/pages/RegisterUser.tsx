@@ -151,7 +151,7 @@ function CreateUser() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          access_token: accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify(jsonBody),
       });
@@ -249,7 +249,7 @@ function CreateUser() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          access_token: accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify(jsonBody),
       });

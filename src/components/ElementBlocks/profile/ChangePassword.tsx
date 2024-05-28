@@ -61,7 +61,7 @@ function ChangePassword(prop: Props) {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${prop.token}`,
-              access_token: accessToken,
+              accesstoken: accessToken,
             },
             body: JSON.stringify(jsonBody),
           });
@@ -74,7 +74,7 @@ function ChangePassword(prop: Props) {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${prop.token}`,
-              access_token: accessToken,
+              accesstoken: accessToken,
             },
             body: JSON.stringify(jsonBody),
           });

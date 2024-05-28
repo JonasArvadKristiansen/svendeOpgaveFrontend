@@ -1,9 +1,10 @@
-import DeafultLayout from "../layout/DeafultLayout";
 import CopmanyCard from "../components/ElementBlocks/content/copmanyCard";
 import endpoint from "../config.json";
 
 import "../scss/pages/content.scss";
 import { useEffect, useState } from "react";
+import FilterHeader from "../components/layout/FilterHeader";
+import Footer from "../components/layout/Footer";
 
 interface CompanyObject {
   id: number;
@@ -24,7 +25,7 @@ function Company() {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "access_token": accessToken,
+            "accesstoken": accessToken,
           },
         });
 
@@ -45,8 +46,13 @@ function Company() {
     getData();
   }, []);
 
+  const serchOnClick = (newData: CompanyObject[]) => {
+    setCompanyList(newData)
+  }
+
   return (
-    <DeafultLayout>
+    <>
+      <FilterHeader isCompany={true} serchOnClickCompany={serchOnClick}/>
       <div className="container-sm content">
         <h1 className="heading-1 title">Virksomheder</h1>
         <div className=" content__blocks">
@@ -62,7 +68,8 @@ function Company() {
             ))}
         </div>
       </div>
-    </DeafultLayout>
+      <Footer/>
+      </>
   );
 }
 

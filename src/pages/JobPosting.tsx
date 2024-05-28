@@ -1,9 +1,11 @@
-import DeafultLayout from "../layout/DeafultLayout";
 import JobPostingCard from "../components/ElementBlocks/content/jobPostingCard";
 import endpoint from "../config.json";
 
 import "../scss/pages/content.scss";
 import { useEffect, useState } from "react";
+
+import FilterHeader from "../components/layout/FilterHeader";
+import Footer from "../components/layout/Footer";
 
 interface JobPostingObject {
   id: number;
@@ -24,10 +26,9 @@ function JobPosting() {
       try {
         const response = await fetch(`${endpoint.path}jobpost/all`, {
           method: "GET",
-          credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            access_token: accessToken,
+            accesstoken: accessToken,
           },
         });
 
@@ -49,8 +50,13 @@ function JobPosting() {
     getData();
   }, []);
 
+  const serchOnClick = (newData: JobPostingObject[]) => {
+    setJobpostList(newData)
+  }
+
   return (
-    <DeafultLayout>
+    <>
+    <FilterHeader isCompany={false} serchOnClickJobtype={serchOnClick}/>
       <div className="container-sm content">
         <h1 className="heading-1 title">Jobopslag</h1>
         <div className=" content__blocks">
@@ -68,7 +74,8 @@ function JobPosting() {
             ))}
         </div>
       </div>
-    </DeafultLayout>
+      <Footer/>
+    </>
   );
 }
 

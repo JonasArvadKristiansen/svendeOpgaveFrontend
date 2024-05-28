@@ -64,7 +64,7 @@ function CompanyInfo() {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
-              access_token: accessToken,
+              accesstoken: accessToken,
             },
           }
         );

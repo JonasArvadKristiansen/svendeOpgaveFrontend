@@ -4,6 +4,7 @@ import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 
 import "../../scss/header.scss";
+import endpoint from "../../config.json";
 
 import { Button } from "../uiElements/Buttons";
 import Login from "../ElementBlocks/LoginPopUp";
@@ -17,17 +18,21 @@ interface ExtraJwtInfo {
 }
 
 function Header() {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
   //Checks if user logged in are companyes
-  const [isCompany, setIsCompany] = useState(false);
+  const [isCompany, setIsCompany] = useState<boolean>(false);
+
+  const [serachValue, setSerachValue] = useState<string>("");
 
   //Checks if useres are logged in
-  const [isLogedInd, setIsLogedInd] = useState(false);
+  const [isLogedInd, setIsLogedInd] = useState<boolean>(false);
 
   //Enable login popup
-  const [isLogedIndPopup, setIsLogedIndPopup] = useState(false);
+  const [isLogedIndPopup, setIsLogedIndPopup] = useState<boolean>(false);
 
   //Enables the under header with serach
-  const [canSearch, setCanSearch] = useState(true);
+  const [canSearch, setCanSearch] = useState<boolean>(true);
 
   //Get, set and remove cookies
   const [cookies, setCookie, removeCookie] = useCookies();
@@ -44,6 +49,10 @@ function Header() {
 
   const closePopup = () => {
     setIsLogedIndPopup(false);
+  };
+
+  const setNewSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSerachValue(event.target.value);
   };
 
   useEffect(() => {
@@ -125,22 +134,6 @@ function Header() {
           </Button>
         )}
       </div>
-
-      {canSearch && (
-        <div className="under-header">
-          <div className="container-sm under-header__search-container">
-            <div className="under-header__search-container__input">
-              <input
-                type="text"
-                placeholder="Søg efter virksomheder"
-                aria-label="Søg efter virksomheder"
-              />
-              <Button type="button">Søg</Button>
-            </div>
-            <Button type="button">Filtere</Button>
-          </div>
-        </div>
-      )}
     </header>
   );
 }

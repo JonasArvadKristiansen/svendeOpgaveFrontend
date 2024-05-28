@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
+import { json, useNavigate } from "react-router-dom";
 import { Button } from "../components/uiElements/Buttons";
 
 import DeafultLayout from "../layout/DeafultLayout";
@@ -111,24 +111,24 @@ function Profile() {
         //Go though the type the user are to get that users info
         switch (userType) {
           case "Normal user":
-            response = await fetch(`${endpoint.path}user/profile`, {
+            response = await fetch(`${endpoint.path}user/info`, {
               method: "GET",
               credentials: "include",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-                access_token: accessToken,
+                accesstoken: accessToken,
               },
             });
             break;
           case "Company user":
-            response = await fetch(`${endpoint.path}company/profile`, {
+            response = await fetch(`${endpoint.path}company/info`, {
               method: "GET",
               credentials: "include",
               headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`,
-                access_token: accessToken,
+                accesstoken: accessToken,
               },
             });
             break;
@@ -139,7 +139,7 @@ function Profile() {
             throw new Error(`Denne type ${userType} existere ikke`);
         }
 
-        const jsonData = await response.json();
+        const jsonData = await response.json();        
 
         if (!response.ok) {
           throw new Error(jsonData);
@@ -216,7 +216,7 @@ function Profile() {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
-              access_token: accessToken,
+              accesstoken: accessToken,
             },
           });
           break;
@@ -227,7 +227,7 @@ function Profile() {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
-              access_token: accessToken,
+              accesstoken: accessToken,
             },
           });
           break;
@@ -235,7 +235,6 @@ function Profile() {
         default:
           throw new Error("Bruger type eksistere ikke");
       }
-
 
       if (!response.ok) {
         throw new Error("cringe");
@@ -258,7 +257,7 @@ function Profile() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          access_token: accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify({ email: adminSelectedEmail }),
       });

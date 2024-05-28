@@ -267,7 +267,7 @@ function CompanyProfil(prop: Props) {
         headers: {
           Authorization: `Bearer ${prop.token}`,
           "Content-Type": "application/json",
-          access_token: accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify(jsonBody),
       });

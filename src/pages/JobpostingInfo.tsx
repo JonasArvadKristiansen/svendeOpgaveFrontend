@@ -57,7 +57,7 @@ function JobpostingInfo() {
             headers: {
               "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
-              access_token: accessToken,
+              accesstoken: accessToken,
             },
           }
         );
@@ -87,7 +87,7 @@ function JobpostingInfo() {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-          access_token: accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify({ jobpostingId: params.id }),
       });
