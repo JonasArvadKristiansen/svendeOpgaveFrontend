@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import "./scss/index.scss";
 
 import App from "./App.tsx";
+import PrivateRoute from "./pages/PrivateRoute.tsx";
+
 import RegisterUser from "./pages/RegisterUser.tsx";
 import Profile from "./pages/Profile.tsx";
 import CompanyInfo from "./pages/CompanyInfo.tsx";
@@ -11,7 +13,8 @@ import JobPosting from "./pages/JobPosting.tsx";
 import JobpostingInfo from "./pages/JobpostingInfo.tsx";
 import CreateJobpost from "./pages/CreateJobpost.tsx";
 import EditJobpost from "./pages/EditJobpost.tsx";
-import PrivateRoute from "./pages/PrivateRoute.tsx";
+import UpdatePassword from "./pages/UpdatePassword.tsx";
+
 
 const router = createBrowserRouter([
   {
@@ -68,6 +71,10 @@ const router = createBrowserRouter([
         roles={["Company user", "Admin"]}
       />
     ),
+  },
+  {
+    path: "updatePassword",
+    element: <UpdatePassword />,
   },
 ]);
 

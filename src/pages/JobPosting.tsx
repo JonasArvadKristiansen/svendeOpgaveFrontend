@@ -1,11 +1,11 @@
-import JobPostingCard from "../components/ElementBlocks/content/jobPostingCard";
+import JobPostingCard from "../components/ElementBlocks/content/JobPostingCard";
 import endpoint from "../config.json";
 import "../scss/pages/content.scss";
 import { useEffect, useState } from "react";
 
 import FilterHeader from "../components/layout/FilterHeader";
 import Footer from "../components/layout/Footer";
-import DeafultLayout from "../layout/DeafultLayout";
+import NotFoundCard from "../components/ElementBlocks/content/NotFoundCard";
 
 interface JobPostingObject {
   id: number;
@@ -39,7 +39,6 @@ function JobPosting() {
         }
 
         setJobpostList(jsonData.jobpostings);
-
       } catch (error: unknown) {
         if (error instanceof Error) {
           console.error(error.message);
@@ -51,16 +50,16 @@ function JobPosting() {
   }, []);
 
   const serchOnClick = (newData: JobPostingObject[]) => {
-    setJobpostList(newData)
-  }
+    setJobpostList(newData);
+  };
 
   return (
-    <DeafultLayout>
-    <FilterHeader isCompany={false} serchOnClickJobtype={serchOnClick}/>
+    <>
+      <FilterHeader isCompany={false} serchOnClickJobtype={serchOnClick} />
       <div className="container-sm content">
         <h1 className="heading-1 title">Jobopslag</h1>
         <div className=" content__blocks">
-          {Object.keys(jobpostList).length > 0 &&
+          {Object.keys(jobpostList).length > 0 ? (
             jobpostList.map((job, index) => (
               <JobPostingCard
                 key={index}
@@ -71,11 +70,14 @@ function JobPosting() {
                 address={job.address}
                 description={job.description}
               ></JobPostingCard>
-            ))}
+            ))
+          ) : (
+            <NotFoundCard>Ingen jobopslag matcher dine filtre</NotFoundCard>
+          )}
         </div>
       </div>
-      <Footer/>
-    </DeafultLayout>
+      <Footer />
+    </>
   );
 }
 

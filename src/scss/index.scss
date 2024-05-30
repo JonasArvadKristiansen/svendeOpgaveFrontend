@@ -64,7 +64,6 @@ input, textarea {
   border: 1px solid map-get($color, "dark-blue-66");
   border-radius: 10px;
   padding: map-get($spacing, "16px") map-get($spacing, "24px");
-  padding: 16px 24px;
   color: map-get($color, "dark-blue");
   font-weight: bold;
   font-family: $font-family;
@@ -189,8 +188,6 @@ input, textarea {
     }
   }
 }
-
-
 
 .text-section {
   display: flex;

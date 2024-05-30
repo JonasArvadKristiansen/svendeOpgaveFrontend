@@ -1,4 +1,4 @@
-import "../../../scss/pages/content.scss"
+import "../../../scss/pages/content.scss";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -10,13 +10,12 @@ interface Props {
   description: string;
 }
 
-function jobPostingCard(prop: Props) {
-
+function JobPostingCard(prop: Props) {
   return (
     <div className="content__blocks__card">
       <div className="content__blocks__card__header">
         <p>{prop.companyName}</p>
-        <p>Udløbnings dato: {(prop.deadline).split('T')[0]}</p>
+        <p>Udløbnings dato: {prop.deadline.split("T")[0]}</p>
       </div>
       <div className="content__blocks__card__header">
         <p>{prop.title}</p>
@@ -29,7 +28,7 @@ function jobPostingCard(prop: Props) {
         </p>
       </div>
     </div>
-  )
+  );
 }
 
-export default jobPostingCard
+export default JobPostingCard;

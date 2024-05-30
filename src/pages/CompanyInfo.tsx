@@ -1,13 +1,15 @@
-import DeafultLayout from "../layout/DeafultLayout";
-import TextSections from "../components/uiElements/TextSections";
-import JobPostingCard from "../components/ElementBlocks/content/jobPostingCard";
-
-import endpoint from "../config.json";
-
-import "../scss/pages/contentInfo.scss";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+
+import endpoint from "../config.json";
+import "../scss/pages/contentInfo.scss";
+
+import DeafultLayout from "../layout/DeafultLayout";
+import TextSections from "../components/uiElements/TextSections";
+import JobPostingCard from "../components/ElementBlocks/content/JobPostingCard";
+import ApplicationPopup from "../components/ElementBlocks/popups/ApplicationPopup";
+import { Button } from "../components/uiElements/Buttons";
 
 interface CompanyObject {
   companyName: string;
@@ -35,6 +37,10 @@ function CompanyInfo() {
 
   const [jobpostList, setJobpostList] = useState<JobPostingObject[]>([]);
 
+  //Enables popup to show
+  const [showApplicationPopup, setShowApplicationPopup] =
+    useState<boolean>(false);
+
   const [companyList, setCompanyList] = useState<CompanyObject>({
     companyName: "",
     description: "",
@@ -46,7 +52,7 @@ function CompanyInfo() {
     numberOfEmployees: 0,
     jobtypes: "",
   });
-  
+
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
   const [cookies] = useCookies();
@@ -70,12 +76,13 @@ function CompanyInfo() {
         );
 
         const jsonData = await response.json();
+        console.log(jsonData);
 
         if (!response.ok) {
           throw new Error(jsonData);
         }
 
-        setJobpostList(jsonData.jobpostingsData)
+        setJobpostList(jsonData.jobpostingsData);
         setCompanyList(jsonData.companyProfileData[0]);
       } catch (error: unknown) {
         if (error instanceof Error) {
@@ -84,10 +91,19 @@ function CompanyInfo() {
       }
     };
     getData();
-  }, []);
+  }, [cookies]);
+
+  //Handles the
+  const handleTogglePopup = () => {
+    setShowApplicationPopup(!showApplicationPopup);
+  };
 
   return (
     <DeafultLayout>
+      {showApplicationPopup && (
+        <ApplicationPopup reciverEmail="test@mail.dk" closePopup={handleTogglePopup} />
+      )}
+
       <div className="container-sm content">
         <h1 className="heading-1 title">{companyList.companyName}</h1>
 
@@ -135,7 +151,9 @@ function CompanyInfo() {
             )}
           </div>
         </div>
-
+        <Button type="button" onClick={handleTogglePopup}>
+          test popup
+        </Button>
         <h1 className="heading-1 title">Jobopslag</h1>
         <div className=" content__blocks">
           {Object.keys(jobpostList).length > 0 &&

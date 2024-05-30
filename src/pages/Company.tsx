@@ -1,10 +1,14 @@
-import CopmanyCard from "../components/ElementBlocks/content/copmanyCard";
-import endpoint from "../config.json";
-
-import "../scss/pages/content.scss";
 import { useEffect, useState } from "react";
+
+import endpoint from "../config.json";
+import "../scss/pages/content.scss";
+
+
 import FilterHeader from "../components/layout/FilterHeader";
 import Footer from "../components/layout/Footer";
+
+import CompanyCard from "../components/ElementBlocks/content/CompanyCard";
+import NotFoundCard from "../components/ElementBlocks/content/NotFoundCard";
 
 interface CompanyObject {
   id: number;
@@ -25,7 +29,7 @@ function Company() {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "accesstoken": accessToken,
+            accesstoken: accessToken,
           },
         });
 
@@ -47,28 +51,31 @@ function Company() {
   }, []);
 
   const serchOnClick = (newData: CompanyObject[]) => {
-    setCompanyList(newData)
-  }
+    setCompanyList(newData);
+  };
 
   return (
     <>
-      <FilterHeader serchOnClickCompany={serchOnClick} isCompany={true}/>
+      <FilterHeader serchOnClickCompany={serchOnClick} isCompany={true} />
       <div className="container-sm content">
         <h1 className="heading-1 title">Virksomheder</h1>
-        <div className=" content__blocks">
-          {Object.keys(companyList).length > 0 &&
+        <div className="content__blocks">
+          {Object.keys(companyList).length > 0 ? (
             companyList.map((com, index) => (
-              <CopmanyCard
+              <CompanyCard
                 key={index}
                 id={com.id}
                 companyName={com.companyName}
                 description={com.description}
                 jobpostingCount={com.jobpostingCount}
-              ></CopmanyCard>
-            ))}
+              ></CompanyCard>
+            ))
+          ) : (
+            <NotFoundCard>Ingen virksomheder matcher dine filtre</NotFoundCard>
+          )}
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

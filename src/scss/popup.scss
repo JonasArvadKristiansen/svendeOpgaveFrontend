@@ -9,22 +9,36 @@
     margin-bottom: map-get($spacing, "32px");
     border-bottom: 1px solid map-get($color, "dark-blue-66");
 
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__box {
+      display: flex;
+      flex-direction: column;
+      gap: map-get($spacing, "16px");
+      a {
+        display: flex;
+        align-items: center;
+        gap: map-get($spacing, "16px");
+
+        border: 1px solid map-get($color, "dark-blue-66");
+        border-radius: 10px;
+      }
+    }
+
     &--error {
       width: 100%;
       background-color: map-get($color, "error");
-      padding: map-get($spacing, '16px');
+      padding: map-get($spacing, "16px");
     }
 
     form {
       display: flex;
       flex-direction: column;
       gap: map-get($spacing, "32px");
-    }
-
-    &__header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
   }
 
@@ -44,10 +58,10 @@
   height: 100%;
 
   &__popup {
-    margin-top: map-get($spacing, "32px" );
-    display: flex;  
+    margin-top: map-get($spacing, "32px");
+    display: flex;
     justify-content: center;
-    
+
     &__content {
       padding: map-get($spacing, "32px");
       box-shadow: 0px 0px 12px 5px;

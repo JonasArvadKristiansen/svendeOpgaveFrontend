@@ -1,5 +1,5 @@
+import { Link } from "react-router-dom";
 import "../../../scss/pages/content.scss";
-import { Link} from "react-router-dom";
 
 interface Props {
   id: number;
@@ -8,8 +8,7 @@ interface Props {
   jobpostingCount: number;
 }
 
-function copmanyCard(prop: Props) {
- 
+function CompanyCard(prop: Props) {
   return (
     <div className="content__blocks__card">
       <div className="content__blocks__card__header">
@@ -18,7 +17,7 @@ function copmanyCard(prop: Props) {
       </div>
       <div className="content__blocks__card__description">
         <p>
-          {prop.description}... 
+          {prop.description}...
           <Link to={`/companyInfo/${prop.id}`}>Se Mere</Link>
         </p>
       </div>
@@ -26,4 +25,4 @@ function copmanyCard(prop: Props) {
   );
 }
 
-export default copmanyCard;
+export default CompanyCard;

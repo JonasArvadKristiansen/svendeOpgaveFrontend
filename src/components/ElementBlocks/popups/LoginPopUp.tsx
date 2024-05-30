@@ -38,7 +38,7 @@ function LoginPopUp(prop: Props) {
 
     //Make form data to key value format
     const target = new FormData(event.currentTarget);
-
+    
     type JsonBody = {
       [key: string]: string | number | File;
     };
@@ -136,7 +136,22 @@ function LoginPopUp(prop: Props) {
             <Button type="submit">Log ind</Button>
           </form>
 
-          <Link to="#">Glemt adgangskode?</Link>
+          <div className="popup__input__box">
+            <div>
+              <a href="https://jonasarvad.com/api/user/auth/facebook">
+                <img src="facebook.svg" alt="Facebook ikon" />
+                <p>Login med facebook</p>
+              </a>
+            </div>
+            <div>
+              <Link to="https://jonasarvad.com/api/user/auth/google">
+                <img src="google.svg" alt="Google ikon" />
+                <p>Login med Google</p>
+              </Link>
+            </div>
+          </div>
+
+          <Link to="/updatePassword">Glemt adgangskode?</Link>
         </div>
 
         <Link to="/registerUser">Opret en ny bruger</Link>

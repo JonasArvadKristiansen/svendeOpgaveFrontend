@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
-import { json, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../components/uiElements/Buttons";
 
 import DeafultLayout from "../layout/DeafultLayout";
@@ -12,7 +12,9 @@ import UserProfil from "../components/ElementBlocks/profile/UserProfil";
 import ShowPopup from "../components/ElementBlocks/popups/ShowPopup";
 
 import endpoint from "../config.json";
+
 import "../scss/pages/profile.scss";
+import tescookie from "../utility/cookieExist";
 
 interface ExtraJwtInfo {
   user: {
@@ -48,7 +50,7 @@ function Profile() {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
   //Make use of cookie and can navigate
-  const [cookies, setCookie, removeCookie] = useCookies();
+  const [cookies, , removeCookie] = useCookies();
   const navigate = useNavigate();
 
   //Sets the type of user and get the token
@@ -97,72 +99,75 @@ function Profile() {
 
   useEffect(() => {
     const token = cookies["Authorization"];
-    setToken(token);
 
-    const decodeToken = jwtDecode<ExtraJwtInfo>(token);
-    const userType = decodeToken.user.type;
-    setUserType(userType);
+    if (tescookie(token, navigate)) {
+      setToken(token);
 
-    //Get data from the backend to the profiles info
-    const fetchData = async (userType: string) => {
-      try {
-        let response;
-        
-        //Go though the type the user are to get that users info
-        switch (userType) {
-          case "Normal user":
-            response = await fetch(`${endpoint.path}user/info`, {
-              method: "GET",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-                accesstoken: accessToken,
-              },
-            });
-            break;
-          case "Company user":
-            response = await fetch(`${endpoint.path}company/info`, {
-              method: "GET",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`,
-                accesstoken: accessToken,
-              },
-            });
-            break;
-          case "Admin":
-            response == "Admin";
-            return;
-          default:
-            throw new Error(`Denne type ${userType} existere ikke`);
+      const decodeToken = jwtDecode<ExtraJwtInfo>(token);
+      const userType = decodeToken.user.type;
+      setUserType(userType);
+
+      //Get data from the backend to the profiles info
+      const fetchData = async (userType: string) => {
+        try {
+          let response;
+
+          //Go though the type the user are to get that users info
+          switch (userType) {
+            case "Normal user":
+              response = await fetch(`${endpoint.path}user/info`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                  accesstoken: accessToken,
+                },
+              });
+              break;
+            case "Company user":
+              response = await fetch(`${endpoint.path}company/info`, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                  accesstoken: accessToken,
+                },
+              });
+              break;
+            case "Admin":
+              response == "Admin";
+              return;
+            default:
+              throw new Error(`Denne type ${userType} existere ikke`);
+          }
+
+          const jsonData = await response.json();
+
+          if (!response.ok) {
+            throw new Error(jsonData);
+          }
+
+          switch (userType) {
+            case "Normal user":
+              setUserData(jsonData[0]);
+              break;
+            case "Company user":
+              setompanyData(jsonData.companyProfileData[0]);
+              break;
+            default:
+              throw new Error(`Denne type ${userType} existere ikke`);
+          }
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(error.message);
+          }
         }
+      };
 
-        const jsonData = await response.json();        
-
-        if (!response.ok) {
-          throw new Error(jsonData);
-        }
-
-        switch (userType) {
-          case "Normal user":
-            setUserData(jsonData[0]);
-            break;
-          case "Company user":
-            setompanyData(jsonData.companyProfileData[0]);
-            break;
-          default:
-            throw new Error(`Denne type ${userType} existere ikke`);
-        }
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
-      }
-    };
-
-    fetchData(userType);
+      fetchData(userType);
+    }
   }, [cookies]);
 
   //Small functions to enable popup for delete and editing

@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useCookies } from "react-cookie";
+
 import endpoint from "../config.json";
+import "../scss/pages/contentInfo.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
 import TextWithHead from "../components/uiElements/TextSections";
-import "../scss/pages/contentInfo.scss";
-import CopmanyCard from "../components/ElementBlocks/content/copmanyCard";
+import CompanyCard from "../components/ElementBlocks/content/CompanyCard";
 import { Button } from "../components/uiElements/Buttons";
+import ApplicationPopup from "../components/ElementBlocks/popups/ApplicationPopup";
 
 interface JobPostingObject {
   title: string;
@@ -29,6 +31,10 @@ function JobpostingInfo() {
 
   const [isOwner, setIsOwner] = useState(true);
   const [token, setToken] = useState(true);
+
+  //Enables popup to show
+  const [showApplicationPopup, setShowApplicationPopup] =
+    useState<boolean>(false);
 
   const [jobPostList, setJobPostList] = useState<JobPostingObject>({
     title: "",
@@ -61,12 +67,13 @@ function JobpostingInfo() {
             },
           }
         );
-
         const jsonData = await response.json();
 
         if (!response.ok) {
           throw new Error(jsonData);
         }
+
+        console.log(jsonData);
 
         setJobPostList(jsonData.jobposting[0]);
       } catch (error: unknown) {
@@ -78,6 +85,11 @@ function JobpostingInfo() {
 
     getData();
   }, []);
+
+  //Handles the
+  const handleTogglePopup = () => {
+    setShowApplicationPopup(!showApplicationPopup);
+  };
 
   const deleteJobpost = async () => {
     try {
@@ -97,7 +109,6 @@ function JobpostingInfo() {
       if (!response.ok) {
         throw new Error(jsonData);
       }
-
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -107,6 +118,10 @@ function JobpostingInfo() {
 
   return (
     <DeafultLayout>
+      {showApplicationPopup && (
+        <ApplicationPopup reciverEmail="test@mail.dk" closePopup={handleTogglePopup} />
+      )}
+
       <div className="container-sm content">
         <h1 className="heading-1 title">{jobPostList.title}</h1>
         <h2 className="heading-2 title">Jobtype: {jobPostList.jobtype}</h2>
@@ -126,7 +141,7 @@ function JobpostingInfo() {
 
           <div className="grid-layout-job__item-3">
             <h2 className="heading-2 title">Virksomhed</h2>
-            <CopmanyCard
+            <CompanyCard
               id={parseInt(String(params.id))}
               companyName={jobPostList.companyName}
               description={jobPostList.description}
@@ -141,6 +156,9 @@ function JobpostingInfo() {
                   </Button>
                 </>
               )}
+              <Button type="button" onClick={handleTogglePopup}>
+                test popup
+              </Button>
             </div>
           </div>
         </div>

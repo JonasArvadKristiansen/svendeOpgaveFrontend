@@ -22,7 +22,7 @@ interface ExtraJwtInfo {
 
 function Header(prop: Props) {
   //To use cookies and redirect
-  const [cookies, , removeCookie] = useCookies();
+  const [cookies, setcookie, removeCookie] = useCookies();
   const navigate = useNavigate();
 
   //Checkes diffrent states depending on the user
