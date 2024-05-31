@@ -7,9 +7,9 @@ import endpoint from "../config.json";
 import "../scss/pages/contentInfo.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
-import TextWithHead from "../components/uiElements/TextSections";
+import TextWithHead from "../components/UiElements/TextSections";
 import CompanyCard from "../components/ElementBlocks/content/CompanyCard";
-import { Button } from "../components/uiElements/Buttons";
+import { Button } from "../components/UiElements/Buttons";
 import ApplicationPopup from "../components/ElementBlocks/popups/ApplicationPopup";
 
 interface JobPostingObject {

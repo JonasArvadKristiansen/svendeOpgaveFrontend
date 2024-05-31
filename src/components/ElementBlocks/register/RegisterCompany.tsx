@@ -1,6 +1,6 @@
-import { Button } from "../../uiElements/Buttons";
-import Input from "../../uiElements/Input";
-import Textarea from "../../uiElements/Textarea";
+import { Button } from "../../UiElements/Buttons";
+import Input from "../../UiElements/Input";
+import Textarea from "../../UiElements/Textarea";
 import Jobtype from "../Jobtype";
 import CreatePassword from "./CreatePassword";
 

@@ -6,11 +6,11 @@ import endpoint from "../config.json";
 import "../scss/pages/contentInfo.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
-import TextSections from "../components/uiElements/TextSections";
+import TextSections from "../components/UiElements/TextSections";
 import JobPostingCard from "../components/ElementBlocks/content/JobPostingCard";
 
 import ApplicationPopup from "../components/ElementBlocks/popups/ApplicationPopup";
-import { Button } from "../components/uiElements/Buttons";
+import { Button } from "../components/UiElements/Buttons";
 
 interface CompanyObject {
   companyName: string;

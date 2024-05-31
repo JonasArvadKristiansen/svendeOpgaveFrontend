@@ -1,7 +1,7 @@
 import React from "react";
-import Input from "../../uiElements/Input";
+import Input from "../../UiElements/Input";
 import CreatePassword from "./CreatePassword";
-import { Button } from "../../uiElements/Buttons";
+import { Button } from "../../UiElements/Buttons";
 
 interface Props {
   //Submit function

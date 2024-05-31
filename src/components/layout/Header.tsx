@@ -6,7 +6,7 @@ import { useCookies } from "react-cookie";
 import "../../scss/header.scss";
 import profileIcon from "../../assets/profile.svg";
 
-import { Button } from "../uiElements/Buttons";
+import { Button } from "../UiElements/Buttons";
 import LoginPopup from "../ElementBlocks/popups/LoginPopUp";
 
 interface Props {

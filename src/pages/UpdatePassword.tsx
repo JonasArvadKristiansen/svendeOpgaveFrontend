@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import DeafultLayout from "../layout/DeafultLayout";
-import Input from "../components/uiElements/Input";
-import { Button } from "../components/uiElements/Buttons";
+import Input from "../components/UiElements/Input";
+import { Button } from "../components/UiElements/Buttons";
 import ToggleUserType from "../components/ElementBlocks/ToggleUserType";
 import endpoint from "../config.json";
-import ErrorMessage from "../components/uiElements/ErrorMessage";
+import ErrorMessage from "../components/UiElements/ErrorMessage";
 import { useNavigate } from "react-router-dom";
 
 interface ErrorInfo {

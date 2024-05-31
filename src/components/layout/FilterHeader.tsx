@@ -9,7 +9,7 @@ import profileIcon from "../../assets/profile.svg";
 import facebookIcon from "../../assets/facebook.svg"
 import googleIcon from "../../assets/google.svg"
 
-import { Button } from "../uiElements/Buttons";
+import { Button } from "../UiElements/Buttons";
 import FilterPopup from "../ElementBlocks/popups/FilterPopup";
 import LoginPopUp from "../ElementBlocks/popups/LoginPopUp";
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../components/uiElements/Buttons";
+import { Button } from "../components/UiElements/Buttons";
 
 import DeafultLayout from "../layout/DeafultLayout";
 import AdminProfil from "../components/ElementBlocks/profile/AdminProfil";
