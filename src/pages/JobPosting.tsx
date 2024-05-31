@@ -1,4 +1,4 @@
-import JobPostingCard from "../components/elblock/content/jobPosting";
+import JobPostingCard from "../components/elblock/content/JobPostingCard";
 import endpoint from "../config.json";
 import "../scss/pages/content.scss";
 import { useEffect, useState } from "react";
