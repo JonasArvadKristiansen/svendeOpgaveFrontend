@@ -3,12 +3,12 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 import DeafultLayout from "../layout/DeafultLayout";
-import Input from "../components/UiElements/Input";
-import { Button } from "../components/UiElements/Buttons";
+import Input from "../components/uiElements/Input";
+import { Button } from "../components/uiElements/Buttons";
 
 import "../scss/pages/createJobpost.scss";
 import endpoint from "../config.json";
-import ErrorMessage from "../components/UiElements/ErrorMessage";
+import ErrorMessage from "../components/uiElements/ErrorMessage";
 
 interface Jobpost {
   title: string;

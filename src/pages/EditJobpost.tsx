@@ -6,9 +6,9 @@ import endpoint from "../config.json";
 import "../scss/pages/createJobpost.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
-import Input from "../components/UiElements/Input";
-import { Button } from "../components/UiElements/Buttons";
-import ErrorMessage from "../components/UiElements/ErrorMessage";
+import Input from "../components/uiElements/Input";
+import { Button } from "../components/uiElements/Buttons";
+import ErrorMessage from "../components/uiElements/ErrorMessage";
 
 
 interface JobPostingObject {

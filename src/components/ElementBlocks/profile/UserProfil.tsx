@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import Input from "../../UiElements/Input";
-import { Button } from "../../UiElements/Buttons";
-import ErrorMessage from "../../UiElements/ErrorMessage";
+import Input from "../../uiElements/Input";
+import { Button } from "../../uiElements/Buttons";
+import ErrorMessage from "../../uiElements/ErrorMessage";
 
 import endpoint from "../../../config.json";
 interface Props {
