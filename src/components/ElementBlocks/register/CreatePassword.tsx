@@ -1,3 +1,4 @@
+import ErrorMessage from "../../uiElements/ErrorMessage";
 import Input from "../../uiElements/Input";
 
 interface Props {
@@ -39,11 +40,9 @@ function CreatePassword(prop: Props) {
             placeholder="Adgangskode"
             required
           />
-          {!prop.isPasswordValid && (
-            <p className="failed__text">Adgangskoden opfylder ikke kravene.</p>
-          )}
+          <ErrorMessage failed={!prop.isPasswordValid} erroMessage="Adgangskoden opfylder ikke kravene." ></ErrorMessage>
         </div>
-        <Input type="password" name="repeatPassword" required={true}>
+        <Input type="password" name="repeatPassword" required>
           Gentage adgangskode
         </Input>
       </div>

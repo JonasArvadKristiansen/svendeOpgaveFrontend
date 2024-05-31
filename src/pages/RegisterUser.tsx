@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
-
+import { json, useNavigate } from "react-router-dom";
 import "../scss/pages/registerUser.scss";
 import DeafultLayout from "../layout/DeafultLayout";
 
@@ -44,7 +42,6 @@ function CreateUser() {
 
   //Cookie and redirect
   const navigate = useNavigate();
-  const [cookie, setCookie] = useCookies(["Authorization"]);
 
   //Set password value and chceck if they are valid
   const [passwordValue, setPasswordValue] = useState<string>("");
@@ -161,7 +158,6 @@ function CreateUser() {
       if (!response.ok) {
         throw new Error(jsonData);
       }
-
  
       navigate("/");
     } catch (error: unknown) {
@@ -239,6 +235,10 @@ function CreateUser() {
         }
       }
 
+      if (jsonBody.jobtypes.length < 1) {
+        throw new Error("Der skal mindst være en form for jobtype");
+      }
+      
       if (jsonBody.password != jsonBody.repeatPassword) {
         throw new Error("Adgangskoderne er ikke ens med hinanden!");
       }

@@ -80,7 +80,7 @@ function CreateJobposting() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          
           accesstoken: accessToken,
         },
         body: JSON.stringify(jsonBody),
@@ -91,8 +91,8 @@ function CreateJobposting() {
       if (!response.ok) {
         throw new Error(jsonData);
       }
-
-      //Makes the cookie with the jwt and navigatie to the frontpage
+      
+      navigate(`/jobpostingInfo/${jsonData.id}`)
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error);
@@ -113,20 +113,20 @@ function CreateJobposting() {
             failed={registerFailed.hasError}
             erroMessage={registerFailed.errorMesseage}
           />
-          <Input type="text" name="title">
+          <Input type="text" name="title" placeholder="Software developer opsøges" required>
             Title
           </Input>
-          <Input type="text" name="description" required={true}>
+          <Input type="text" name="description" placeholder="Give en beskrivelse omkring hvad i leder efter og hvad medarbejdern skulle kunne..." required>
             Beskrivelse
           </Input>
-          <Input type="date" name="deadline" required={true}>
+          <Input type="date" name="deadline" required>
             Udløbnings dato
           </Input>
-          <Input type="text" name="jobtype" required={true}>
+          <Input type="text" name="jobtype" placeholder="Software developer" required>
             Job type
           </Input>
-          <Input type="number" name="salary" min="0" step="0.001" required={true}>
-            Betaling
+          <Input type="number" name="salary" min="0" placeholder="0 kr" required>
+            Betaling (Pr månded ca)
           </Input>
           <Button type="submit">Opret jobopslag</Button>
         </form>

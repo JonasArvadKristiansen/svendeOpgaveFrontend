@@ -119,7 +119,7 @@ function ChangePassword(prop: Props) {
       <ErrorMessage erroMessage={erroMessage} failed={failed}></ErrorMessage>
 
       <form className="profile__changepass__form" onSubmit={changePassword}>
-        <Input type="text" name="oldPassword" required={true}>
+        <Input type="text" name="oldPassword" required>
           Gammel Adgangskode
         </Input>
         <div>
@@ -143,7 +143,7 @@ function ChangePassword(prop: Props) {
             Adgangskoden opfylder ikke kravene
           </p>
         )}
-        <Input type="password" name="repeatNewPassword" required={true}>
+        <Input type="password" name="repeatNewPassword" CopiPast required>
           Gentage adgangskode
         </Input>
         <Button type="submit">Opdatere adgangskode</Button>

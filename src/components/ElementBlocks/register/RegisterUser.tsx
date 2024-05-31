@@ -23,10 +23,10 @@ interface Props {
 function RegisterUser(prop: Props) {
   return (
     <form method="post" onSubmit={prop.submitCreateUser}>
-      <Input type="text" name="fullName" required={true}>
+      <Input type="text" name="fullName" placeholder="Thomas Hansen" required>
         Fuld navn
       </Input>
-      <Input type="email" name="email" required={true}>
+      <Input type="email" name="email" required placeholder="Thomas@hotmail.dk">
         E-mail
       </Input>
       <Input
@@ -35,7 +35,8 @@ function RegisterUser(prop: Props) {
         pattern="[0-9]{8}"
         type="tel"
         name="phonenumber"
-        required={true}
+        placeholder="45+ 12345678"
+        required
       >
         Telefon
       </Input>

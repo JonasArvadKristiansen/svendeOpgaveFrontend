@@ -5,10 +5,12 @@ import { useCookies } from "react-cookie";
 
 import "../../scss/header.scss";
 import endpoint from "../../config.json";
+import profileIcon from "../../assets/profile.svg";
+import facebookIcon from "../../assets/facebook.svg"
+import googleIcon from "../../assets/google.svg"
 
 import { Button } from "../uiElements/Buttons";
 import FilterPopup from "../ElementBlocks/popups/FilterPopup";
-import Icon from "../uiElements/Icon";
 import LoginPopUp from "../ElementBlocks/popups/LoginPopUp";
 
 interface Props {
@@ -300,7 +302,7 @@ function FilterHeader(prop: Props) {
         {isLoggedIn ? (
           <div className="header__login">
             <Link to="/profile">
-              <Icon src="profile.svg" alt="Profile ikon" />
+              <img src={profileIcon} alt="Profil ikon" />
             </Link>
 
             <Button type="button" onClick={handleLogout}>

@@ -4,20 +4,35 @@ import Input from "../components/uiElements/Input";
 import { Button } from "../components/uiElements/Buttons";
 import ToggleUserType from "../components/ElementBlocks/ToggleUserType";
 import endpoint from "../config.json";
+import ErrorMessage from "../components/uiElements/ErrorMessage";
+import { useNavigate } from "react-router-dom";
+
+interface ErrorInfo {
+  hasError: boolean;
+  errorMesseage: string;
+}
+
 
 function UpdatePassword() {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+  const navigate = useNavigate();
 
   const [isJobseeker, setIsJobseeker] = useState<boolean>(true);
   const [toggleUser, setToggleUser] = useState<string>("user");
 
   const [email, setEmail] = useState<string>("");
 
+  //Error handling
+  const [updateFailed, setUpdateFailed] = useState<ErrorInfo>({
+    hasError: false,
+    errorMesseage: "",
+  });
+
   //Toggle between users to create
   const toggleUserSelect = () => {
     setIsJobseeker(!isJobseeker);
   };
-  
+
   const handleEmailValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
@@ -32,13 +47,6 @@ function UpdatePassword() {
     try {
       event.preventDefault();
 
-      console.log(`${endpoint.path}${toggleUser}/resetPassword`);
-      
-
-      console.log(email);
-      
-
-
       const response = await fetch(
         `${endpoint.path}${toggleUser}/resetPassword`,
         {
@@ -48,7 +56,7 @@ function UpdatePassword() {
             "Content-Type": "application/json",
             accesstoken: accessToken,
           },
-          body: JSON.stringify({email: email }),
+          body: JSON.stringify({ email: email }),
         }
       );
 
@@ -57,11 +65,15 @@ function UpdatePassword() {
       if (!response.ok) {
         throw new Error(jsonData);
       }
+      navigate("/");
 
-      console.log("complete ");
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
+        setUpdateFailed({
+          hasError: true,
+          errorMesseage: error.message
+        })
       }
     }
   };
@@ -77,8 +89,9 @@ function UpdatePassword() {
             isBoolean={isJobseeker}
             toggleSelect={toggleUserSelect}
           />
+          <ErrorMessage failed={updateFailed.hasError} erroMessage={updateFailed.errorMesseage}></ErrorMessage>
           <form onSubmit={submitChangePassword}>
-            <Input onchange={handleEmailValue} type="text" name="email">
+            <Input onchange={handleEmailValue} type="text" name="email" required>
               Email
             </Input>
             <Button type="submit">Log ind</Button>

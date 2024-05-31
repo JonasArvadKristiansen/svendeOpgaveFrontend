@@ -1,14 +1,15 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+
 import endpoint from "../config.json";
+import "../scss/pages/createJobpost.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
 import Input from "../components/uiElements/Input";
 import { Button } from "../components/uiElements/Buttons";
 import ErrorMessage from "../components/uiElements/ErrorMessage";
 
-import "../scss/pages/createJobpost.scss";
 
 interface JobPostingObject {
   title?: string;
@@ -24,9 +25,13 @@ interface ErrorInfo {
   errorMesseage: string;
 }
 
+
+
 function EditJobpost() {
   const params = useParams();
   const [cookies] = useCookies();
+  const navigate = useNavigate();
+
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
   const [token, setToken] = useState("");
@@ -68,7 +73,7 @@ function EditJobpost() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              
               accesstoken: accessToken,
             },
           }
@@ -108,27 +113,33 @@ function EditJobpost() {
       for (const pair of target.entries()) {
         switch (pair[0]) {
           case "title":
-    
             if (pair[1] != originalInfo.title) {
               jsonBody.title = String(pair[1]);
             }
             break;
           case "description":
-         
             if (pair[1] != originalInfo.description) {
               jsonBody.description = String(pair[1]);
             }
             break;
           case "deadline":
-         
             if (pair[1] != String(originalInfo.deadline)) {
               jsonBody.deadline = String(pair[1]);
             }
             break;
           case "jobtype":
-
             if (pair[1] != originalInfo.jobtype) {
               jsonBody.jobtype = String(pair[1]);
+            }
+            break;
+          case "jobtype":
+            if (pair[1] != originalInfo.jobtype) {
+              jsonBody.jobtype = String(pair[1]);
+            }
+            break;
+          case "salary":
+            if (pair[1] != String(originalInfo.salary)) {
+              jsonBody.salary = parseInt(String(pair[1]));
             }
             break;
           default:
@@ -144,7 +155,7 @@ function EditJobpost() {
         method: "PUT",
         credentials: "include",
         headers: {
-          Authorization: `Bearer ${token}`,
+          
           "Content-Type": "application/json",
           accesstoken: accessToken,
         },
@@ -156,6 +167,8 @@ function EditJobpost() {
       if (!response.ok) {
         throw new Error(jsonData);
       }
+
+      navigate("..", { relative: "path" });
     } catch (error: unknown) {
       if (error instanceof Error) {
         setUserFailed({
@@ -187,6 +200,9 @@ function EditJobpost() {
         case "jobtype":
           setJobPostInfo({ ...jobPostInfo, jobtype: newValue });
           break;
+        case "salary":
+          setJobPostInfo({ ...jobPostInfo, salary: parseInt(newValue) });
+          break;
         default:
           throw new Error(`Dette input ${inputName} existere ikke`);
       }
@@ -210,9 +226,12 @@ function EditJobpost() {
             failed={userFailed.hasError}
             erroMessage={userFailed.errorMesseage}
           ></ErrorMessage>
+
           <Input
             type="text"
             name="title"
+            placeholder="Software developer opsøges"
+            required
             value={jobPostInfo.title}
             onchange={handleInputChanges}
           >
@@ -221,6 +240,8 @@ function EditJobpost() {
           <Input
             type="text"
             name="description"
+            placeholder="Give en beskrivelse omkring hvad i leder efter og hvad medarbejdern skulle kunne..."
+            required
             value={jobPostInfo.description}
             onchange={handleInputChanges}
           >
@@ -230,6 +251,7 @@ function EditJobpost() {
           <Input
             type="date"
             name="deadline"
+            required
             value={jobPostInfo.deadline!.split("T")[0]}
             onchange={handleInputChanges}
           >
@@ -239,23 +261,25 @@ function EditJobpost() {
           <Input
             type="text"
             name="jobtype"
+            placeholder="Software developer"
+            required
             value={jobPostInfo.jobtype}
             onchange={handleInputChanges}
           >
             Job type
           </Input>
 
-          {/*  <Input
+          <Input
             type="number"
             name="salary"
             min="0"
-            step="0.001"
-            required={true}
-            value={jobPostList.salary}
+            placeholder="0 kr"
+            required
+            value={jobPostInfo.salary}
             onchange={handleInputChanges}
           >
-            Betaling
-          </Input> */}
+            Betaling (Pr månded ca)
+          </Input>
 
           <Button type="submit">Opdatere jobopslag</Button>
         </form>

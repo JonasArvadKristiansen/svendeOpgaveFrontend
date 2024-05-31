@@ -3,6 +3,8 @@ import { Button, CloseButton } from "../../uiElements/Buttons";
 import Input from "../../uiElements/Input";
 import ErrorMessage from "../../uiElements/ErrorMessage";
 
+import closeIcon from "../../../assets/exit.svg"
+
 interface Props {
   closePopup: () => void;
   filterSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -30,7 +32,7 @@ function FilterPopup(prop: Props) {
             <CloseButton
               onClick={prop.closePopup}
               arialLabel="Luk filter popup"
-              src="src\assets\exit.svg"
+              src={closeIcon}
               alt="Luk ikon"
             />
           </div>

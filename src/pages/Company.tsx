@@ -39,6 +39,9 @@ function Company() {
           throw new Error(jsonData);
         }
 
+        console.log(jsonData);
+        
+
         setCompanyList(jsonData.companys);
       } catch (error: unknown) {
         if (error instanceof Error) {

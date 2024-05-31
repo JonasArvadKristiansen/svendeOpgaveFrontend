@@ -15,7 +15,7 @@ function Textarea(prop: Props) {
       <textarea
         id={prop.name}
         name={prop.name}
-        placeholder={prop.label}
+        placeholder={prop.placeholder}
         required={prop.required}
         value={prop.children}
         onChange={prop.onChange}

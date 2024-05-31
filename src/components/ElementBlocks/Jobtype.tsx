@@ -1,4 +1,4 @@
-import Icon from "../uiElements/Icon";
+import deleteIcon from "../../assets/exitSmall.svg";
 
 interface Props {
   children: string;
@@ -14,7 +14,7 @@ function Jobtype(prop: Props) {
         aria-label="Slet jobtype"
         type="button"
       >
-        <Icon src="exitSmall.svg" alt="Slet jobtype ikon"/>
+        <img src={deleteIcon} alt="Slet jobtype ikon"/>
       </button>
     </div>
   );

@@ -4,8 +4,6 @@ import Textarea from "../../uiElements/Textarea";
 import Jobtype from "../Jobtype";
 import CreatePassword from "./CreatePassword";
 
-
-
 interface Props {
   //Submit function
   submitCreateUser: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -37,10 +35,10 @@ interface Props {
 function RegisterCompany(prop: Props) {
   return (
     <form method="post" onSubmit={prop.submitCreateUser}>
-      <Input type="text" name="companyName" required={true}>
+      <Input type="text" name="companyName" required placeholder="Tech Innovate Solutions">
         Virksomhed navn
       </Input>
-      <Input type="email" name="email" required={true}>
+      <Input type="email" name="email" required placeholder="info@techinnovatesolutions.com">
         E-mail
       </Input>
       <Input
@@ -49,26 +47,27 @@ function RegisterCompany(prop: Props) {
         pattern="[0-9]{8}"
         type="tel"
         name="phonenumber"
-        required={true}
+        placeholder="45+ 12345678"
+        required
       >
         Telefon
       </Input>
-      <Input type="text" name="address" required={true}>
+      <Input type="text" name="address" placeholder="H.C andersne vej 23" required>
         Address
       </Input>
-      <Input type="text" name="city" required={true}>
+      <Input type="text" name="city" placeholder="København" required>
         By
       </Input>
-      <Textarea name="description" label="Beskrivelse" placeholder="Beskrivelse" required={true}></Textarea>
-      <Input type="number" name="cvrNumber" min="1" required={true}>
+      <Textarea name="description" label="Beskrivelse" placeholder="Give en beskrivelse omkring dit firma..." required></Textarea>
+      <Input type="number" name="cvrNumber" min="1" placeholder="12345678" required>
         CVR nummer
       </Input>
-      <Input type="number" name="numberOfEmployees" min="1" required={true}>
-        Nummer af medarbejder
+      <Input type="number" name="numberOfEmployees" min="1" placeholder="ca. 1" required>
+        Nummer af medarbejder ca
       </Input>
 
       <div>
-        <label htmlFor="jobtypes">Jobtyper</label>
+        <label htmlFor="jobtypes">Jobtyper (mindst 1 jobtype)</label>
         <div className="reg-user__container__jobtype-input">
           <input
             name="jobtypes"
@@ -76,7 +75,7 @@ function RegisterCompany(prop: Props) {
             type="text"
             value={prop.jobtypeValue}
             onChange={prop.changeJobValue}
-            placeholder="Jobtyper"
+            placeholder="It-support"
           />
           <Button type="button" onClick={() => prop.addJobElement()}>
             Opret

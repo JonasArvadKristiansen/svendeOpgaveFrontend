@@ -4,10 +4,10 @@ import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 
 import "../../scss/header.scss";
+import profileIcon from "../../assets/profile.svg";
 
 import { Button } from "../uiElements/Buttons";
 import LoginPopup from "../ElementBlocks/popups/LoginPopUp";
-import Icon from "../uiElements/Icon";
 
 interface Props {
   children?: React.ReactNode;
@@ -31,7 +31,6 @@ function Header(prop: Props) {
 
   //Enables popup to show
   const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);  
-
  
   //Handles the logout state for the user
   const handleLogout = () => {
@@ -96,7 +95,7 @@ function Header(prop: Props) {
         {isLoggedIn ? (
           <div className="header__login">
             <Link to="/profile">
-              <Icon src="profile.svg" alt="Profile ikon" />
+              <img src={profileIcon} alt="Profile ikon" />
             </Link>
 
             <Button type="button" onClick={handleLogout}>

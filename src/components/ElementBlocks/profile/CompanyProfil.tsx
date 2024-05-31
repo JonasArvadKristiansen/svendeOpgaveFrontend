@@ -80,7 +80,6 @@ function CompanyProfil(prop: Props) {
   useEffect(() => {
     const dataInfo = prop.data;
 
-    
     if (
       dataInfo.jobtypes != undefined &&
       typeof dataInfo.jobtypes == "string"
@@ -193,17 +192,7 @@ function CompanyProfil(prop: Props) {
       event.preventDefault();
       const target = new FormData(event.currentTarget);
 
-      const jsonBody: CompanyData = {
-        companyName: "",
-        email: "",
-        phonenumber: 0,
-        city: "",
-        description: "",
-        address: "",
-        numberOfEmployees: 0,
-        cvrNumber: 0,
-        jobtypes: "",
-      };
+      const jsonBody: CompanyData = { };
 
       for (const pair of target.entries()) {
         switch (pair[0]) {
@@ -256,11 +245,17 @@ function CompanyProfil(prop: Props) {
             throw new Error(`Dette input ${pair[0]} existere ikke`);
         }
       }
+      
+      console.log(jobtypesList.length);
 
       if (Object.keys(jsonBody).length <= 0) {
         throw new Error("Du har ikke lavet nogen ændinger!");
       }
-
+      
+      if (jobtypesList.length < 1) {
+        throw new Error("Der skal mindst være en form for jobtype");
+      }
+      
       const response = await fetch(`${endpoint.path}company/update`, {
         method: "PUT",
         credentials: "include",
@@ -319,7 +314,7 @@ function CompanyProfil(prop: Props) {
         pattern="[0-9]{8}"
         type="tel"
         name="phonenumber"
-        required={true}
+        required
         value={String(userInfo.phonenumber)}
         onchange={handleInputChanges}
       >
@@ -398,7 +393,7 @@ function CompanyProfil(prop: Props) {
       </div>
 
       <div className="profile__user__actions">
-        <Button onClick={prop.deleteSubmit} delete={true} type="button">
+        <Button onClick={prop.deleteSubmit} delete type="button">
           Slet din bruger
         </Button>
         <Button type="submit">Opdatere din bruger</Button>

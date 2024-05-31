@@ -48,7 +48,7 @@ function UserProfil(prop: Props) {
 
   //Set values from parent to the usestate
   useEffect(() => {
-    const dataInfo = prop.data;    
+    const dataInfo = prop.data;
 
     setOriginalInfo(dataInfo);
     setUserInfo(dataInfo);
@@ -93,7 +93,7 @@ function UserProfil(prop: Props) {
       event.preventDefault();
       const target = new FormData(event.currentTarget);
 
-      const jsonBody: UserData = { fullName: "", email: "", phonenumber: 0 };
+      const jsonBody: UserData = {};
 
       for (const pair of target.entries()) {
         switch (pair[0]) {
@@ -181,7 +181,7 @@ function UserProfil(prop: Props) {
           pattern="[0-9]{8}"
           type="tel"
           name="phonenumber"
-          required={true}
+          required
           value={String(userInfo.phonenumber)}
           onchange={handleInputChanges}
         >
@@ -189,7 +189,7 @@ function UserProfil(prop: Props) {
         </Input>
 
         <div className="profile__user__actions">
-          <Button onClick={prop.deleteSubmit} delete={true} type="button">
+          <Button onClick={prop.deleteSubmit} delete type="button">
             Slet din bruger
           </Button>
           <Button type="submit">Opdatere din bruger</Button>

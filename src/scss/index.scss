@@ -48,9 +48,9 @@ input, textarea {
   border: 1px solid map-get($color, 'dark-blue-66');
 
   border-radius: 10px;
-  &::placeholder {
+  /* &::placeholder {
     font-weight: bold;
-  }
+  } */
 
   &[type="checkbox"] {
     accent-color: map-get($color, "dark-blue" );

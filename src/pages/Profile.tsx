@@ -115,23 +115,23 @@ function Profile() {
           //Go though the type the user are to get that users info
           switch (userType) {
             case "Normal user":
-              response = await fetch(`${endpoint.path}user/info`, {
+              response = await fetch(`${endpoint.path}user/profile`, {
                 method: "GET",
                 credentials: "include",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
+                  
                   accesstoken: accessToken,
                 },
               });
               break;
             case "Company user":
-              response = await fetch(`${endpoint.path}company/info`, {
+              response = await fetch(`${endpoint.path}company/profile`, {
                 method: "GET",
                 credentials: "include",
                 headers: {
                   "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
+                  
                   accesstoken: accessToken,
                 },
               });
@@ -179,24 +179,22 @@ function Profile() {
   const handleEditPopup = () => {
     setShowEditPopup(true);
   };
+  const handleSuccesPopup = () => {
+    setShowSuccessPopup(!showSuccessPopup);
+  };
+
   const handleAdminPopup = () => {
     setShowAdminDeletesPopup(false);
     setIsAdminBanning(false);
     setIsAdminDelete(false);
   };
-
   const handleAdminBanningPopup = () => {
     setShowAdminDeletesPopup(true);
     setIsAdminBanning(true);
   };
-
   const handleAdminDeletingPopup = () => {
     setShowAdminDeletesPopup(true);
     setIsAdminBanning(true);
-  };
-
-  const handleSuccesPopup = () => {
-    setShowSuccessPopup(!showSuccessPopup);
   };
 
   //Reload the current page
@@ -220,7 +218,7 @@ function Profile() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              
               accesstoken: accessToken,
             },
           });
@@ -231,7 +229,7 @@ function Profile() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              
               accesstoken: accessToken,
             },
           });
@@ -261,7 +259,7 @@ function Profile() {
         method: crud,
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          
           accesstoken: accessToken,
         },
         body: JSON.stringify({ email: adminSelectedEmail }),
@@ -291,7 +289,7 @@ function Profile() {
         return (
           <UserProfil
             editUserComplete={handleEditPopup}
-            deleteSubmit={deleteCurrentUser}
+            deleteSubmit={handleDeletePopup}
             token={token}
             data={UserData}
           />
@@ -311,7 +309,7 @@ function Profile() {
         return (
           <CompanyProfil
             editUserComplete={handleEditPopup}
-            deleteSubmit={deleteCurrentUser}
+            deleteSubmit={handleDeletePopup}
             token={token}
             data={CompanyData}
           />
@@ -332,7 +330,7 @@ function Profile() {
               <Button onClick={handleDeletePopup} type="button">
                 Nej
               </Button>
-              <Button onClick={deleteCurrentUser} delete={true} type="button">
+              <Button onClick={deleteCurrentUser} delete type="button">
                 Slet bruger
               </Button>
             </div>
@@ -368,7 +366,7 @@ function Profile() {
                         "POST"
                       )
                     }
-                    delete={true}
+                    delete
                     type="button"
                   >
                     Ban email
@@ -391,7 +389,7 @@ function Profile() {
                           "DELETE"
                         )
                       }
-                      delete={true}
+                      delete
                       type="button"
                     >
                       Slet en user
@@ -403,7 +401,7 @@ function Profile() {
                           "DELETE"
                         )
                       }
-                      delete={true}
+                      delete
                       type="button"
                     >
                       Slet en virksomhed

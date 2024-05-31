@@ -8,6 +8,7 @@ import "../scss/pages/contentInfo.scss";
 import DeafultLayout from "../layout/DeafultLayout";
 import TextSections from "../components/uiElements/TextSections";
 import JobPostingCard from "../components/ElementBlocks/content/JobPostingCard";
+
 import ApplicationPopup from "../components/ElementBlocks/popups/ApplicationPopup";
 import { Button } from "../components/uiElements/Buttons";
 
@@ -33,13 +34,17 @@ interface JobPostingObject {
 }
 
 function CompanyInfo() {
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+  const [cookies] = useCookies();
   const params = useParams();
-
-  const [jobpostList, setJobpostList] = useState<JobPostingObject[]>([]);
 
   //Enables popup to show
   const [showApplicationPopup, setShowApplicationPopup] =
     useState<boolean>(false);
+
+  const [companyEmail, setCompanyEmail] = useState<string>("");
+
+  const [jobpostList, setJobpostList] = useState<JobPostingObject[]>([]);
 
   const [companyList, setCompanyList] = useState<CompanyObject>({
     companyName: "",
@@ -53,10 +58,6 @@ function CompanyInfo() {
     jobtypes: "",
   });
 
-  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
-
-  const [cookies] = useCookies();
-
   useEffect(() => {
     const token = cookies["Authorization"];
 
@@ -69,21 +70,22 @@ function CompanyInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              
               accesstoken: accessToken,
             },
           }
         );
 
         const jsonData = await response.json();
-        console.log(jsonData);
-
+        
         if (!response.ok) {
           throw new Error(jsonData);
         }
-
+        
+        console.log(jsonData);
         setJobpostList(jsonData.jobpostingsData);
         setCompanyList(jsonData.companyProfileData[0]);
+        setCompanyEmail(jsonData.companyProfileData[0].email);
       } catch (error: unknown) {
         if (error instanceof Error) {
           console.error(error.message);
@@ -101,7 +103,10 @@ function CompanyInfo() {
   return (
     <DeafultLayout>
       {showApplicationPopup && (
-        <ApplicationPopup reciverEmail="test@mail.dk" closePopup={handleTogglePopup} />
+        <ApplicationPopup
+          reciverEmail={companyEmail}
+          closePopup={handleTogglePopup}
+        />
       )}
 
       <div className="container-sm content">
@@ -151,11 +156,13 @@ function CompanyInfo() {
             )}
           </div>
         </div>
+
         <Button type="button" onClick={handleTogglePopup}>
-          test popup
+          Ansøg uopfordret
         </Button>
+
         <h1 className="heading-1 title">Jobopslag</h1>
-        <div className=" content__blocks">
+        <div className="content__blocks">
           {Object.keys(jobpostList).length > 0 &&
             jobpostList.map((job, index) => (
               <JobPostingCard

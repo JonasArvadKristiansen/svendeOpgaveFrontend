@@ -1,10 +1,13 @@
 import React, { useState } from "react";
+
+import endpoint from "../../../config.json";
+import closeIcon from "../../../assets/exit.svg"
+
 import ShowPopup from "./ShowPopup";
 import Input from "../../uiElements/Input";
 import ErrorMessage from "../../uiElements/ErrorMessage";
 import { CloseButton, Button } from "../../uiElements/Buttons";
 import Textarea from "../../uiElements/Textarea";
-import endpoint from "../../../config.json";
 
 interface Props {
   closePopup: () => void;
@@ -87,7 +90,7 @@ function ApplicationPopup(prop: Props) {
             <CloseButton
               onClick={prop.closePopup}
               arialLabel="Luk login popup"
-              src="src\assets\exit.svg"
+              src={closeIcon}
               alt="Luk ikon"
             />
           </div>
@@ -98,17 +101,17 @@ function ApplicationPopup(prop: Props) {
           />
 
           <form encType="multipart/form-data" onSubmit={submitApplication}>
-            <Input type="email" name="receiver" required={true}>
+            <Input type="email" name="receiver" value={prop.reciverEmail} readOnly required>
               Modtager
             </Input>
-            <Input type="text" name="title" required={true}>
+            <Input type="text" name="title" placeholder="Application for software developer Thomas Hansen" required>
               Title
             </Input>
-            <Textarea label="Beskrivelse" name="text" />
-            <Input type="file" name="files" required={true}>
+            <Textarea label="Beskrivelse" name="text" placeholder="Give en kort beskrivelse omkring hvorfor du ansøger hos dem..." />
+            <Input type="file" name="files" required>
               Ansøgnings
             </Input>
-            <Input type="file" name="files" required={true}>
+            <Input type="file" name="files" required>
               CV
             </Input>
             <Button type="submit">Send Ansøgning</Button>

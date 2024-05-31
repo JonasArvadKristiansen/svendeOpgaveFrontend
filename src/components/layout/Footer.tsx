@@ -1,5 +1,8 @@
 import "../../scss/footer.scss";
 import { Link } from "react-router-dom";
+import phoneIcon from '../../assets/phone.svg';
+import mailIcon from '../../assets/mail.svg';
+import locationIcod from '../../assets/location.svg';
 
 function Footer() {
   return (
@@ -23,15 +26,15 @@ function Footer() {
 
           <div className="footer-container__section-contact__info-container">
             <div className="footer-container__section-contact__info-container__info">
-              <img src="phone.svg" alt="" />
+              <img src={phoneIcon} alt="telefon ikon" />
               <p>+45 11 22 33 44</p>
             </div>
             <div className="footer-container__section-contact__info-container__info">
-              <img src="mail.svg" alt="" />
+              <img src={mailIcon} alt="mail ikon" />
               <p>JobConnect@hotmail.dk</p>
             </div>
             <div className="footer-container__section-contact__info-container__info">
-              <img src="location.svg" alt="" />
+              <img src={locationIcod} alt="placering ikon" />
               <p>Viborg H.C. Andersens Vej 7</p>
             </div>
           </div>

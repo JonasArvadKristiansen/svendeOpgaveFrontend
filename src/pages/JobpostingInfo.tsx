@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
 
 import endpoint from "../config.json";
 import "../scss/pages/contentInfo.scss";
@@ -19,9 +20,17 @@ interface JobPostingObject {
   løn: number;
   deadLine: string;
 
+  companyID: number,
   companyName: string;
   companyDescription: string;
   jobpostingCount: number;
+}
+
+interface ExtraJwtInfo {
+  user: {
+    id: number;
+    type: string;
+  };
 }
 
 function JobpostingInfo() {
@@ -29,7 +38,12 @@ function JobpostingInfo() {
   const [cookies] = useCookies();
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
-  const [isOwner, setIsOwner] = useState(true);
+  //Helps to redirect
+  const navigate = useNavigate();
+
+  const [companyEmail, setCompanyEmail] = useState<string>("");
+
+  const [isOwner, setIsOwner] = useState(false);
   const [token, setToken] = useState(true);
 
   //Enables popup to show
@@ -44,6 +58,7 @@ function JobpostingInfo() {
     løn: 0,
     deadLine: "",
 
+    companyID: 0,
     companyName: "",
     companyDescription: "",
     jobpostingCount: 0,
@@ -52,6 +67,7 @@ function JobpostingInfo() {
   useEffect(() => {
     const token = cookies["Authorization"];
     setToken(token);
+    const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
     const getData = async () => {
       try {
@@ -62,7 +78,7 @@ function JobpostingInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
+              
               accesstoken: accessToken,
             },
           }
@@ -73,9 +89,15 @@ function JobpostingInfo() {
           throw new Error(jsonData);
         }
 
+        if (decodeToken.user.id == jsonData.jobposting[0].companyID) {
+          setIsOwner(true);
+        }
+
         console.log(jsonData);
+        
 
         setJobPostList(jsonData.jobposting[0]);
+        setCompanyEmail(jsonData.jobposting[0].email);
       } catch (error: unknown) {
         if (error instanceof Error) {
           console.error(error.message);
@@ -87,18 +109,23 @@ function JobpostingInfo() {
   }, []);
 
   //Handles the
+  const handleRedirectToEdit = () => {
+    navigate("editJobpost");
+  };
+
+  //Handles the
   const handleTogglePopup = () => {
     setShowApplicationPopup(!showApplicationPopup);
   };
 
-  const deleteJobpost = async () => {
+  const handleDeleteJobpost = async () => {
     try {
       const response = await fetch(`${endpoint.path}jobpost/delete`, {
         method: "DELETE",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+          
           accesstoken: accessToken,
         },
         body: JSON.stringify({ jobpostingId: params.id }),
@@ -119,7 +146,10 @@ function JobpostingInfo() {
   return (
     <DeafultLayout>
       {showApplicationPopup && (
-        <ApplicationPopup reciverEmail="test@mail.dk" closePopup={handleTogglePopup} />
+        <ApplicationPopup
+          reciverEmail={companyEmail}
+          closePopup={handleTogglePopup}
+        />
       )}
 
       <div className="container-sm content">
@@ -138,29 +168,32 @@ function JobpostingInfo() {
             <TextWithHead header="Addresse" text={jobPostList.address} />
             <TextWithHead header="Løn" text="12.000 om måndeden" />
           </div>
+        </div>
 
-          <div className="grid-layout-job__item-3">
-            <h2 className="heading-2 title">Virksomhed</h2>
-            <CompanyCard
-              id={parseInt(String(params.id))}
-              companyName={jobPostList.companyName}
-              description={jobPostList.description}
-              jobpostingCount={jobPostList.jobpostingCount}
-            />
-            <div className="grid-layout-job__item-3__button">
-              {isOwner && (
-                <>
-                  <Link to={"editJobpost"}>Redigere</Link>
-                  <Button delete={true} type="button" onClick={deleteJobpost}>
-                    Slet opslag
-                  </Button>
-                </>
-              )}
-              <Button type="button" onClick={handleTogglePopup}>
-                test popup
-              </Button>
-            </div>
-          </div>
+        {isOwner ? (
+          <>
+            <Button type="button" onClick={handleRedirectToEdit}>
+              Redigere jobopslaget
+            </Button>
+            <Button delete type="button" onClick={handleDeleteJobpost}>
+              Slet jobopslaget
+            </Button>
+          </>
+        ) : (
+          <Button type="button" onClick={handleTogglePopup}>
+            Ansøg denne stilling
+          </Button>
+        )}
+
+        <h2 className="heading-2 title">Virksomhed</h2>
+        <div className="content__blocks">
+          <CompanyCard
+            id={jobPostList.companyID}
+            companyName={jobPostList.companyName}
+            description={jobPostList.description}
+            jobpostingCount={jobPostList.jobpostingCount}
+          />
+          <div className="grid-layout-job__item-3__button"></div>
         </div>
       </div>
     </DeafultLayout>

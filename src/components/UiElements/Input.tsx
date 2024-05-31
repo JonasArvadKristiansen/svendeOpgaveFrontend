@@ -5,6 +5,7 @@ interface Props {
 
   placeholder?: string;
   required?: boolean;
+  readOnly?: boolean;
 
   onchange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string | number;
@@ -16,6 +17,8 @@ interface Props {
   min?: string;
   max?: string;
   step?: string;
+
+  CopiPast?: boolean;
 }
 
 function Input(prop: Props) {
@@ -34,6 +37,7 @@ function Input(prop: Props) {
         name={prop.name}
         placeholder={!prop.placeholder ? prop.children : prop.placeholder}
         required={prop.required}
+        readOnly={prop.readOnly}
       />
     </div>
   );

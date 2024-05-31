@@ -2,6 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import "../../../scss/popup.scss";
+import facebookIcon from "../../../assets/facebook.svg"
+import googleIcon from "../../../assets/google.svg"
+import closeIcon from "../../../assets/exit.svg"
 
 import { Button, CloseButton } from "../../uiElements/Buttons";
 import Input from "../../uiElements/Input";
@@ -114,7 +117,7 @@ function LoginPopUp(prop: Props) {
             <CloseButton
               onClick={prop.closePopup}
               arialLabel="Luk login popup"
-              src="src\assets\exit.svg"
+              src={closeIcon}
               alt="Luk ikon"
             />
           </div>
@@ -127,10 +130,10 @@ function LoginPopUp(prop: Props) {
           />
 
           <form method="post" onSubmit={submitLoginForm}>
-            <Input type="email" name="email" required={true}>
+            <Input type="email" name="email" required>
               E-mail
             </Input>
-            <Input type="password" name="password" required={true}>
+            <Input type="password" name="password" required>
               Adgnagskode
             </Input>
             <Button type="submit">Log ind</Button>
@@ -138,14 +141,14 @@ function LoginPopUp(prop: Props) {
 
           <div className="popup__input__box">
             <div>
-              <a href="https://jonasarvad.com/api/user/auth/facebook">
-                <img src="facebook.svg" alt="Facebook ikon" />
+              <Link to="https://jonasarvad.com/api/user/auth/facebook">
+                <img src={facebookIcon} alt="Facebook ikon" />
                 <p>Login med facebook</p>
-              </a>
+              </Link>
             </div>
             <div>
               <Link to="https://jonasarvad.com/api/user/auth/google">
-                <img src="google.svg" alt="Google ikon" />
+                <img src={googleIcon} alt="Google ikon" />
                 <p>Login med Google</p>
               </Link>
             </div>
