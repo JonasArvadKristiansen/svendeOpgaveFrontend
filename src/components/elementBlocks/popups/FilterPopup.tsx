@@ -1,7 +1,7 @@
 import ShowPopup from "./ShowPopup";
-import { Button, CloseButton } from "../../uiElem/Buttons";
-import Input from "../../uiElem/Input";
-import ErrorMessage from "../../uiElem/ErrorMessage";
+import { Button, CloseButton } from "../../uiElements/Buttons";
+import Input from "../../uiElements/Input";
+import ErrorMessage from "../../uiElements/ErrorMessage";
 
 import closeIcon from "../../../assets/exit.svg"
 

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import Input from "../../uiElem/Input";
-import { Button } from "../../uiElem/Buttons";
+import Input from "../../uiElements/Input";
+import { Button } from "../../uiElements/Buttons";
 import Jobtype from "../Jobtype";
-import ErrorMessage from "../../uiElem/ErrorMessage";
+import ErrorMessage from "../../uiElements/ErrorMessage";
 
 import endpoint from "../../../config.json";
-import Textarea from "../../uiElem/Textarea";
+import Textarea from "../../uiElements/Textarea";
 
 interface Props {
   deleteSubmit: () => void;

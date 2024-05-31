@@ -7,10 +7,10 @@ import endpoint from "../config.json";
 import "../scss/pages/contentInfo.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
-import TextWithHead from "../components/uiElem/TextSections";
-import CompanyCard from "../components/elblock/content/CompanyCard";
-import { Button } from "../components/uiElem/Buttons";
-import ApplicationPopup from "../components/elblock/popups/ApplicationPopup";
+import TextWithHead from "../components/uiElements/TextSections";
+import CompanyCard from "../components/elementBlocks/content/CompanyCard";
+import { Button } from "../components/uiElements/Buttons";
+import ApplicationPopup from "../components/elementBlocks/popups/ApplicationPopup";
 
 interface JobPostingObject {
   title: string;

@@ -1,6 +1,6 @@
-import Input from "../../uiElem/Input";
-import { Button } from '../../uiElem/Buttons';
-import ErrorMessage from "../../uiElem/ErrorMessage";
+import Input from "../../uiElements/Input";
+import { Button } from '../../uiElements/Buttons';
+import ErrorMessage from "../../uiElements/ErrorMessage";
 
 interface props {
   failed: ErrorInfo;

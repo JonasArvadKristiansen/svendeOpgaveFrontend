@@ -3,10 +3,10 @@ import { json, useNavigate } from "react-router-dom";
 import "../scss/pages/registerUser.scss";
 import DeafultLayout from "../layout/DeafultLayout";
 
-import ErrorMessage from "../components/uiElem/ErrorMessage";
-import RegisterUser from "../components/elblock/register/RegisterUser";
-import RegisterCompany from "../components/elblock/register/RegisterCompany";
-import ToggleUserType from "../components/elblock/ToggleUserType";
+import ErrorMessage from "../components/uiElements/ErrorMessage";
+import RegisterUser from "../components/elementBlocks/register/RegisterUser";
+import RegisterCompany from "../components/elementBlocks/register/RegisterCompany";
+import ToggleUserType from "../components/elementBlocks/ToggleUserType";
 
 import endpoint from "../config.json";
 

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
-import Input from "../../uiElem/Input";
-import { Button } from "../../uiElem/Buttons";
-import ErrorMessage from "../../uiElem/ErrorMessage";
+import Input from "../../uiElements/Input";
+import { Button } from "../../uiElements/Buttons";
+import ErrorMessage from "../../uiElements/ErrorMessage";
 
 import endpoint from "../../../config.json";
 

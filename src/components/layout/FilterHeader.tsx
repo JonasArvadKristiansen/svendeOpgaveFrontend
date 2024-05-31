@@ -9,9 +9,9 @@ import profileIcon from "../../assets/profile.svg";
 import facebookIcon from "../../assets/facebook.svg"
 import googleIcon from "../../assets/google.svg"
 
-import { Button } from "../uiElem/Buttons";
-import FilterPopup from "../elblock/popups/FilterPopup";
-import LoginPopUp from "../elblock/popups/LoginPopUp";
+import { Button } from "../uiElements/Buttons";
+import FilterPopup from "../elementBlocks/popups/FilterPopup";
+import LoginPopUp from "../elementBlocks/popups/LoginPopUp";
 
 interface Props {
   serchOnClickCompany?: (data: CompanyObject[]) => void;

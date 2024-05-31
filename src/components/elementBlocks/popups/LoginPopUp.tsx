@@ -6,9 +6,9 @@ import facebookIcon from "../../../assets/facebook.svg"
 import googleIcon from "../../../assets/google.svg"
 import closeIcon from "../../../assets/exit.svg"
 
-import { Button, CloseButton } from "../../uiElem/Buttons";
-import Input from "../../uiElem/Input";
-import ErrorMessage from "../../uiElem/ErrorMessage";
+import { Button, CloseButton } from "../../uiElements/Buttons";
+import Input from "../../uiElements/Input";
+import ErrorMessage from "../../uiElements/ErrorMessage";
 import endpoint from "../../../config.json";
 import ToggleUserType from "../ToggleUserType";
 import ShowPopup from "./ShowPopup";

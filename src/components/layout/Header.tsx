@@ -6,8 +6,8 @@ import { useCookies } from "react-cookie";
 import "../../scss/header.scss";
 import profileIcon from "../../assets/profile.svg";
 
-import { Button } from "../uiElem/Buttons";
-import LoginPopup from "../elblock/popups/LoginPopUp";
+import { Button } from "../uiElements/Buttons";
+import LoginPopup from "../elementBlocks/popups/LoginPopUp";
 
 interface Props {
   children?: React.ReactNode;
