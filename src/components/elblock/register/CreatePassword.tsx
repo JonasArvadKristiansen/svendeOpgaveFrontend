@@ -1,5 +1,5 @@
-import ErrorMessage from "../../uiElements/ErrorMessage";
-import Input from "../../uiElements/Input";
+import ErrorMessage from "../../uiElem/ErrorMessage";
+import Input from "../../uiElem/Input";
 
 interface Props {
   setIsPasswordValid: React.Dispatch<React.SetStateAction<boolean>>;

@@ -4,10 +4,10 @@ import endpoint from "../../../config.json";
 import closeIcon from "../../../assets/exit.svg"
 
 import ShowPopup from "./ShowPopup";
-import Input from "../../uiElements/Input";
-import ErrorMessage from "../../uiElements/ErrorMessage";
-import { CloseButton, Button } from "../../uiElements/Buttons";
-import Textarea from "../../uiElements/Textarea";
+import Input from "../../uiElem/Input";
+import ErrorMessage from "../../uiElem/ErrorMessage";
+import { CloseButton, Button } from "../../uiElem/Buttons";
+import Textarea from "../../uiElem/Textarea";
 
 interface Props {
   closePopup: () => void;

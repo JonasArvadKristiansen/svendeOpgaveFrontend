@@ -7,8 +7,8 @@ import "../scss/pages/content.scss";
 import FilterHeader from "../components/layout/FilterHeader";
 import Footer from "../components/layout/Footer";
 
-import CompanyCard from "../components/ElementBlocks/content/CompanyCard";
-import NotFoundCard from "../components/ElementBlocks/content/NotFoundCard";
+import CompanyCard from "../components/elblock/content/CompanyCard";
+import NotFoundCard from "../components/elblock/content/NotFoundCard";
 
 interface CompanyObject {
   id: number;

@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-import { Button } from "../components/uiElements/Buttons";
+import { Button } from "../components/uiElem/Buttons";
 
 import DeafultLayout from "../layout/DeafultLayout";
-import AdminProfil from "../components/ElementBlocks/profile/AdminProfil";
-import ChangePassword from "../components/ElementBlocks/profile/ChangePassword";
-import CompanyProfil from "../components/ElementBlocks/profile/CompanyProfil";
-import UserProfil from "../components/ElementBlocks/profile/UserProfil";
-import ShowPopup from "../components/ElementBlocks/popups/ShowPopup";
+import AdminProfil from "../components/elblock/profile/AdminProfil";
+import ChangePassword from "../components/elblock/profile/ChangePassword";
+import CompanyProfil from "../components/elblock/profile/CompanyProfil";
+import UserProfil from "../components/elblock/profile/UserProfil";
+import ShowPopup from "../components/elblock/popups/ShowPopup";
 
 import endpoint from "../config.json";
 
