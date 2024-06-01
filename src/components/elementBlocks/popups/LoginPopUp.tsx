@@ -141,13 +141,13 @@ function LoginPopUp(prop: Props) {
 
           <div className="popup__input__box">
             <div>
-              <Link to="https://jonasarvad.com/api/user/auth/facebook">
+              <Link to="http://localhost:3000/api/user/auth/facebook">
                 <img src={facebookIcon} alt="Facebook ikon" />
                 <p>Login med facebook</p>
               </Link>
             </div>
             <div>
-              <Link to="https://jonasarvad.com/api/user/auth/google">
+              <Link to="http://localhost:3000/api/user/auth/google">
                 <img src={googleIcon} alt="Google ikon" />
                 <p>Login med Google</p>
               </Link>

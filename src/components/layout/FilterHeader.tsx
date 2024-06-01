@@ -6,8 +6,8 @@ import { useCookies } from "react-cookie";
 import "../../scss/header.scss";
 import endpoint from "../../config.json";
 import profileIcon from "../../assets/profile.svg";
-import facebookIcon from "../../assets/facebook.svg"
-import googleIcon from "../../assets/google.svg"
+import facebookIcon from "../../assets/facebook.svg";
+import googleIcon from "../../assets/google.svg";
 
 import { Button } from "../uiElements/Buttons";
 import FilterPopup from "../elementBlocks/popups/FilterPopup";
@@ -51,6 +51,7 @@ function FilterHeader(prop: Props) {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
   const [serachValue, setSerachValue] = useState<string>("");
   const [isFilterPopup, setIsFilterPopup] = useState<boolean>(false);
+  const [userType, setUserType] = useState<string>("");
 
   const [filterFailed, setFilterFailed] = useState<ErrorInfo>({
     hasError: false,
@@ -93,10 +94,15 @@ function FilterHeader(prop: Props) {
         const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
         if (
-          ["Company user", "Admin", "Normal user"].includes(
-            decodeToken.user.type
-          )
+          [
+            "Company user",
+            "Admin",
+            "Normal user",
+            "Google user",
+            "Facebook user",
+          ].includes(decodeToken.user.type)
         ) {
+          setUserType(decodeToken.user.type);
           setIsLoggedIn(true);
         }
 
@@ -278,7 +284,7 @@ function FilterHeader(prop: Props) {
         </>
       )}
 
-<div className="container-sm header">
+      <div className="container-sm header">
         <div className="header__nav">
           <div>
             <h1 className="heading-1">JobConnect</h1>
@@ -296,14 +302,27 @@ function FilterHeader(prop: Props) {
                 <Link to="/createJobpost">Opret jobopslag</Link>
               </li>
             )}
+            {userType == "Admin" && (
+              <li>
+                <Link to="/statistic">Statestik</Link>
+              </li>
+            )}
           </ul>
         </div>
 
         {isLoggedIn ? (
           <div className="header__login">
-            <Link to="/profile">
-              <img src={profileIcon} alt="Profil ikon" />
-            </Link>
+            {isCompanyUser && (
+              <Link to="/profile">
+                <img src={profileIcon} alt="Profile ikon" />
+              </Link>
+            )}
+            {userType == "Facebook user" && (
+              <img src={facebookIcon} alt="Facebook ikon" />
+            )}
+            {userType == "Google user" && (
+              <img src={googleIcon} alt="Google ikon" />
+            )}
 
             <Button type="button" onClick={handleLogout}>
               Log ud

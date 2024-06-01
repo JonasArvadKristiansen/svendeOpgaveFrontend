@@ -5,6 +5,8 @@ import { useCookies } from "react-cookie";
 
 import "../../scss/header.scss";
 import profileIcon from "../../assets/profile.svg";
+import facebookIcon from "../../assets/facebook.svg";
+import googleIcon from "../../assets/google.svg";
 
 import { Button } from "../uiElements/Buttons";
 import LoginPopup from "../elementBlocks/popups/LoginPopUp";
@@ -25,13 +27,15 @@ function Header(prop: Props) {
   const [cookies, setcookie, removeCookie] = useCookies();
   const navigate = useNavigate();
 
+  const [userType, setUserType] = useState<string>("");
+
   //Checkes diffrent states depending on the user
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [isCompanyUser, setIsCompanyUser] = useState<boolean>(false);
 
   //Enables popup to show
-  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);  
- 
+  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);
+
   //Handles the logout state for the user
   const handleLogout = () => {
     removeCookie("Authorization");
@@ -51,10 +55,11 @@ function Header(prop: Props) {
         const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
         if (
-          ["Company user", "Admin", "Normal user"].includes(
+          ["Company user", "Admin", "Normal user", "Google user", "Facebook user"].includes(
             decodeToken.user.type
           )
         ) {
+          setUserType(decodeToken.user.type);
           setIsLoggedIn(true);
         }
 
@@ -89,14 +94,27 @@ function Header(prop: Props) {
                 <Link to="/createJobpost">Opret jobopslag</Link>
               </li>
             )}
+             {userType == "Admin" && (
+              <li>
+                <Link to="/statistic">Statestik</Link>
+              </li>
+            )}
           </ul>
         </div>
 
         {isLoggedIn ? (
           <div className="header__login">
-            <Link to="/profile">
-              <img src={profileIcon} alt="Profile ikon" />
-            </Link>
+            {isCompanyUser && (
+              <Link to="/profile">
+                <img src={profileIcon} alt="Profile ikon" />
+              </Link>
+            )}
+            {userType == "Facebook user" && (
+              <img src={facebookIcon} alt="Facebook ikon" />
+            )}
+            {userType == "Google user" && (
+              <img src={googleIcon} alt="Google ikon" />
+            )}
 
             <Button type="button" onClick={handleLogout}>
               Log ud

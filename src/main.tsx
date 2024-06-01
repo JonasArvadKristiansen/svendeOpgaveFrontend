@@ -14,6 +14,8 @@ import JobpostingInfo from "./pages/JobpostingInfo.tsx";
 import CreateJobpost from "./pages/CreateJobpost.tsx";
 import EditJobpost from "./pages/EditJobpost.tsx";
 import UpdatePassword from "./pages/UpdatePassword.tsx";
+import Statistics from "./pages/Statistics.tsx";
+
 
 
 const router = createBrowserRouter([
@@ -29,6 +31,10 @@ const router = createBrowserRouter([
   {
     path: "registerUser",
     element: <RegisterUser />,
+  },
+  {
+    path: "updatePassword",
+    element: <UpdatePassword />,
   },
   {
     path: "profile",
@@ -50,7 +56,13 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute
         component={<JobpostingInfo />}
-        roles={["Normal user", "Company user", "Admin"]}
+        roles={[
+          "Normal user",
+          "Company user",
+          "Admin",
+          "Facebook user",
+          "Google user",
+        ]}
       />
     ),
   },
@@ -59,7 +71,13 @@ const router = createBrowserRouter([
     element: (
       <PrivateRoute
         component={<CompanyInfo />}
-        roles={["Normal user", "Company user", "Admin"]}
+        roles={[
+          "Normal user",
+          "Company user",
+          "Admin",
+          "Facebook user",
+          "Google user",
+        ]}
       />
     ),
   },
@@ -73,8 +91,13 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "updatePassword",
-    element: <UpdatePassword />,
+    path: "statistic",
+    element: (
+      <PrivateRoute
+        component={<Statistics />}
+        roles={["Admin"]}
+      />
+    ),
   },
 ]);
 

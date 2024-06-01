@@ -1,0 +1,9 @@
+@import "../variables.scss";
+
+.center-sta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: map-get($spacing, "16px") ;
+}
