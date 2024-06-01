@@ -34,7 +34,6 @@ function Button(prop: PropsButton) {
 }
 
 function CloseButton(prop: PropsCloseButton) {
-  console.log('dd');
   
   return (
     <>

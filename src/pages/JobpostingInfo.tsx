@@ -44,7 +44,6 @@ function JobpostingInfo() {
   const [companyEmail, setCompanyEmail] = useState<string>("");
 
   const [isOwner, setIsOwner] = useState(false);
-  const [token, setToken] = useState(true);
 
   //Enables popup to show
   const [showApplicationPopup, setShowApplicationPopup] =
@@ -66,7 +65,6 @@ function JobpostingInfo() {
 
   useEffect(() => {
     const token = cookies["Authorization"];
-    setToken(token);
     const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
     const getData = async () => {
@@ -93,7 +91,6 @@ function JobpostingInfo() {
           setIsOwner(true);
         }
 
-        console.log(jsonData);
         
 
         setJobPostList(jsonData.jobposting[0]);

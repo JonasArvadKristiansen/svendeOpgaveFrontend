@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import { useCookies } from "react-cookie";
-
-import "../../scss/header.scss";
-import endpoint from "../../config.json";
-import profileIcon from "../../assets/profile.svg";
-import facebookIcon from "../../assets/facebook.svg";
-import googleIcon from "../../assets/google.svg";
-
-import { Button } from "../uiElements/Buttons";
+import { useState } from "react";
+import BaseHeader from "./BaseHeader";
 import FilterPopup from "../elementBlocks/popups/FilterPopup";
-import LoginPopUp from "../elementBlocks/popups/LoginPopUp";
+import endpoint from "../../config.json";
+import { Button } from "../uiElements/Buttons";
 
 interface Props {
   serchOnClickCompany?: (data: CompanyObject[]) => void;
   serchOnClickJobtype?: (data: JobPostingObject[]) => void;
-  isCompany?: boolean;
+  siteType: "company" | "jobpost";
 }
 
 interface CompanyObject {
@@ -40,137 +31,28 @@ interface ErrorInfo {
   errorMesseage: string;
 }
 
-interface ExtraJwtInfo {
-  user: {
-    id: number;
-    type: string;
-  };
-}
-
 function FilterHeader(prop: Props) {
+  //Gets token to sendt with the feth from .env
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
-  const [serachValue, setSerachValue] = useState<string>("");
-  const [isFilterPopup, setIsFilterPopup] = useState<boolean>(false);
-  const [userType, setUserType] = useState<string>("");
 
+  //Checks for popup should show
+  const [showFilterPopup, setShowFilterPopup] = useState<boolean>(false);
+
+  //Hold serach values
+  const [serachValue, setSerachValue] = useState<string>("");
+
+  //Checks for failer in filter
   const [filterFailed, setFilterFailed] = useState<ErrorInfo>({
     hasError: false,
     errorMesseage: "",
   });
 
-  //To use cookies and redirect
-  const [cookies, , removeCookie] = useCookies();
-  const navigate = useNavigate();
-
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [isCompanyUser, setIsCompanyUser] = useState<boolean>(false);
-
-  const [showLoginPopup, setShowLoginPopup] = useState<boolean>(false);
-
-  const closePopup = () => {
-    setIsFilterPopup(false);
-  };
-
-  const setNewSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSerachValue(event.target.value);
-  };
-
-  //Handles the logout state for the user
-  const handleLogout = () => {
-    removeCookie("Authorization");
-    setIsLoggedIn(false);
-    navigate("/");
-  };
-
-  //Handles the
-  const handleTogglePopup = () => {
-    setShowLoginPopup(!showLoginPopup);
-  };
-
-  useEffect(() => {
-    try {
-      const token = cookies["Authorization"];
-      if (token) {
-        const decodeToken = jwtDecode<ExtraJwtInfo>(token);
-
-        if (
-          [
-            "Company user",
-            "Admin",
-            "Normal user",
-            "Google user",
-            "Facebook user",
-          ].includes(decodeToken.user.type)
-        ) {
-          setUserType(decodeToken.user.type);
-          setIsLoggedIn(true);
-        }
-
-        if (decodeToken.user.type == "Company user") {
-          setIsCompanyUser(true);
-        }
-      }
-    } catch (error: unknown) {
-      console.error(error);
-    }
-  }, [cookies]);
-
-  const searching = async (event: React.FormEvent<HTMLFormElement>) => {
-    try {
-      event.preventDefault();
-      let response;
-
-      if (prop.isCompany) {
-        response = await fetch(
-          `${endpoint.path}company/filter?search=${serachValue}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              accesstoken: accessToken,
-            },
-          }
-        );
-      } else {
-        response = await fetch(
-          `${endpoint.path}jobpost/filter?search=${serachValue}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              accesstoken: accessToken,
-            },
-          }
-        );
-      }
-
-      const jsonData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(jsonData);
-      }
-
-      if (prop.serchOnClickCompany) {
-        prop.serchOnClickCompany(jsonData.companys);
-      }
-      if (prop.serchOnClickJobtype) {
-        prop.serchOnClickJobtype(jsonData.jobpostings);
-      }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
-  };
-
+  //Get new data out from submitting changes from popup filter
   const filterSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      let jsonQury = "";
       const target = new FormData(event.currentTarget);
-      let response;
+      let jsonQury = "";
 
       //Add values from form in a key, value
       for (const pair of target.entries()) {
@@ -200,10 +82,12 @@ function FilterHeader(prop: Props) {
         }
       }
 
+      //Checks if it's an empty qury that is getting used
       if (jsonQury === "") {
         throw new Error("Du har ikke udfyldt nogen a punkterne");
       }
 
+      //Check IF one of the deadlines ikke er blevet sat
       if (
         !jsonQury.includes("deadlineFirst") &&
         jsonQury.includes("deadlineLast")
@@ -216,25 +100,18 @@ function FilterHeader(prop: Props) {
         throw new Error("Deadline til er ikke sat!");
       }
 
-      if (prop.isCompany) {
-        response = await fetch(`${endpoint.path}company/filter?${jsonQury}`, {
+      //Get new filter data
+      const response = await fetch(
+        `${endpoint.path}${prop.siteType}/filter?${jsonQury}`,
+        {
           method: "GET",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
             accesstoken: accessToken,
           },
-        });
-      } else {
-        response = await fetch(`${endpoint.path}jobpost/filter?${jsonQury}`, {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            accesstoken: accessToken,
-          },
-        });
-      }
+        }
+      );
 
       const jsonData = await response.json();
 
@@ -242,6 +119,7 @@ function FilterHeader(prop: Props) {
         throw new Error(jsonData);
       }
 
+      //checks what data to use
       if (prop.serchOnClickCompany) {
         prop.serchOnClickCompany(jsonData.companys);
       }
@@ -261,105 +139,88 @@ function FilterHeader(prop: Props) {
     }
   };
 
+  //Get new data out from search value
+  const searchSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    try {
+      event.preventDefault();
+
+      //Get new filter data
+      const response = await fetch(
+        `${endpoint.path}${prop.siteType}/filter?search=${serachValue}`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            accesstoken: accessToken,
+          },
+        }
+      );
+
+      const jsonData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(jsonData);
+      }
+
+      
+      if (prop.serchOnClickCompany) {
+        prop.serchOnClickCompany(jsonData.companys);
+      }
+      if (prop.serchOnClickJobtype) {
+        prop.serchOnClickJobtype(jsonData.jobpostings);
+      }
+     
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  };
+
+
   const popupToggle = () => {
-    setIsFilterPopup(!isFilterPopup);
+    setShowFilterPopup(!showFilterPopup);
+  };
+
+  const setNewSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSerachValue(event.target.value);
   };
 
   return (
     <>
-      {showLoginPopup && (
-        <>
-          <LoginPopUp closePopup={handleTogglePopup} />
-        </>
-      )}
-
-      {isFilterPopup && (
+      <BaseHeader>
+        <div className="under-header">
+          <div className="container-sm under-header__search-container">
+            <form
+              className="under-header__search-container__input"
+              onSubmit={searchSubmit}
+            >
+              <input
+                type="text"
+                placeholder="Søg efter virksomheder"
+                aria-label="Søg efter virksomheder"
+                value={serachValue}
+                onChange={setNewSearchValue}
+              />
+              <Button type="submit">Søg</Button>
+            </form>
+            <Button type="button" onClick={popupToggle}>
+              Filtere
+            </Button>
+          </div>
+        </div>
+      </BaseHeader>
+      {showFilterPopup && (
         <>
           <FilterPopup
             failed={filterFailed}
             filterSubmit={filterSubmit}
-            isForCompany={prop.isCompany ? prop.isCompany : false}
-            closePopup={closePopup}
+            isForCompany={prop.siteType == "company" ? true : false}
+            closePopup={popupToggle}
           />
         </>
       )}
-
-      <div className="container-sm header">
-        <div className="header__nav">
-          <div>
-            <h1 className="heading-1">JobConnect</h1>
-            <p>Fin din nye karriere i dag</p>
-          </div>
-          <ul className="header__nav__list">
-            <li>
-              <Link to="/">Virksomheder</Link>
-            </li>
-            <li>
-              <Link to="/jobposting">Jobopslag</Link>
-            </li>
-            {isCompanyUser && (
-              <li>
-                <Link to="/createJobpost">Opret jobopslag</Link>
-              </li>
-            )}
-            {userType == "Admin" && (
-              <li>
-                <Link to="/statistic">Statestik</Link>
-              </li>
-            )}
-          </ul>
-        </div>
-
-        {isLoggedIn ? (
-          <div className="header__login">
-            {isCompanyUser && (
-              <Link to="/profile">
-                <img src={profileIcon} alt="Profile ikon" />
-              </Link>
-            )}
-            {userType == "Facebook user" && (
-              <img src={facebookIcon} alt="Facebook ikon" />
-            )}
-            {userType == "Google user" && (
-              <img src={googleIcon} alt="Google ikon" />
-            )}
-
-            <Button type="button" onClick={handleLogout}>
-              Log ud
-            </Button>
-          </div>
-        ) : (
-          <Button
-            type="button"
-            arialExpanded={showLoginPopup}
-            arialHaspopup={true}
-            onClick={handleTogglePopup}
-          >
-            Log ind
-          </Button>
-        )}
-      </div>
-
-      <div className="under-header">
-        <div className="container-sm under-header__search-container">
-          <form
-            className="under-header__search-container__input"
-            onSubmit={searching}
-          >
-            <input
-              type="text"
-              placeholder="Søg efter virksomheder"
-              aria-label="Søg efter virksomheder"
-              value={serachValue}
-              onChange={setNewSearchValue}
-            />
-            <Button type="submit">Søg</Button>
-          </form>
-          <Button type="button" onClick={popupToggle}>
-            Filtere
-          </Button>
-        </div>
-      </div>
     </>
   );
 }

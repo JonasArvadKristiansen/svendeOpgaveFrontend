@@ -246,7 +246,6 @@ function CompanyProfil(prop: Props) {
         }
       }
       
-      console.log(jobtypesList.length);
 
       if (Object.keys(jsonBody).length <= 0) {
         throw new Error("Du har ikke lavet nogen ændinger!");

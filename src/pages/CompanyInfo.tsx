@@ -59,8 +59,6 @@ function CompanyInfo() {
   });
 
   useEffect(() => {
-    const token = cookies["Authorization"];
-
     const getData = async () => {
       try {
         const response = await fetch(
@@ -82,7 +80,6 @@ function CompanyInfo() {
           throw new Error(jsonData);
         }
         
-        console.log(jsonData);
         setJobpostList(jsonData.jobpostingsData);
         setCompanyList(jsonData.companyProfileData[0]);
         setCompanyEmail(jsonData.companyProfileData[0].email);

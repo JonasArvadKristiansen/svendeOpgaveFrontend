@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import endpoint from "../config.json";
 import "../scss/pages/content.scss";
 
-
 import FilterHeader from "../components/layout/FilterHeader";
 import Footer from "../components/layout/Footer";
 
@@ -37,10 +36,7 @@ function Company() {
 
         if (!response.ok) {
           throw new Error(jsonData);
-        }
-
-        console.log(jsonData);
-        
+        }        
 
         setCompanyList(jsonData.companys);
       } catch (error: unknown) {
@@ -59,7 +55,7 @@ function Company() {
 
   return (
     <>
-      <FilterHeader serchOnClickCompany={serchOnClick} isCompany={true} />
+      <FilterHeader serchOnClickCompany={serchOnClick} siteType='company' />
       <div className="container-sm content">
         <h1 className="heading-1 title">Virksomheder</h1>
         <div className="content__blocks">
