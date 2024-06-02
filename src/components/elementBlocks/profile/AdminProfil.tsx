@@ -17,7 +17,7 @@ interface ErrorInfo {
 function AdminProfil(prop: props) {
 
   //Setting the email to the profile
-  const OnChangeEmail = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeEmail = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputEmail = event.target.value
     prop.setEmail(inputEmail)
   }
@@ -26,7 +26,7 @@ function AdminProfil(prop: props) {
     <form className="profile__admin">
       <ErrorMessage failed={prop.failed.hasError} erroMessage={prop.failed.errorMesseage}/>
 
-      <Input type="email" name="email" placeholder='E-mail' onchange={OnChangeEmail}>
+      <Input type="email" name="email" placeholder='E-mail' onchange={onChangeEmail}>
         Email af bruger
       </Input>
 

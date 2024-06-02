@@ -3,6 +3,8 @@ import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
+import cookieExist from "../utility/cookieExist";
+
 interface Props {
   component: React.ReactNode;
   roles: string[];
@@ -22,7 +24,7 @@ function PrivateRoute(prop: Props) {
   const token = cookies["Authorization"];
 
   useEffect(() => {
-    if (token !== undefined) {
+    if (cookieExist(token, navigate)) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
       const isTypeCorrect = prop.roles?.includes(decodeToken.user.type);
 

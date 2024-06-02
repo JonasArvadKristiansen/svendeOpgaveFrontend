@@ -10,6 +10,8 @@ import Input from "../../components/uiElements/Input";
 import { Button } from "../../components/uiElements/Buttons";
 import ErrorMessage from "../../components/uiElements/ErrorMessage";
 
+import cookieExist from "../../utility/cookieExist";
+
 interface JobPostingObject {
   title?: string;
   description?: string;
@@ -59,41 +61,44 @@ function EditJobpost() {
   });
 
   useEffect(() => {
-    //Gets the data first thing connected to the parms id of jobpost
-    const getData = async () => {
-      try {
-        const response = await fetch(
-          `${endpoint.path}jobpost/info?jobpostingId=${params.id}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
+    const token = cookies["Authorization"];
 
-              accesstoken: accessToken,
-            },
+    if (cookieExist(token, navigate)) {
+      //Gets the data first thing connected to the parms id of jobpost
+      const getData = async () => {
+        try {
+          const response = await fetch(
+            `${endpoint.path}jobpost/info?jobpostingId=${params.id}`,
+            {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+                accesstoken: accessToken,
+              },
+            }
+          );
+
+          const jsonData = await response.json();
+
+          if (!response.ok) {
+            throw new Error(jsonData);
           }
-        );
-
-        const jsonData = await response.json();
-
-        if (!response.ok) {
-          throw new Error(jsonData);
+          setOriginalInfo(jsonData.jobposting[0]);
+          setJobPostInfo(jsonData.jobposting[0]);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            setEditFailed({
+              hasError: true,
+              errorMesseage: error.message,
+            });
+            console.error(error.message);
+          }
         }
-        setOriginalInfo(jsonData.jobposting[0]);
-        setJobPostInfo(jsonData.jobposting[0]);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setEditFailed({
-            hasError: true,
-            errorMesseage: error.message,
-          });
-          console.error(error.message);
-        }
-      }
-    };
+      };
 
-    getData();
+      getData();
+    }
   }, [cookies]);
 
   //Checks what inputs have changed to opdate info
@@ -177,7 +182,7 @@ function EditJobpost() {
       const inputName = target.name;
       const newValue = target.value;
 
-      //Goes though all the inputs from 
+      //Goes though all the inputs from
       switch (inputName) {
         case "title":
           setJobPostInfo({ ...jobPostInfo, title: newValue });

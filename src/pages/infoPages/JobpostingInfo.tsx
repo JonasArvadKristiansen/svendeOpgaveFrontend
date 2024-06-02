@@ -12,6 +12,8 @@ import CompanyCard from "../../components/elementBlocks/contentCards/CompanyCard
 import { Button } from "../../components/uiElements/Buttons";
 import ApplicationPopup from "../../components/elementBlocks/popups/ApplicationPopup";
 
+import cookieExist from "../../utility/cookieExist";
+
 interface JobPostingObject {
   title: string;
   jobtype: string;
@@ -70,43 +72,45 @@ function JobpostingInfo() {
     const token = cookies["Authorization"];
     const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
-    //Gets information for joppost that matches the url parms id
-    const getData = async () => {
-      try {
-        const response = await fetch(
-          `${endpoint.path}jobpost/info?jobpostingId=${params.id}`,
-          {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              accesstoken: accessToken,
-            },
+    if (cookieExist(token, navigate)) {
+      //Gets information for joppost that matches the url parms id
+      const getData = async () => {
+        try {
+          const response = await fetch(
+            `${endpoint.path}jobpost/info?jobpostingId=${params.id}`,
+            {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+                accesstoken: accessToken,
+              },
+            }
+          );
+
+          const jsonData = await response.json();
+
+          if (!response.ok) {
+            throw new Error(jsonData);
           }
-        );
 
-        const jsonData = await response.json();
+          //Checkes if the current user is the creater of the jobpost
+          if (decodeToken.user.id == jsonData.jobposting[0].companyID) {
+            setIsOwner(true);
+          }
 
-        if (!response.ok) {
-          throw new Error(jsonData);
+          //Sets the usestates to give them data from the fetch
+          setJobPostList(jsonData.jobposting[0]);
+          setCompanyEmail(jsonData.jobposting[0].email);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(error.message);
+          }
         }
+      };
 
-        //Checkes if the current user is the creater of the jobpost
-        if (decodeToken.user.id == jsonData.jobposting[0].companyID) {
-          setIsOwner(true);
-        }
-
-        //Sets the usestates to give them data from the fetch
-        setJobPostList(jsonData.jobposting[0]);
-        setCompanyEmail(jsonData.jobposting[0].email);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
-      }
-    };
-
-    getData();
+      getData();
+    }
   }, []);
 
   //Handles the redirect to edit

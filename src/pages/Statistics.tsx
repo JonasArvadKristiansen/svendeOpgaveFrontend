@@ -20,9 +20,9 @@ interface data {
 
 function Statistics() {
   const [importData, setImportData] = useState<data[]>([]);
-
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
+  //Gets statistics from fetch
   useEffect(() => {
     const getStatistics = async () => {
       const response = await fetch(`${endpoint.path}admin/statistikData`, {

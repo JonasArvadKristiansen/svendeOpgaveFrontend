@@ -10,6 +10,8 @@ import googleIcon from "../../assets/google.svg";
 
 import { Button } from "../uiElements/Buttons";
 import LoginPopup from "../elementBlocks/popups/LoginPopUp";
+import cookieExist from "../../utility/cookieExist";
+
 
 interface Props {
   children?: React.ReactNode;
@@ -38,7 +40,7 @@ function BaseHeader(prop: Props) {
 
   useEffect(() => {
     const token = cookies["Authorization"];
-    if (token) {
+    if (cookieExist(token, navigate)) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
       if (

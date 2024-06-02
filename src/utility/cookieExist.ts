@@ -1,5 +1,5 @@
 
-const tescookie = (cookie: string | undefined,  navigate: any) => {
+const cookieExist = (cookie: string | undefined,  navigate: any) => {
 
   if (cookie === undefined) {
     console.error('failed and redirect and is undefined');
@@ -11,4 +11,4 @@ const tescookie = (cookie: string | undefined,  navigate: any) => {
   return true
 };
 
-export default tescookie;
+export default cookieExist;
