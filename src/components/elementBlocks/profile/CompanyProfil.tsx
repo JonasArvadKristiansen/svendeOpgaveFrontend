@@ -11,7 +11,6 @@ import Textarea from "../../uiElements/Textarea";
 interface Props {
   deleteSubmit: () => void;
   editUserComplete: () => void;
-  token: string;
   data: CompanyData;
 }
 
@@ -93,14 +92,14 @@ function CompanyProfil(prop: Props) {
   }, [prop.data]);
 
   //Remove jobtypeValue from an array of jobs
-  const removeJobElement = (index: number) => {
+  const handleRemoveJobElement = (index: number) => {
     setJobtypesList((jobtypesList) => {
       return jobtypesList.filter((_, i) => i !== index);
     });
   };
 
   //Add jobtypeValue into an array of jobs
-  const addJobElement = () => {
+  const handleNewJobElement = () => {
     const value = jobtypeValue.trim();
     if (value.length < 1) {
       setJobtypeValue("");
@@ -111,11 +110,12 @@ function CompanyProfil(prop: Props) {
   };
 
   //Change jobtypeValue input value
-  const changeJobValue = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeJobValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setJobtypeValue(event.target.value);
   };
 
-  const handleTextareaChanges = (
+  //Makes it able to change textarea values after being given new ones
+  const onChangeTextareaValue = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
     try {
@@ -142,7 +142,7 @@ function CompanyProfil(prop: Props) {
   };
 
   //Makes it able to change input values after being given new ones
-  const handleInputChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeInputValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const target = event.target;
       const inputName = target.name;
@@ -259,7 +259,6 @@ function CompanyProfil(prop: Props) {
         method: "PUT",
         credentials: "include",
         headers: {
-          Authorization: `Bearer ${prop.token}`,
           "Content-Type": "application/json",
           accesstoken: accessToken,
         },
@@ -295,7 +294,7 @@ function CompanyProfil(prop: Props) {
         type="text"
         name="companyName"
         value={userInfo.companyName}
-        onchange={handleInputChanges}
+        onchange={onChangeInputValue}
       >
         Company name
       </Input>
@@ -304,7 +303,7 @@ function CompanyProfil(prop: Props) {
         type="email"
         name="email"
         value={userInfo.email}
-        onchange={handleInputChanges}
+        onchange={onChangeInputValue}
       >
         E-mail
       </Input>
@@ -315,7 +314,7 @@ function CompanyProfil(prop: Props) {
         name="phonenumber"
         required
         value={String(userInfo.phonenumber)}
-        onchange={handleInputChanges}
+        onchange={onChangeInputValue}
       >
         Telefon nummer
       </Input>
@@ -324,7 +323,7 @@ function CompanyProfil(prop: Props) {
         type="text"
         name="city"
         value={userInfo.city}
-        onchange={handleInputChanges}
+        onchange={onChangeInputValue}
       >
         By
       </Input>
@@ -332,7 +331,7 @@ function CompanyProfil(prop: Props) {
       <Textarea
         name="description"
         label="Beskrivelse"
-        onChange={handleTextareaChanges}
+        onChange={onChangeTextareaValue}
       >
         {userInfo.description === undefined
           ? ""
@@ -343,7 +342,7 @@ function CompanyProfil(prop: Props) {
         type="text"
         name="address"
         value={userInfo.address}
-        onchange={handleInputChanges}
+        onchange={onChangeInputValue}
       >
         Addresse
       </Input>
@@ -352,7 +351,7 @@ function CompanyProfil(prop: Props) {
         type="number"
         name="numberOfEmployees"
         value={String(userInfo.numberOfEmployees)}
-        onchange={handleInputChanges}
+        onchange={onChangeInputValue}
       >
         Number af medarbejder
       </Input>
@@ -361,7 +360,7 @@ function CompanyProfil(prop: Props) {
         type="number"
         name="cvrNumber"
         value={String(userInfo.cvrNumber)}
-        onchange={handleInputChanges}
+        onchange={onChangeInputValue}
       >
         CVR
       </Input>
@@ -374,17 +373,17 @@ function CompanyProfil(prop: Props) {
             id="jobtypes"
             type="text"
             value={jobtypeValue}
-            onChange={changeJobValue}
+            onChange={onChangeJobValue}
             placeholder="Jobtyper"
           />
-          <Button type="button" onClick={addJobElement}>
+          <Button type="button" onClick={handleNewJobElement}>
             Opret
           </Button>
         </div>
 
         <div className="reg-user__container__jobtype-list">
           {jobtypesList.map((jobType, index) => (
-            <Jobtype key={index} deleteJobtype={() => removeJobElement(index)}>
+            <Jobtype key={index} deleteJobtype={() => handleRemoveJobElement(index)}>
               {jobType}
             </Jobtype>
           ))}

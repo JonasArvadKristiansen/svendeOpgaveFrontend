@@ -9,42 +9,67 @@ import ErrorMessage from "../../uiElements/ErrorMessage";
 import endpoint from "../../../config.json";
 
 interface Props {
-  token: string;
   userType: string;
 }
 
-type JsonBody = {
-  [key: string]: string | number | File;
-};
+interface JsonBody {
+  newPassword: string;
+  repeatNewPassword: string;
+  oldPassword: string;
+}
+
+interface ErrorInfo {
+  hasError: boolean;
+  errorMesseage: string;
+}
 
 function ChangePassword(prop: Props) {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
   //Remove cookie and navigate
   const navigate = useNavigate();
-  const [cookie, setCookie, removeCookie] = useCookies(["Authorization"]);
+  const [, , removeCookie] = useCookies(["Authorization"]);
 
   //Checks if password is valid to be used
   const [isValid, setIsValid] = useState<boolean>(true);
   const [newPassword, setNewPassword] = useState<string>("");
 
-  //Fail check and messeage
-  const [failed, setFailed] = useState<boolean>(false);
-  const [erroMessage, setErroMessage] = useState<string>("");
+  //Error handling
+  const [changePasswordFailed, setChangePasswordFailed] = useState<ErrorInfo>({
+    hasError: false,
+    errorMesseage: "",
+  });
 
   //Submit POST change users current password
-  const changePassword = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const target = new FormData(event.currentTarget);
-    let jsonBody: JsonBody = {};
-    let response;
-
-    for (let pair of target.entries()) {
-      jsonBody[pair[0]] = pair[1];
-    }
-
+  const submitChangePassword = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
+      event.preventDefault();
+
+      //Sets the jsonBody to send with the fetch
+      const target = new FormData(event.currentTarget);
+      let jsonBody: JsonBody = {
+        newPassword: "",
+        repeatNewPassword: "",
+        oldPassword: "",
+      };
+
+      //Add values from form in a key, value
+      for (const pair of target.entries()) {
+        switch (pair[0]) {
+          case "newPassword":
+            jsonBody.newPassword = String(pair[1]);
+            break;
+          case "repeatNewPassword":
+            jsonBody.repeatNewPassword = String(pair[1]);
+            break;
+          case "oldPassword":
+            jsonBody.oldPassword = String(pair[1]);
+            break;
+          default:
+            throw new Error(`Dette input ${pair[0]} existere ikke`);
+        }
+      }
+
       if (!isValid) {
         throw new Error("Adgangskoden opfylder ikke kravene");
       }
@@ -52,37 +77,16 @@ function ChangePassword(prop: Props) {
       if (jsonBody.newPassword != jsonBody.repeatNewPassword) {
         throw new Error("Adgangskoderne er ikke ens med hinanden!");
       }
-
-      switch (prop.userType) {
-        case "Normal user":
-          response = await fetch(`${endpoint.path}user/password`, {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${prop.token}`,
-              accesstoken: accessToken,
-            },
-            body: JSON.stringify(jsonBody),
-          });
-          break;
-
-        case "Company user":
-          response = await fetch(`${endpoint.path}company/password`, {
-            method: "PUT",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${prop.token}`,
-              accesstoken: accessToken,
-            },
-            body: JSON.stringify(jsonBody),
-          });
-          break;
-
-        default:
-          throw new Error("Bruger type eksistere ikke");
-      }
+    
+      const response = await fetch(`${endpoint.path}${prop.userType == "Normal user"? "user": "company"}/password`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          accesstoken: accessToken,
+        },
+        body: JSON.stringify(jsonBody),
+      });
 
       const jsonData = await response.json();
 
@@ -95,14 +99,16 @@ function ChangePassword(prop: Props) {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
-        setErroMessage(error.message);
-        setFailed(true);
+        setChangePasswordFailed({
+          hasError: true,
+          errorMesseage: error.message,
+        });
       }
     }
   };
 
   //Checks to see if password is valid
-  const validate = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeValidatePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
 
     if (value.length < 8 || !/[A-Z]/.test(value) || !/\d/.test(value)) {
@@ -110,15 +116,17 @@ function ChangePassword(prop: Props) {
     } else {
       setIsValid(true);
     }
-
     setNewPassword(value);
   };
 
   return (
     <div className="profile__changepass">
-      <ErrorMessage erroMessage={erroMessage} failed={failed}></ErrorMessage>
+      <ErrorMessage
+        failed={changePasswordFailed.hasError}
+        erroMessage={changePasswordFailed.errorMesseage}
+      ></ErrorMessage>
 
-      <form className="profile__changepass__form" onSubmit={changePassword}>
+      <form className="profile__changepass__form" onSubmit={submitChangePassword}>
         <Input type="text" name="oldPassword" required>
           Gammel Adgangskode
         </Input>
@@ -130,7 +138,7 @@ function ChangePassword(prop: Props) {
           <input
             className={isValid ? "failed" : undefined}
             value={newPassword}
-            onChange={validate}
+            onChange={onChangeValidatePassword}
             id="new-password"
             type="text"
             name="newPassword"

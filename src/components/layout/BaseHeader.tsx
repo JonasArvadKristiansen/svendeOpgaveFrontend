@@ -100,7 +100,7 @@ function BaseHeader(prop: Props) {
 
           {isLoggedIn ? (
             <div className="header__login">
-              {(userType == "Normal user" || userType == "Company user")  && (
+              {(userType == "Normal user" || userType == "Company user"  || userType == "Admin")  && (
                 <Link to="/profile">
                   <img src={profileIcon} alt="Profile ikon" />
                 </Link>

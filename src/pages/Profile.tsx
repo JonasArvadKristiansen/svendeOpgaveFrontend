@@ -14,7 +14,7 @@ import ShowPopup from "../components/elementBlocks/popups/ShowPopup";
 import endpoint from "../config.json";
 
 import "../scss/pages/profile.scss";
-import tescookie from "../utility/cookieExist";
+import cookieExist from "../utility/cookieExist";
 
 interface ExtraJwtInfo {
   user: {
@@ -55,7 +55,6 @@ function Profile() {
 
   //Sets the type of user and get the token
   const [userType, setUserType] = useState<string>("");
-  const [token, setToken] = useState<string>("");
 
   //Shows diffrent popups
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
@@ -100,65 +99,58 @@ function Profile() {
   useEffect(() => {
     const token = cookies["Authorization"];
 
-    if (tescookie(token, navigate)) {
-      setToken(token);
-
+    //Cheks if cookie exist
+    if (cookieExist(token, navigate)) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
       const userType = decodeToken.user.type;
+      
       setUserType(userType);
 
       //Get data from the backend to the profiles info
       const fetchData = async (userType: string) => {
         try {
-          let response;
+          let url;
+
+          if (userType != "Admin") {
+            switch (userType) {
+              case "Normal user":
+                url = "user/profile";
+                break;
+              case "Company user":
+                url = "user/profile";
+                break;
+              default:
+                throw new Error(`Denne type ${userType} existere ikke`);
+            }
+
+            const response = await fetch(`${endpoint.path}${url}`, {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                "Content-Type": "application/json",
+                accesstoken: accessToken,
+              },
+            });
+
+            const jsonData = await response.json();
+
+            if (!response.ok) {
+              throw new Error(jsonData);
+            }
+
+            switch (userType) {
+              case "Normal user":
+                setUserData(jsonData[0]);
+                break;
+              case "Company user":
+                setompanyData(jsonData.companyProfileData[0]);
+                break;
+              default:
+                throw new Error(`Denne type ${userType} existere ikke`);
+            }
+          }
 
           //Go though the type the user are to get that users info
-          switch (userType) {
-            case "Normal user":
-              response = await fetch(`${endpoint.path}user/profile`, {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                  "Content-Type": "application/json",
-                  
-                  accesstoken: accessToken,
-                },
-              });
-              break;
-            case "Company user":
-              response = await fetch(`${endpoint.path}company/profile`, {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                  "Content-Type": "application/json",
-                  
-                  accesstoken: accessToken,
-                },
-              });
-              break;
-            case "Admin":
-              response == "Admin";
-              return;
-            default:
-              throw new Error(`Denne type ${userType} existere ikke`);
-          }
-
-          const jsonData = await response.json();
-
-          if (!response.ok) {
-            throw new Error(jsonData);
-          }
-
-          switch (userType) {
-            case "Normal user":
-              setUserData(jsonData[0]);
-              break;
-            case "Company user":
-              setompanyData(jsonData.companyProfileData[0]);
-              break;
-            default:
-              throw new Error(`Denne type ${userType} existere ikke`);
-          }
         } catch (error: unknown) {
           if (error instanceof Error) {
             console.error(error.message);
@@ -170,8 +162,44 @@ function Profile() {
     }
   }, [cookies]);
 
-  //Small functions to enable popup for delete and editing
+  //Find the user profile it needs to show
+  const handleUserProfile = () => {
+    switch (userType) {
+      case "Normal user":
+      return (
+          <UserProfil
+            editUserComplete={handleEditPopup}
+            deleteSubmit={handleDeletePopup}
+            data={UserData}
+          />
+        );
+      case "Admin":        
+        return (
+          <AdminProfil
+            failed={AdminFailed}
+            enableDeleteEmailPopup={handleAdminDeletingPopup}
+            enableBanEmailPopup={handleAdminBanningPopup}
+            setEmail={handleEmailSelect}
+          ></AdminProfil>
+        );
+      case "Company user":
+        return (
+          <CompanyProfil
+            editUserComplete={handleEditPopup}
+            deleteSubmit={handleDeletePopup}
+            data={CompanyData}
+          />
+        );
+      case "":
+        //When it first runs it havent been given a usertype
+       break
+      default:
+        console.error(`Kender ikke bruger typen: ${userType}`);
+        break;
+    }
+  };
 
+  //Small functions to enable popup for delete and editing
   //Handels the diffrent popup
   const handleDeletePopup = () => {
     setShowDeletePopup(!showDeletePopup);
@@ -183,32 +211,8 @@ function Profile() {
     setShowSuccessPopup(!showSuccessPopup);
   };
 
-  const handleAdminPopup = () => {
-    setShowAdminDeletesPopup(false);
-    setIsAdminBanning(false);
-    setIsAdminDelete(false);
-  };
-  const handleAdminBanningPopup = () => {
-    setShowAdminDeletesPopup(true);
-    setIsAdminBanning(true);
-  };
-  const handleAdminDeletingPopup = () => {
-    setShowAdminDeletesPopup(true);
-    setIsAdminBanning(true);
-  };
-
-  //Reload the current page
-  const reloadCurrentPage = () => {
-    navigate(0);
-  };
-
-  //Change the email thats going to be banned or removed by admin
-  const handleEmailSelect = () => {
-    (email: string) => setAdminSelectedEmail(email);
-  };
-
-  //Delete the user
-  const deleteCurrentUser = async () => {
+  //User deletes them self
+  const handleDeleteCurrentUser = async () => {
     try {
       let response;
       switch (userType) {
@@ -218,7 +222,7 @@ function Profile() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              
+
               accesstoken: accessToken,
             },
           });
@@ -229,7 +233,7 @@ function Profile() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              
+
               accesstoken: accessToken,
             },
           });
@@ -252,14 +256,32 @@ function Profile() {
     }
   };
 
-  //Admins submits to the backend
-  const adminSubmitOptions = async (url: string, crud: string) => {
+  //Admins popup
+  const handleAdminPopup = () => {
+    setShowAdminDeletesPopup(false);
+    setIsAdminBanning(false);
+    setIsAdminDelete(false);
+  };
+  const handleAdminBanningPopup = () => {
+    setShowAdminDeletesPopup(true);
+    setIsAdminBanning(true);
+  };
+  const handleAdminDeletingPopup = () => {
+    setShowAdminDeletesPopup(true);
+    setIsAdminBanning(true);
+  };
+
+  //Change the email thats going to be banned or removed by admin
+  const handleEmailSelect = () => {
+    (email: string) => setAdminSelectedEmail(email);
+  };
+  //Admins submits to the backend delete or ban users
+  const submitAdminOptions = async (url: string, crud: string) => {
     try {
       const response = await fetch(url, {
         method: crud,
         headers: {
           "Content-Type": "application/json",
-          
           accesstoken: accessToken,
         },
         body: JSON.stringify({ email: adminSelectedEmail }),
@@ -282,42 +304,9 @@ function Profile() {
     }
   };
 
-  //Find the user profile it needs to show
-  const userProfile = () => {
-    switch (userType) {
-      case "Normal user":
-        return (
-          <UserProfil
-            editUserComplete={handleEditPopup}
-            deleteSubmit={handleDeletePopup}
-            token={token}
-            data={UserData}
-          />
-        );
-
-      case "Admin":
-        return (
-          <AdminProfil
-            failed={AdminFailed}
-            enableDeleteEmailPopup={handleAdminDeletingPopup}
-            enableBanEmailPopup={handleAdminBanningPopup}
-            setEmail={handleEmailSelect}
-          ></AdminProfil>
-        );
-
-      case "Company user":
-        return (
-          <CompanyProfil
-            editUserComplete={handleEditPopup}
-            deleteSubmit={handleDeletePopup}
-            token={token}
-            data={CompanyData}
-          />
-        );
-
-      default:
-        return <div>Error: Kender ikke bruger typen</div>;
-    }
+  //Reload the current page
+  const handleReloadCurrentPage = () => {
+    navigate(0);
   };
 
   return (
@@ -330,7 +319,7 @@ function Profile() {
               <Button onClick={handleDeletePopup} type="button">
                 Nej
               </Button>
-              <Button onClick={deleteCurrentUser} delete type="button">
+              <Button onClick={handleDeleteCurrentUser} delete type="button">
                 Slet bruger
               </Button>
             </div>
@@ -342,7 +331,7 @@ function Profile() {
         <ShowPopup>
           <div className="edit-user">
             <p>Din profil er nu opdateret!</p>
-            <Button onClick={reloadCurrentPage} type="button">
+            <Button onClick={handleReloadCurrentPage} type="button">
               Okay
             </Button>
           </div>
@@ -361,7 +350,7 @@ function Profile() {
                   </Button>
                   <Button
                     onClick={() =>
-                      adminSubmitOptions(
+                      submitAdminOptions(
                         `${endpoint.path}admin/banEmail`,
                         "POST"
                       )
@@ -384,7 +373,7 @@ function Profile() {
                   <div className="ban-user__buttons__options">
                     <Button
                       onClick={() =>
-                        adminSubmitOptions(
+                        submitAdminOptions(
                           `${endpoint.path}admin/deleteUser`,
                           "DELETE"
                         )
@@ -396,7 +385,7 @@ function Profile() {
                     </Button>
                     <Button
                       onClick={() =>
-                        adminSubmitOptions(
+                        submitAdminOptions(
                           `${endpoint.path}admin/deleteCompany`,
                           "DELETE"
                         )
@@ -426,8 +415,10 @@ function Profile() {
       )}
 
       <div className="container-sm profile">
-        {userProfile()}
-        <ChangePassword token={token} userType={userType}></ChangePassword>
+        {handleUserProfile()}
+        {(userType == "Normal user" || userType == "Company user") && (
+          <ChangePassword userType={userType}></ChangePassword>
+        )}
       </div>
     </DeafultLayout>
   );

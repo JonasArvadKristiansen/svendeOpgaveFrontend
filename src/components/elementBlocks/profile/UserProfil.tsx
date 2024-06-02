@@ -8,7 +8,6 @@ import endpoint from "../../../config.json";
 interface Props {
   deleteSubmit: () => void;
   editUserComplete: () => void;
-  token: string;
   data: UserData;
 }
 
@@ -48,10 +47,8 @@ function UserProfil(prop: Props) {
 
   //Set values from parent to the usestate
   useEffect(() => {
-    const dataInfo = prop.data;
-
-    setOriginalInfo(dataInfo);
-    setUserInfo(dataInfo);
+    setOriginalInfo(prop.data);
+    setUserInfo(prop.data);
   }, [prop.data]);
 
   //Makes it able to change input values after being given new ones
@@ -117,6 +114,7 @@ function UserProfil(prop: Props) {
         }
       }
 
+      //Checks if there has happend any changes compared the first fetch of data
       if (Object.keys(jsonBody).length <= 0) {
         throw new Error("Du har ikke lavet nogen ændinger!");
       }
@@ -126,7 +124,6 @@ function UserProfil(prop: Props) {
         method: "PUT",
         credentials: "include",
         headers: {
-          Authorization: `Bearer ${prop.token}`,
           "Content-Type": "application/json",
           accesstoken: accessToken,
         },
