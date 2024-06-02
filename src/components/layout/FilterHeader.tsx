@@ -100,32 +100,10 @@ function FilterHeader(prop: Props) {
         throw new Error("Deadline til er ikke sat!");
       }
 
-      //Get new filter data
-      const response = await fetch(
-        `${endpoint.path}${prop.siteType}/filter?${jsonQury}`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            accesstoken: accessToken,
-          },
-        }
+      await fetchDate(
+        event,
+        `${endpoint.path}${prop.siteType}/filter?${jsonQury}`
       );
-
-      const jsonData = await response.json();
-
-      if (!response.ok) {
-        throw new Error(jsonData);
-      }
-
-      //checks what data to use
-      if (prop.serchOnClickCompany) {
-        prop.serchOnClickCompany(jsonData.companys);
-      }
-      if (prop.serchOnClickJobtype) {
-        prop.serchOnClickJobtype(jsonData.jobpostings);
-      }
 
       popupToggle();
     } catch (error: unknown) {
@@ -141,21 +119,29 @@ function FilterHeader(prop: Props) {
 
   //Get new data out from search value
   const searchSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    fetchDate(
+      event,
+      `${endpoint.path}${prop.siteType}/filter?search=${serachValue}`
+    );
+  };
+
+  //Fetch data depending on the url given
+  const fetchDate = async (
+    event: React.FormEvent<HTMLFormElement>,
+    url: string
+  ) => {
     try {
       event.preventDefault();
 
       //Get new filter data
-      const response = await fetch(
-        `${endpoint.path}${prop.siteType}/filter?search=${serachValue}`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            accesstoken: accessToken,
-          },
-        }
-      );
+      const response = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          accesstoken: accessToken,
+        },
+      });
 
       const jsonData = await response.json();
 
@@ -163,14 +149,12 @@ function FilterHeader(prop: Props) {
         throw new Error(jsonData);
       }
 
-      
       if (prop.serchOnClickCompany) {
         prop.serchOnClickCompany(jsonData.companys);
       }
       if (prop.serchOnClickJobtype) {
         prop.serchOnClickJobtype(jsonData.jobpostings);
       }
-     
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -178,18 +162,19 @@ function FilterHeader(prop: Props) {
     }
   };
 
-
+  //Toggles the filter popup
   const popupToggle = () => {
     setShowFilterPopup(!showFilterPopup);
   };
 
+  //Makes the serche value update when typeing 
   const setNewSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSerachValue(event.target.value);
   };
 
   return (
     <>
-      <BaseHeader>
+      <BaseHeader >
         <div className="under-header">
           <div className="container-sm under-header__search-container">
             <form

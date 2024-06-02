@@ -2,7 +2,7 @@ import BaseHeader from "./BaseHeader";
 
 function Header() {
   return (
-    <BaseHeader></BaseHeader>
+    <BaseHeader/>
   );
 }
 

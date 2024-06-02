@@ -11,6 +11,7 @@ body {
   box-sizing: border-box;
   font-size: map-get($bread-sizes, "md");
   font-family: $font-family;
+  font-weight: 400;
   color: map-get($color, "dark-blue");
   padding: 0;
   margin: 0;

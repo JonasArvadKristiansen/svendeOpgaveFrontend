@@ -55,7 +55,7 @@ function JobPosting() {
 
   return (
     <>
-      <FilterHeader isCompany={false} serchOnClickJobtype={serchOnClick} />
+      <FilterHeader siteType='jobpost' serchOnClickJobtype={serchOnClick} />
       <div className="container-sm content">
         <h1 className="heading-1 title">Jobopslag</h1>
         <div className=" content__blocks">

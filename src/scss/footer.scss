@@ -8,7 +8,7 @@
 
 footer {
   margin-top: auto;
-  border-top: 2px solid  map-get($color, "dark-blue");
+  border-top: 2px solid map-get($color, "dark-blue");
   padding-top: map-get($spacing, "40px");
   padding-bottom: map-get($spacing, "40px");
 
@@ -22,6 +22,9 @@ footer {
 
       &__info {
         @include flexDisplay(map-get($spacing, "8px"));
+        a {
+          font-weight: 400;
+        }
       }
 
       &__info-container {

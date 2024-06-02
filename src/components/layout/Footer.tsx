@@ -1,5 +1,6 @@
-import "../../scss/footer.scss";
 import { Link } from "react-router-dom";
+
+import "../../scss/footer.scss";
 import phoneIcon from '../../assets/phone.svg';
 import mailIcon from '../../assets/mail.svg';
 import locationIcod from '../../assets/location.svg';
@@ -14,15 +15,16 @@ function Footer() {
         </div>
 
         <div className="footer-container__section-brows">
-          <h6 className="heading-6">Browse</h6>
+          <h5 className="heading-5">Browse</h5>
           <div className="footer-container__section-brows__info">
             <Link to="/">Virksomheder</Link>
             <Link to="/jobposting">Jobopslag</Link>
+            <p>ddd</p>
           </div>
         </div>
 
         <div className="footer-container__section-contact">
-          <h6 className="heading-6">Kontakt Info</h6>
+          <h5 className="heading-5">Kontakt Info</h5>
 
           <div className="footer-container__section-contact__info-container">
             <div className="footer-container__section-contact__info-container__info">

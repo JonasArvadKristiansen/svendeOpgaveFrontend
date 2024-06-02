@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect, useState } from "react";
+import {useEffect, useState } from "react";
 import {
   BarChart,
   Bar,
@@ -7,7 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
 } from "recharts";
 
 import DeafultLayout from "../layout/DeafultLayout";

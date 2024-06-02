@@ -2,9 +2,9 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import "../../../scss/popup.scss";
-import facebookIcon from "../../../assets/facebook.svg"
-import googleIcon from "../../../assets/google.svg"
-import closeIcon from "../../../assets/exit.svg"
+import facebookIcon from "../../../assets/facebook.svg";
+import googleIcon from "../../../assets/google.svg";
+import closeIcon from "../../../assets/exit.svg";
 
 import { Button, CloseButton } from "../../uiElements/Buttons";
 import Input from "../../uiElements/Input";
@@ -17,15 +17,22 @@ interface Props {
   closePopup: () => void;
 }
 
+interface ErrorInfo {
+  hasError: boolean;
+  errorMesseage: string;
+}
+
 function LoginPopUp(prop: Props) {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
   //Are user loggin ind as a Jobseeker or company
   const [isJobseeker, setIsJobseeker] = useState<boolean>(true);
 
-  //Checks for errors that orcurre
-  const [failed, setFailed] = useState<boolean>(false);
-  const [erroMessage, setErroMessage] = useState<string>("");
+  //Checks errors for logind
+  const [loginFailed, setLoginFailed] = useState<ErrorInfo>({
+    hasError: false,
+    errorMesseage: "",
+  });
 
   //Helps to redirect
   const navigate = useNavigate();
@@ -41,7 +48,7 @@ function LoginPopUp(prop: Props) {
 
     //Make form data to key value format
     const target = new FormData(event.currentTarget);
-    
+
     type JsonBody = {
       [key: string]: string | number | File;
     };
@@ -58,7 +65,7 @@ function LoginPopUp(prop: Props) {
             jsonBody.password = pair[1];
             break;
           default:
-            break;
+            throw new Error(`Dette input ${pair[0]} existere ikke`);
         }
       }
 
@@ -97,8 +104,10 @@ function LoginPopUp(prop: Props) {
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error);
-        setErroMessage(error.message);
-        setFailed(true);
+        setLoginFailed({
+          hasError: true,
+          errorMesseage: error.message
+        })
       }
     }
   };
@@ -122,7 +131,7 @@ function LoginPopUp(prop: Props) {
             />
           </div>
 
-          <ErrorMessage erroMessage={erroMessage} failed={failed} />
+          <ErrorMessage failed={loginFailed.hasError} erroMessage={loginFailed.errorMesseage}  />
 
           <ToggleUserType
             isBoolean={isJobseeker}

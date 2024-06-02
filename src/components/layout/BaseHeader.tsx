@@ -13,7 +13,6 @@ import LoginPopup from "../elementBlocks/popups/LoginPopUp";
 
 interface Props {
   children?: React.ReactNode;
-  filter?: boolean;
 }
 
 interface ExtraJwtInfo {
@@ -86,7 +85,7 @@ function BaseHeader(prop: Props) {
                 <Link to="/jobposting">Jobopslag</Link>
               </li>
               {userType == "Company user" && (
-                <li>
+                <li> 
                   <Link to="/createJobpost">Opret jobopslag</Link>
                 </li>
               )}
