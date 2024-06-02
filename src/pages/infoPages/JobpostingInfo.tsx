@@ -3,14 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 
-import endpoint from "../config.json";
-import "../scss/pages/contentInfo.scss";
+import endpoint from "../../config.json";
+import "../../scss/pages/contentInfo.scss";
 
-import DeafultLayout from "../layout/DeafultLayout";
-import TextWithHead from "../components/uiElements/TextSections";
-import CompanyCard from "../components/elementBlocks/contentCards/CompanyCard";
-import { Button } from "../components/uiElements/Buttons";
-import ApplicationPopup from "../components/elementBlocks/popups/ApplicationPopup";
+import DeafultLayout from "../../layout/DeafultLayout";
+import TextWithHead from "../../components/uiElements/TextSections";
+import CompanyCard from "../../components/elementBlocks/contentCards/CompanyCard";
+import { Button } from "../../components/uiElements/Buttons";
+import ApplicationPopup from "../../components/elementBlocks/popups/ApplicationPopup";
 
 interface JobPostingObject {
   title: string;
@@ -20,7 +20,7 @@ interface JobPostingObject {
   løn: number;
   deadLine: string;
 
-  companyID: number,
+  companyID: number;
   companyName: string;
   companyDescription: string;
   jobpostingCount: number;
@@ -34,21 +34,24 @@ interface ExtraJwtInfo {
 }
 
 function JobpostingInfo() {
+  //Makes us able to use libary functions
   const params = useParams();
   const [cookies] = useCookies();
-  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
-
-  //Helps to redirect
   const navigate = useNavigate();
 
+  const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
+
+  //Saves the company email to be used in application reciver
   const [companyEmail, setCompanyEmail] = useState<string>("");
 
+  //Checks for the owener to enable edit or delete of joppost
   const [isOwner, setIsOwner] = useState(false);
 
   //Enables popup to show
   const [showApplicationPopup, setShowApplicationPopup] =
     useState<boolean>(false);
 
+  //Sets the values from the fetch to the html
   const [jobPostList, setJobPostList] = useState<JobPostingObject>({
     title: "",
     jobtype: "",
@@ -67,6 +70,7 @@ function JobpostingInfo() {
     const token = cookies["Authorization"];
     const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
+    //Gets information for joppost that matches the url parms id
     const getData = async () => {
       try {
         const response = await fetch(
@@ -76,23 +80,23 @@ function JobpostingInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              
               accesstoken: accessToken,
             },
           }
         );
+
         const jsonData = await response.json();
 
         if (!response.ok) {
           throw new Error(jsonData);
         }
 
+        //Checkes if the current user is the creater of the jobpost
         if (decodeToken.user.id == jsonData.jobposting[0].companyID) {
           setIsOwner(true);
         }
 
-        
-
+        //Sets the usestates to give them data from the fetch
         setJobPostList(jsonData.jobposting[0]);
         setCompanyEmail(jsonData.jobposting[0].email);
       } catch (error: unknown) {
@@ -105,16 +109,17 @@ function JobpostingInfo() {
     getData();
   }, []);
 
-  //Handles the
+  //Handles the redirect to edit
   const handleRedirectToEdit = () => {
     navigate("editJobpost");
   };
 
-  //Handles the
+  //Handles the toggle to show apply for aplication popup
   const handleTogglePopup = () => {
     setShowApplicationPopup(!showApplicationPopup);
   };
 
+  //Handles the deletion of the jobpost
   const handleDeleteJobpost = async () => {
     try {
       const response = await fetch(`${endpoint.path}jobpost/delete`, {
@@ -122,7 +127,7 @@ function JobpostingInfo() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          
+
           accesstoken: accessToken,
         },
         body: JSON.stringify({ jobpostingId: params.id }),

@@ -2,13 +2,13 @@ import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
-import DeafultLayout from "../layout/DeafultLayout";
-import Input from "../components/uiElements/Input";
-import { Button } from "../components/uiElements/Buttons";
+import "../../scss/pages/createJobpost.scss";
+import endpoint from "../../config.json";
 
-import "../scss/pages/createJobpost.scss";
-import endpoint from "../config.json";
-import ErrorMessage from "../components/uiElements/ErrorMessage";
+import DeafultLayout from "../../layout/DeafultLayout";
+import ErrorMessage from "../../components/uiElements/ErrorMessage";
+import { Button } from "../../components/uiElements/Buttons";
+import Input from "../../components/uiElements/Input";
 
 interface Jobpost {
   title: string;
@@ -23,7 +23,7 @@ interface ErrorInfo {
   errorMesseage: string;
 }
 
-function CreateJobposting() {
+function CreateJobpost() {
   const navigate = useNavigate();
   const [cookies] = useCookies();
   
@@ -135,4 +135,4 @@ function CreateJobposting() {
   );
 }
 
-export default CreateJobposting;
+export default CreateJobpost;

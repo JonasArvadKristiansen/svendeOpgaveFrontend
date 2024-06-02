@@ -32,7 +32,7 @@ interface Props {
   changeJobValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-function RegisterCompany(prop: Props) {
+function CreateCompany(prop: Props) {
   return (
     <form method="post" onSubmit={prop.submitCreateUser}>
       <Input type="text" name="companyName" required placeholder="Tech Innovate Solutions">
@@ -102,4 +102,4 @@ function RegisterCompany(prop: Props) {
   );
 }
 
-export default RegisterCompany;
+export default CreateCompany;

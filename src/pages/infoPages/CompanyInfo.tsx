@@ -2,15 +2,15 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
-import endpoint from "../config.json";
-import "../scss/pages/contentInfo.scss";
+import endpoint from "../../config.json";
+import "../../scss/pages/contentInfo.scss";
 
-import DeafultLayout from "../layout/DeafultLayout";
-import TextSections from "../components/uiElements/TextSections";
-import JobPostingCard from "../components/elementBlocks/contentCards/JobPostingCard";
+import DeafultLayout from "../../layout/DeafultLayout";
+import TextSections from "../../components/uiElements/TextSections";
+import JobPostingCard from "../../components/elementBlocks/contentCards/JobPostingCard";
 
-import ApplicationPopup from "../components/elementBlocks/popups/ApplicationPopup";
-import { Button } from "../components/uiElements/Buttons";
+import ApplicationPopup from "../../components/elementBlocks/popups/ApplicationPopup";
+import { Button } from "../../components/uiElements/Buttons";
 
 interface CompanyObject {
   companyName: string;
@@ -34,6 +34,7 @@ interface JobPostingObject {
 }
 
 function CompanyInfo() {
+  //Gets to get data from cookie, params and token 
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
   const [cookies] = useCookies();
   const params = useParams();
@@ -42,10 +43,13 @@ function CompanyInfo() {
   const [showApplicationPopup, setShowApplicationPopup] =
     useState<boolean>(false);
 
+  //Saves the company email to be used in application reciver
   const [companyEmail, setCompanyEmail] = useState<string>("");
 
+  //Gets the array of jobtypes
   const [jobpostList, setJobpostList] = useState<JobPostingObject[]>([]);
 
+  //Sets the values from the fetch to the html
   const [companyList, setCompanyList] = useState<CompanyObject>({
     companyName: "",
     description: "",
@@ -68,7 +72,6 @@ function CompanyInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              
               accesstoken: accessToken,
             },
           }
@@ -92,7 +95,7 @@ function CompanyInfo() {
     getData();
   }, [cookies]);
 
-  //Handles the
+  //Handles the toggle to show apply for aplication popup
   const handleTogglePopup = () => {
     setShowApplicationPopup(!showApplicationPopup);
   };
@@ -124,14 +127,14 @@ function CompanyInfo() {
             <div className="grid-layout-com__2__item-1">
               <TextSections
                 header="Telefon nummer"
-                text={companyList.phonenumber}
+                text={`45+ ${companyList.phonenumber}`}
               />
             </div>
 
             <div className="grid-layout-com__2__item-2">
               <TextSections
                 header="Medarbejder"
-                text={companyList.numberOfEmployees}
+                text={`ca. ${companyList.numberOfEmployees}`}
               />
             </div>
             <div className="grid-layout-com__2__item-1">

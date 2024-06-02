@@ -2,13 +2,13 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
-import endpoint from "../config.json";
-import "../scss/pages/createJobpost.scss";
+import endpoint from "../../config.json";
+import "../../scss/pages/createJobpost.scss";
 
-import DeafultLayout from "../layout/DeafultLayout";
-import Input from "../components/uiElements/Input";
-import { Button } from "../components/uiElements/Buttons";
-import ErrorMessage from "../components/uiElements/ErrorMessage";
+import DeafultLayout from "../../layout/DeafultLayout";
+import Input from "../../components/uiElements/Input";
+import { Button } from "../../components/uiElements/Buttons";
+import ErrorMessage from "../../components/uiElements/ErrorMessage";
 
 
 interface JobPostingObject {
@@ -33,8 +33,6 @@ function EditJobpost() {
   const navigate = useNavigate();
 
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
-
-  const [token, setToken] = useState("");
 
   const [originalInfo, setOriginalInfo] = useState<JobPostingObject>({
     title: "",
@@ -62,7 +60,6 @@ function EditJobpost() {
 
   useEffect(() => {
     const token = cookies["Authorization"];
-    setToken(token);
 
     const getData = async () => {
       try {

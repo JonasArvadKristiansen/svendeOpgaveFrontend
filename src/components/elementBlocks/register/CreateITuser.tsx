@@ -20,7 +20,7 @@ interface Props {
   isPasswordValid: boolean;
 }
 
-function RegisterUser(prop: Props) {
+function CreateITuser(prop: Props) {
   return (
     <form method="post" onSubmit={prop.submitCreateUser}>
       <Input type="text" name="fullName" placeholder="Thomas Hansen" required>
@@ -51,4 +51,4 @@ function RegisterUser(prop: Props) {
   );
 }
 
-export default RegisterUser;
+export default CreateITuser;

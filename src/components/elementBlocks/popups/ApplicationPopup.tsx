@@ -96,7 +96,7 @@ function ApplicationPopup(prop: Props) {
             <Input
               type="text"
               name="title"
-              placeholder="Application for software developer Thomas Hansen"
+              placeholder="Ansøgning for software developer Thomas Hansen"
               required
             >
               Title

@@ -6,16 +6,18 @@ import "./scss/index.scss";
 import App from "./App.tsx";
 import PrivateRoute from "./pages/PrivateRoute.tsx";
 
-import RegisterUser from "./pages/RegisterUser.tsx";
-import Profile from "./pages/Profile.tsx";
-import CompanyInfo from "./pages/CompanyInfo.tsx";
-import JobPosting from "./pages/JobPosting.tsx";
-import JobpostingInfo from "./pages/JobpostingInfo.tsx";
-import CreateJobpost from "./pages/CreateJobpost.tsx";
-import EditJobpost from "./pages/EditJobpost.tsx";
+import JobPosting from "./pages/mainContentPages/JobPosting.tsx";
+import JobpostingInfo from "./pages/infoPages/JobpostingInfo.tsx";
+import CompanyInfo from "./pages/infoPages/CompanyInfo.tsx";
+
+import RegisterUser from "./pages/CreateUser.tsx";
 import UpdatePassword from "./pages/UpdatePassword.tsx";
+
+import Profile from "./pages/Profile.tsx";
 import Statistics from "./pages/Statistics.tsx";
 
+import CreateJobpost from "./pages/jobpostPages/CreateJobpost.tsx";
+import EditJobpost from "./pages/jobpostPages/EditJobpost.tsx";
 
 
 const router = createBrowserRouter([

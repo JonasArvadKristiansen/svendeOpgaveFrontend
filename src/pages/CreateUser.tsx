@@ -4,8 +4,9 @@ import "../scss/pages/registerUser.scss";
 import DeafultLayout from "../layout/DeafultLayout";
 
 import ErrorMessage from "../components/uiElements/ErrorMessage";
-import RegisterUser from "../components/elementBlocks/register/RegisterUser";
-import RegisterCompany from "../components/elementBlocks/register/RegisterCompany";
+
+import RegisterITuser from "../components/elementBlocks/register/CreateITuser";
+import RegisterCompany from "../components/elementBlocks/register/CreateCompany";
 import ToggleUserType from "../components/elementBlocks/ToggleUserType";
 
 import endpoint from "../config.json";
@@ -289,7 +290,7 @@ function CreateUser() {
           />
 
           {isJobseeker ? (
-            <RegisterUser
+            <RegisterITuser
               submitCreateUser={submitCreateUser}
               phoneLimitOnChange={phoneLimitOnChange}
               phoneValue={phoneValue}

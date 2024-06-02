@@ -1,4 +1,4 @@
-import Company from "./pages/Company"
+import Company from "./pages/mainContentPages/Company"
 
 function App() {
   return (
