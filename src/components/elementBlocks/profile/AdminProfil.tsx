@@ -30,8 +30,8 @@ function AdminProfil(prop: props) {
         Email af bruger
       </Input>
 
-      <Button delete onClick={prop.enableDeleteEmailPopup} type='button'>Slet e-mail</Button>
-      <Button delete onClick={prop.enableBanEmailPopup} type='button'>Ban e-mail</Button>
+      <Button delete onClick={prop.enableDeleteEmailPopup} type='button'>Slet bruger ud fra e-mail</Button>
+      <Button delete onClick={prop.enableBanEmailPopup} type='button'>Ban bruger ud fra e-mail</Button>
     </form>
   )
 }

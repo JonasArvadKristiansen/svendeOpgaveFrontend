@@ -266,9 +266,10 @@ function Profile() {
     setShowAdminDeletesPopup(true);
     setIsAdminBanning(true);
   };
+
   const handleAdminDeletingPopup = () => {
     setShowAdminDeletesPopup(true);
-    setIsAdminBanning(true);
+    setIsAdminDelete(true);
   };
 
   //Change the email thats going to be banned or removed by admin
@@ -367,7 +368,7 @@ function Profile() {
               <>
                 <p>Er du sikker på at du ville slette denne e-mail!</p>
                 <div className="ban-user__buttons">
-                  <Button onClick={handleDeletePopup} type="button">
+                  <Button onClick={handleAdminPopup} type="button">
                     Nej
                   </Button>
                   <div className="ban-user__buttons__options">
