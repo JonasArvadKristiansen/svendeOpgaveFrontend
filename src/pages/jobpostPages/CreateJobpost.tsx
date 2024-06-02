@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 import "../../scss/pages/createJobpost.scss";
@@ -24,20 +23,19 @@ interface ErrorInfo {
 }
 
 function CreateJobpost() {
+  //Makes us able to use libary functions
   const navigate = useNavigate();
-  const [cookies] = useCookies();
-  
+
   //Error handling
   const [registerFailed, setRegisterFailed] = useState<ErrorInfo>({
     hasError: false,
     errorMesseage: "",
   });
 
-  //Submit POST create user
+  //Submit POST create new jobpost
   const submitJobpost = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
-      const token = cookies["Authorization"];
 
       const target = new FormData(event.currentTarget);
       const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
@@ -74,13 +72,12 @@ function CreateJobpost() {
         }
       }
 
-      //Send the post request
+      //Send the post request to add jobpost
       const response = await fetch(`${endpoint.path}jobpost/create`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          
           accesstoken: accessToken,
         },
         body: JSON.stringify(jsonBody),
@@ -91,8 +88,8 @@ function CreateJobpost() {
       if (!response.ok) {
         throw new Error(jsonData);
       }
-      
-      navigate(`/jobpostingInfo/${jsonData.id}`)
+
+      navigate(`/jobpostingInfo/${jsonData.id}`);
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error);
@@ -113,19 +110,40 @@ function CreateJobpost() {
             failed={registerFailed.hasError}
             erroMessage={registerFailed.errorMesseage}
           />
-          <Input type="text" name="title" placeholder="Software developer opsøges" required>
+          <Input
+            type="text"
+            name="title"
+            placeholder="Software developer opsøges"
+            required
+          >
             Title
           </Input>
-          <Input type="text" name="description" placeholder="Give en beskrivelse omkring hvad i leder efter og hvad medarbejdern skulle kunne..." required>
+          <Input
+            type="text"
+            name="description"
+            placeholder="Give en beskrivelse omkring hvad i leder efter og hvad medarbejdern skulle kunne..."
+            required
+          >
             Beskrivelse
           </Input>
           <Input type="date" name="deadline" required>
             Udløbnings dato
           </Input>
-          <Input type="text" name="jobtype" placeholder="Software developer" required>
+          <Input
+            type="text"
+            name="jobtype"
+            placeholder="Software developer"
+            required
+          >
             Job type
           </Input>
-          <Input type="number" name="salary" min="0" placeholder="0 kr" required>
+          <Input
+            type="number"
+            name="salary"
+            min="0"
+            placeholder="0 kr"
+            required
+          >
             Betaling (Pr månded ca)
           </Input>
           <Button type="submit">Opret jobopslag</Button>

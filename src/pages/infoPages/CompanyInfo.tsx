@@ -34,7 +34,7 @@ interface JobPostingObject {
 }
 
 function CompanyInfo() {
-  //Gets to get data from cookie, params and token 
+  //Makes us able to use libary functions
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
   const [cookies] = useCookies();
   const params = useParams();
@@ -78,11 +78,11 @@ function CompanyInfo() {
         );
 
         const jsonData = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(jsonData);
         }
-        
+
         setJobpostList(jsonData.jobpostingsData);
         setCompanyList(jsonData.companyProfileData[0]);
         setCompanyEmail(jsonData.companyProfileData[0].email);

@@ -50,6 +50,7 @@ function BaseHeader(prop: Props) {
           "Facebook user",
         ].includes(decodeToken.user.type)
       ) {
+        
         setUserType(decodeToken.user.type);
         setIsLoggedIn(true);
       }
@@ -85,7 +86,7 @@ function BaseHeader(prop: Props) {
                 <Link to="/jobposting">Jobopslag</Link>
               </li>
               {userType == "Company user" && (
-                <li> 
+                <li>
                   <Link to="/createJobpost">Opret jobopslag</Link>
                 </li>
               )}
@@ -99,9 +100,11 @@ function BaseHeader(prop: Props) {
 
           {isLoggedIn ? (
             <div className="header__login">
-              <Link to="/profile">
-                <img src={profileIcon} alt="Profile ikon" />
-              </Link>
+              {(userType == "Normal user" || userType == "Company user")  && (
+                <Link to="/profile">
+                  <img src={profileIcon} alt="Profile ikon" />
+                </Link>
+              )}
 
               {userType == "Facebook user" && (
                 <img src={facebookIcon} alt="Facebook ikon" />

@@ -10,7 +10,6 @@ import Input from "../../components/uiElements/Input";
 import { Button } from "../../components/uiElements/Buttons";
 import ErrorMessage from "../../components/uiElements/ErrorMessage";
 
-
 interface JobPostingObject {
   title?: string;
   description?: string;
@@ -25,15 +24,15 @@ interface ErrorInfo {
   errorMesseage: string;
 }
 
-
-
 function EditJobpost() {
+  //Makes us able to use libary functions
   const params = useParams();
   const [cookies] = useCookies();
   const navigate = useNavigate();
 
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
+  //Sets af copi of the recived data
   const [originalInfo, setOriginalInfo] = useState<JobPostingObject>({
     title: "",
     description: "",
@@ -43,6 +42,7 @@ function EditJobpost() {
     jobpostingId: 0,
   });
 
+  //Gets the data and as well the updated values
   const [jobPostInfo, setJobPostInfo] = useState<JobPostingObject>({
     title: "",
     description: "",
@@ -52,15 +52,14 @@ function EditJobpost() {
     jobpostingId: 0,
   });
 
-  //Checks for failer in user
-  const [userFailed, setUserFailed] = useState<ErrorInfo>({
+  //Checks for failer in editer of jobpost
+  const [editFailed, setEditFailed] = useState<ErrorInfo>({
     hasError: false,
     errorMesseage: "",
   });
 
   useEffect(() => {
-    const token = cookies["Authorization"];
-
+    //Gets the data first thing connected to the parms id of jobpost
     const getData = async () => {
       try {
         const response = await fetch(
@@ -70,7 +69,7 @@ function EditJobpost() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              
+
               accesstoken: accessToken,
             },
           }
@@ -85,7 +84,7 @@ function EditJobpost() {
         setJobPostInfo(jsonData.jobposting[0]);
       } catch (error: unknown) {
         if (error instanceof Error) {
-          setUserFailed({
+          setEditFailed({
             hasError: true,
             errorMesseage: error.message,
           });
@@ -95,14 +94,13 @@ function EditJobpost() {
     };
 
     getData();
-  }, []);
+  }, [cookies]);
 
   //Checks what inputs have changed to opdate info
   const submitInputChange = async (event: React.FormEvent<HTMLFormElement>) => {
     try {
       event.preventDefault();
       const target = new FormData(event.currentTarget);
-
       const jsonBody: JobPostingObject = {};
 
       jsonBody.jobpostingId = parseInt(String(params.id));
@@ -129,11 +127,6 @@ function EditJobpost() {
               jsonBody.jobtype = String(pair[1]);
             }
             break;
-          case "jobtype":
-            if (pair[1] != originalInfo.jobtype) {
-              jsonBody.jobtype = String(pair[1]);
-            }
-            break;
           case "salary":
             if (pair[1] != String(originalInfo.salary)) {
               jsonBody.salary = parseInt(String(pair[1]));
@@ -148,11 +141,11 @@ function EditJobpost() {
         throw new Error("Du har ikke lavet nogen ændinger!");
       }
 
+      //Updates jobpost if the body is not empty
       const response = await fetch(`${endpoint.path}jobpost/update`, {
         method: "PUT",
         credentials: "include",
         headers: {
-          
           "Content-Type": "application/json",
           accesstoken: accessToken,
         },
@@ -168,7 +161,7 @@ function EditJobpost() {
       navigate("..", { relative: "path" });
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setUserFailed({
+        setEditFailed({
           hasError: true,
           errorMesseage: error.message,
         });
@@ -177,13 +170,14 @@ function EditJobpost() {
     }
   };
 
-  //Makes it able to change input values after being given new ones
+  //Makes it able to change input values after being given new input value
   const handleInputChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const target = event.target;
       const inputName = target.name;
       const newValue = target.value;
 
+      //Goes though all the inputs from 
       switch (inputName) {
         case "title":
           setJobPostInfo({ ...jobPostInfo, title: newValue });
@@ -205,7 +199,7 @@ function EditJobpost() {
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setUserFailed({
+        setEditFailed({
           hasError: true,
           errorMesseage: error.message,
         });
@@ -220,8 +214,8 @@ function EditJobpost() {
         <form className="display-grid__container" onSubmit={submitInputChange}>
           <h1 className="heading-1 title">Opdatere jobopslag</h1>
           <ErrorMessage
-            failed={userFailed.hasError}
-            erroMessage={userFailed.errorMesseage}
+            failed={editFailed.hasError}
+            erroMessage={editFailed.errorMesseage}
           ></ErrorMessage>
 
           <Input

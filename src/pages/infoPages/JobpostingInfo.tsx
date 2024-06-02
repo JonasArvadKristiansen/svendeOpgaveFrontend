@@ -34,7 +34,7 @@ interface ExtraJwtInfo {
 }
 
 function JobpostingInfo() {
-  //Makes us able to use libary functions
+  // Makes us able to use libary functions
   const params = useParams();
   const [cookies] = useCookies();
   const navigate = useNavigate();

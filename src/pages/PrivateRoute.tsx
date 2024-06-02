@@ -16,6 +16,7 @@ interface ExtraJwtInfo {
 }
 
 function PrivateRoute(prop: Props) {
+   //Makes us able to use libary functions
   const navigate = useNavigate();
   const [cookies] = useCookies();
   const token = cookies["Authorization"];
