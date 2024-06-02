@@ -19,7 +19,6 @@ function Footer() {
           <div className="footer-container__section-brows__info">
             <Link to="/">Virksomheder</Link>
             <Link to="/jobposting">Jobopslag</Link>
-            <p>ddd</p>
           </div>
         </div>
 

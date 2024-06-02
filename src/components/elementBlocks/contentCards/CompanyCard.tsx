@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import "../../../scss/pages/content.scss";
 
 interface Props {
   id: number;

@@ -1,4 +1,3 @@
-import "../../../scss/pages/content.scss";
 import { Link } from "react-router-dom";
 
 interface Props {

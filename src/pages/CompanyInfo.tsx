@@ -7,7 +7,7 @@ import "../scss/pages/contentInfo.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
 import TextSections from "../components/uiElements/TextSections";
-import JobPostingCard from "../components/elementBlocks/content/JobPostingCard";
+import JobPostingCard from "../components/elementBlocks/contentCards/JobPostingCard";
 
 import ApplicationPopup from "../components/elementBlocks/popups/ApplicationPopup";
 import { Button } from "../components/uiElements/Buttons";

@@ -1,11 +1,11 @@
-import JobPostingCard from "../components/elementBlocks/content/JobPostingCard";
+import JobPostingCard from "../components/elementBlocks/contentCards/JobPostingCard";
 import endpoint from "../config.json";
 import "../scss/pages/content.scss";
 import { useEffect, useState } from "react";
 
 import FilterHeader from "../components/layout/FilterHeader";
 import Footer from "../components/layout/Footer";
-import NotFoundCard from "../components/elementBlocks/content/NotFoundCard";
+import NotFoundCard from "../components/elementBlocks/contentCards/NotFoundCard";
 
 interface JobPostingObject {
   id: number;

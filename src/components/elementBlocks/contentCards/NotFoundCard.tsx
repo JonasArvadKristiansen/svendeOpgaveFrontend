@@ -1,4 +1,3 @@
-import "../../../scss/pages/content.scss";
 
 interface Props {
   children: string;

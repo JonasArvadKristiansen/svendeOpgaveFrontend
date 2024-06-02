@@ -8,7 +8,7 @@ import "../scss/pages/contentInfo.scss";
 
 import DeafultLayout from "../layout/DeafultLayout";
 import TextWithHead from "../components/uiElements/TextSections";
-import CompanyCard from "../components/elementBlocks/content/CompanyCard";
+import CompanyCard from "../components/elementBlocks/contentCards/CompanyCard";
 import { Button } from "../components/uiElements/Buttons";
 import ApplicationPopup from "../components/elementBlocks/popups/ApplicationPopup";
 

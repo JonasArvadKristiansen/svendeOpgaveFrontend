@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import endpoint from "../../../config.json";
-import closeIcon from "../../../assets/exit.svg"
+import closeIcon from "../../../assets/exit.svg";
 
 import ShowPopup from "./ShowPopup";
 import Input from "../../uiElements/Input";
@@ -19,15 +19,6 @@ interface ErrorInfo {
   errorMesseage: string;
 }
 
-interface ApplicationBody {
-  reciver: string
-  title: string
-  text: string
-  application: File
-  cv: File
-} 
-
-
 function ApplicationPopup(prop: Props) {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
@@ -41,14 +32,6 @@ function ApplicationPopup(prop: Props) {
     event.preventDefault();
 
     const target = new FormData(event.currentTarget);
-
-   /*  const jsonBody: ApplicationBody = {
-      reciver: "",
-      title: "",
-      text: "",
-      application: event.currentTarget.elements.item,
-      cv: 0,
-    }; */
 
     try {
       const response = await fetch(`${endpoint.path}user/sendEmail`, {
@@ -101,13 +84,28 @@ function ApplicationPopup(prop: Props) {
           />
 
           <form encType="multipart/form-data" onSubmit={submitApplication}>
-            <Input type="email" name="receiver" value={prop.reciverEmail} readOnly required>
+            <Input
+              type="email"
+              name="receiver"
+              value={prop.reciverEmail}
+              readOnly
+              required
+            >
               Modtager
             </Input>
-            <Input type="text" name="title" placeholder="Application for software developer Thomas Hansen" required>
+            <Input
+              type="text"
+              name="title"
+              placeholder="Application for software developer Thomas Hansen"
+              required
+            >
               Title
             </Input>
-            <Textarea label="Beskrivelse" name="text" placeholder="Give en kort beskrivelse omkring hvorfor du ansøger hos dem..." />
+            <Textarea
+              label="Beskrivelse"
+              name="text"
+              placeholder="Give en kort beskrivelse omkring hvorfor du ansøger hos dem..."
+            />
             <Input type="file" name="files" required>
               Ansøgnings
             </Input>
