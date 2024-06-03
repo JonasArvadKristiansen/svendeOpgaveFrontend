@@ -97,7 +97,7 @@ function UpdatePassword() {
             <Input onchange={onChangeEmailValue} type="text" name="email" required>
               Email
             </Input>
-            <Button type="submit">Log ind</Button>
+            <Button type="submit">Send email med ny adgangskode</Button>
           </form>
         </div>
       </div>

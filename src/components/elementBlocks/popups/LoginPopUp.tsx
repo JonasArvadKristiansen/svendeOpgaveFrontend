@@ -136,20 +136,20 @@ function LoginPopUp(prop: Props) {
               E-mail
             </Input>
             <Input type="password" name="password" required>
-              Adgnagskode
+              Adgangskode
             </Input>
             <Button type="submit">Log ind</Button>
           </form>
 
           <div className="popup__input__box">
             <div>
-              <Link to="http://localhost:3000/api/user/auth/facebook">
+              <Link to={`${endpoint}user/auth/facebook`}>
                 <img src={facebookIcon} alt="Facebook ikon" />
                 <p>Login med facebook</p>
               </Link>
             </div>
             <div>
-              <Link to="http://localhost:3000/api/user/auth/google">
+              <Link to={`${endpoint}user/auth/google`}>
                 <img src={googleIcon} alt="Google ikon" />
                 <p>Login med Google</p>
               </Link>

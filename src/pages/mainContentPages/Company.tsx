@@ -14,6 +14,7 @@ interface CompanyObject {
   companyName: string;
   description: string;
   jobpostingCount: number;
+  jobtypes: string;
 }
 
 function Company() {
@@ -32,7 +33,7 @@ function Company() {
           },
         });
 
-        const jsonData = await response.json();
+        const jsonData = await response.json();        
 
         if (!response.ok) {
           throw new Error(jsonData);
@@ -67,6 +68,7 @@ function Company() {
                 companyName={com.companyName}
                 description={com.description}
                 jobpostingCount={com.jobpostingCount}
+                jobtypes={com.jobtypes}
               ></CompanyCard>
             ))
           ) : (

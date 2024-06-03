@@ -25,7 +25,7 @@
     &__card {
       display: flex;
       flex-direction: column;
-      gap: map-get($spacing, '16px');
+      gap: map-get($spacing, "16px");
 
       border: 1px solid map-get($color, "dark-blue-66");
       padding: map-get($spacing, "32px");
@@ -34,10 +34,17 @@
       &__header {
         display: flex;
         justify-content: space-between;
-        font-size: map-get($bread-sizes, 'lg');
+        font-size: map-get($bread-sizes, "lg");
         font-weight: bold;
+        gap: map-get($spacing, "8px" );
       }
-     
+
+      &__jobtypes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: map-get($spacing, "8px" );
+      }
+
       &__description {
         display: flex;
       }

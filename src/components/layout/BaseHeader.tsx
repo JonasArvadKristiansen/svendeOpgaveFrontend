@@ -75,7 +75,7 @@ function BaseHeader(prop: Props) {
           <div className="header__nav">
             <div>
               <h1 className="heading-1">JobConnect</h1>
-              <p>Fin din nye karriere i dag</p>
+              <p>Find din nye karriere i dag</p>
             </div>
             <ul className="header__nav__list">
               <li>

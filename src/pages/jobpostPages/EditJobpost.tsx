@@ -75,7 +75,7 @@ function EditJobpost() {
         );
 
         const jsonData = await response.json();
-
+        
         if (!response.ok) {
           throw new Error(jsonData);
         }
@@ -90,9 +90,8 @@ function EditJobpost() {
           console.error(error.message);
         }
       }
-
-      getData();
     };
+    getData();
   }, [cookies]);
 
   //Checks what inputs have changed to opdate info

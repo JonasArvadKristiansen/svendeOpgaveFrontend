@@ -11,8 +11,9 @@ import CompanyProfil from "../components/elementBlocks/profile/CompanyProfil";
 import UserProfil from "../components/elementBlocks/profile/UserProfil";
 import ShowPopup from "../components/elementBlocks/popups/ShowPopup";
 
-import endpoint from "../config.json";
 
+
+import endpoint from "../config.json";
 import "../scss/pages/profile.scss";
 import cookieExist from "../utility/cookieExist";
 
@@ -22,7 +23,10 @@ interface ExtraJwtInfo {
     type: string;
   };
 }
-
+interface SucceedInfo {
+  hasSucceeded: boolean;
+  succeedMessage: string;
+}
 interface ErrorInfo {
   hasError: boolean;
   errorMesseage: string;
@@ -75,6 +79,10 @@ function Profile() {
     hasError: false,
     errorMesseage: "",
   });
+  const [AdminSucceed, setAdminSucceed] = useState<SucceedInfo>({
+    hasSucceeded: false,
+    succeedMessage: "",
+  });
 
   //Data from the backend to the userProfile component
   const [UserData, setUserData] = useState<UserData>({
@@ -103,7 +111,7 @@ function Profile() {
     if (cookieExist(token, navigate)) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
       const userType = decodeToken.user.type;
-      
+
       setUserType(userType);
 
       //Get data from the backend to the profiles info
@@ -166,17 +174,18 @@ function Profile() {
   const handleUserProfile = () => {
     switch (userType) {
       case "Normal user":
-      return (
+        return (
           <UserProfil
             editUserComplete={handleEditPopup}
             deleteSubmit={handleDeletePopup}
             data={UserData}
           />
         );
-      case "Admin":        
+      case "Admin":
         return (
           <AdminProfil
             failed={AdminFailed}
+            succeeded={AdminSucceed}
             enableDeleteEmailPopup={handleAdminDeletingPopup}
             enableBanEmailPopup={handleAdminBanningPopup}
             setEmail={handleEmailSelect}
@@ -192,7 +201,7 @@ function Profile() {
         );
       case "":
         //When it first runs it havent been given a usertype
-       break
+        break;
       default:
         console.error(`Kender ikke bruger typen: ${userType}`);
         break;
@@ -215,31 +224,18 @@ function Profile() {
   const handleDeleteCurrentUser = async () => {
     try {
       let response;
-      switch (userType) {
-        case "Normal user":
-          response = await fetch(`${endpoint.path}user/delete`, {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              "accesstoken": accessToken,
-            },
-          });
-          break;
-        case "Company user":
-          response = await fetch(`${endpoint.path}company/delete`, {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-              "accesstoken": accessToken,
-            },
-          });
-          break;
 
-        default:
-          throw new Error("Bruger type eksistere ikke");
-      }
+      response = await fetch(
+        `${endpoint.path}${userType == "Normal user" ? "user" : "company"}/delete`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            "accesstoken": accessToken,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("cringe");
@@ -271,14 +267,16 @@ function Profile() {
   };
 
   //Change the email thats going to be banned or removed by admin
-  const handleEmailSelect = () => {
-    (email: string) => setAdminSelectedEmail(email);
+  const handleEmailSelect = (email: string) => {
+    setAdminSelectedEmail(email);
   };
+
   //Admins submits to the backend delete or ban users
   const submitAdminOptions = async (url: string, crud: string) => {
     try {
       const response = await fetch(url, {
         method: crud,
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
           "accesstoken": accessToken,
@@ -291,6 +289,16 @@ function Profile() {
       if (!response.ok) {
         throw new Error(jsonObject);
       }
+
+      setAdminSucceed({
+        hasSucceeded: true,
+        succeedMessage: `Du har succesfuldt ${crud == "POST"? 'bannede': 'slettet'} denne email: ${adminSelectedEmail}` 
+      })
+      setAdminFailed({
+        hasError: false,
+        errorMesseage: "",
+      });
+
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -298,8 +306,13 @@ function Profile() {
           hasError: true,
           errorMesseage: error.message,
         });
-        handleAdminPopup();
+        setAdminSucceed({
+          hasSucceeded: false,
+          succeedMessage: ""
+        })
       }
+    } finally {
+      handleAdminPopup();
     }
   };
 

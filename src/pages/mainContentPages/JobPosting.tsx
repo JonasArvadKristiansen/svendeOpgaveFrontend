@@ -16,6 +16,7 @@ interface JobPostingObject {
   deadline: string;
   address: string;
   description: string;
+  jobtype: string;
 }
 
 function JobPosting() {
@@ -35,7 +36,7 @@ function JobPosting() {
         });
 
         const jsonData = await response.json();
-
+                
         if (!response.ok) {
           throw new Error(jsonData);
         }
@@ -71,6 +72,7 @@ function JobPosting() {
                 deadline={job.deadline}
                 address={job.address}
                 description={job.description}
+                jobtype={job.jobtype}
               ></JobPostingCard>
             ))
           ) : (

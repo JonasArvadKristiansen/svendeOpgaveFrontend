@@ -47,7 +47,10 @@ function ApplicationPopup(prop: Props) {
 
       if (!response.ok) {
         throw new Error(jsonData);
-      }
+      }      
+
+      prop.closePopup();
+      
     } catch (error: unknown) {
       if (error instanceof Error) {
         setApplicationFailed({

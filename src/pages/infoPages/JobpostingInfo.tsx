@@ -17,7 +17,7 @@ interface JobPostingObject {
   jobtype: string;
   description: string;
   address: string;
-  løn: number;
+  salary: number;
   deadLine: string;
 
   companyID: number;
@@ -41,6 +41,9 @@ function JobpostingInfo() {
 
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
+  //Checks if common user can send an aplication
+  const [isCommonUser, setIsCommonUser] = useState<boolean>(false);
+
   //Saves the company email to be used in application reciver
   const [companyEmail, setCompanyEmail] = useState<string>("");
 
@@ -57,7 +60,7 @@ function JobpostingInfo() {
     jobtype: "",
     description: "",
     address: "",
-    løn: 0,
+    salary: 0,
     deadLine: "",
 
     companyID: 0,
@@ -79,21 +82,32 @@ function JobpostingInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              "accesstoken": accessToken,
+              accesstoken: accessToken,
             },
           }
         );
 
-        const jsonData = await response.json();
+        const jsonData = await response.json();        
 
         if (!response.ok) {
           throw new Error(jsonData);
         }
 
         //Checkes if the current user is the creater of the jobpost
-        if (decodeToken.user.id == jsonData.jobposting[0].companyID) {
+        if (
+          decodeToken.user.type == "Company user" &&
+          decodeToken.user.id == jsonData.jobposting[0].companyID
+        ) {
           setIsOwner(true);
         }
+
+        setIsCommonUser(
+          ["Normal user", "Google user", "Facebook user"].includes(
+            decodeToken.user.type
+          )
+        );
+
+        
 
         //Sets the usestates to give them data from the fetch
         setJobPostList(jsonData.jobposting[0]);
@@ -125,12 +139,13 @@ function JobpostingInfo() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "accesstoken": accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify({ jobpostingId: params.id }),
       });
 
       const jsonData = await response.json();
+      navigate('/')
 
       if (!response.ok) {
         throw new Error(jsonData);
@@ -159,17 +174,20 @@ function JobpostingInfo() {
           <div className="grid-layout-job__item-1">
             <TextWithHead
               header="Arbejds beskrivelse"
-              text={jobPostList.companyDescription}
+              text={jobPostList.description}
             />
           </div>
 
           <div className="grid-layout-job__item-2">
             <TextWithHead header="Addresse" text={jobPostList.address} />
-            <TextWithHead header="Løn" text="12.000 om måndeden" />
+            <TextWithHead
+              header="Løn"
+              text={`${jobPostList.salary} kr om måndeden`}
+            />
           </div>
         </div>
 
-        {isOwner ? (
+        {isOwner && (
           <>
             <Button type="button" onClick={handleRedirectToEdit}>
               Redigere jobopslaget
@@ -178,7 +196,8 @@ function JobpostingInfo() {
               Slet jobopslaget
             </Button>
           </>
-        ) : (
+        )}
+        {isCommonUser && (
           <Button type="button" onClick={handleTogglePopup}>
             Ansøg denne stilling
           </Button>
@@ -189,8 +208,9 @@ function JobpostingInfo() {
           <CompanyCard
             id={jobPostList.companyID}
             companyName={jobPostList.companyName}
-            description={jobPostList.description}
+            description={jobPostList.companyDescription}
             jobpostingCount={jobPostList.jobpostingCount}
+            jobtypes={jobPostList.jobtype}
           />
           <div className="grid-layout-job__item-3__button"></div>
         </div>

@@ -71,7 +71,7 @@ function CreateJobpost() {
             throw new Error(`Dette input ${pair[0]} existere ikke`);
         }
       }
-
+      
       //Send the post request to add jobpost
       const response = await fetch(`${endpoint.path}jobpost/create`, {
         method: "POST",

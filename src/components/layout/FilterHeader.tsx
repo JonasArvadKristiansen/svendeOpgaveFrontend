@@ -15,6 +15,7 @@ interface CompanyObject {
   companyName: string;
   description: string;
   jobpostingCount: number;
+  jobtypes: string;
 }
 
 interface JobPostingObject {
@@ -24,6 +25,7 @@ interface JobPostingObject {
   deadline: string;
   address: string;
   description: string;
+  jobtype: string;
 }
 
 interface ErrorInfo {

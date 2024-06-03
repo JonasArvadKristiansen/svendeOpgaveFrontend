@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import { jwtDecode } from "jwt-decode";
 
 import endpoint from "../../config.json";
 import "../../scss/pages/contentInfo.scss";
@@ -31,6 +32,14 @@ interface JobPostingObject {
   deadline: string;
   address: string;
   description: string;
+  jobtype: string
+}
+
+interface ExtraJwtInfo {
+  user: {
+    id: number;
+    type: string;
+  };
 }
 
 function CompanyInfo() {
@@ -42,6 +51,9 @@ function CompanyInfo() {
   //Enables popup to show
   const [showApplicationPopup, setShowApplicationPopup] =
     useState<boolean>(false);
+
+  //Checks if common user can send an aplication
+  const [isCommonUser, setIsCommonUser] = useState<boolean>(false);
 
   //Saves the company email to be used in application reciver
   const [companyEmail, setCompanyEmail] = useState<string>("");
@@ -65,8 +77,10 @@ function CompanyInfo() {
   useEffect(() => {
     //Gets information for joppost that matches the url parms id
     const getData = async () => {
-      console.log('teet');
       try {
+        const token = cookies["Authorization"];
+        const decodeToken = jwtDecode<ExtraJwtInfo>(token);
+
         const response = await fetch(
           `${endpoint.path}company/info?companyID=${params.id}`,
           {
@@ -79,11 +93,17 @@ function CompanyInfo() {
           }
         );
 
-        const jsonData = await response.json();
+        const jsonData = await response.json();        
 
         if (!response.ok) {
           throw new Error(jsonData);
-        }        
+        }
+
+        setIsCommonUser(
+          ["Normal user", "Google user", "Facebook user"].includes(
+            decodeToken.user.type
+          )
+        );
 
         setJobpostList(jsonData.jobpostingsData);
         setCompanyList(jsonData.companyProfileData[0]);
@@ -95,7 +115,6 @@ function CompanyInfo() {
       }
     };
     getData();
-
   }, [cookies]);
 
   //Handles the toggle to show apply for aplication popup
@@ -160,9 +179,11 @@ function CompanyInfo() {
           </div>
         </div>
 
-        <Button type="button" onClick={handleTogglePopup}>
-          Ansøg uopfordret
-        </Button>
+        {isCommonUser && (
+          <Button type="button" onClick={handleTogglePopup}>
+            Ansøg uopfordret
+          </Button>
+        )}
 
         <h1 className="heading-1 title">Jobopslag</h1>
         <div className="content__blocks">
@@ -176,6 +197,7 @@ function CompanyInfo() {
                 deadline={job.deadline}
                 address={job.address}
                 description={job.description}
+                jobtype={job.jobtype}
               ></JobPostingCard>
             ))}
         </div>
