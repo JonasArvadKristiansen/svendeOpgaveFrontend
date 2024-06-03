@@ -57,7 +57,7 @@ function UpdatePassword() {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            accesstoken: accessToken,
+            "accesstoken": accessToken,
           },
           body: JSON.stringify({ email: email }),
         }

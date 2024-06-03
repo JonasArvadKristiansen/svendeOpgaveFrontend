@@ -128,7 +128,7 @@ function Profile() {
               credentials: "include",
               headers: {
                 "Content-Type": "application/json",
-                accesstoken: accessToken,
+                "accesstoken": accessToken,
               },
             });
 
@@ -222,8 +222,7 @@ function Profile() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-
-              accesstoken: accessToken,
+              "accesstoken": accessToken,
             },
           });
           break;
@@ -233,8 +232,7 @@ function Profile() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-
-              accesstoken: accessToken,
+              "accesstoken": accessToken,
             },
           });
           break;
@@ -283,7 +281,7 @@ function Profile() {
         method: crud,
         headers: {
           "Content-Type": "application/json",
-          accesstoken: accessToken,
+          "accesstoken": accessToken,
         },
         body: JSON.stringify({ email: adminSelectedEmail }),
       });

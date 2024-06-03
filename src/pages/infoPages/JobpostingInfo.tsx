@@ -79,7 +79,7 @@ function JobpostingInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              accesstoken: accessToken,
+              "accesstoken": accessToken,
             },
           }
         );
@@ -125,8 +125,7 @@ function JobpostingInfo() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-
-          accesstoken: accessToken,
+          "accesstoken": accessToken,
         },
         body: JSON.stringify({ jobpostingId: params.id }),
       });

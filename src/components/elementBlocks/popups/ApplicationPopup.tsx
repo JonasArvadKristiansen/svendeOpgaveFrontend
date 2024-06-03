@@ -38,7 +38,7 @@ function ApplicationPopup(prop: Props) {
         method: "POST",
         credentials: "include",
         headers: {
-          accesstoken: accessToken,
+          "accesstoken": accessToken,
         },
         body: target,
       });

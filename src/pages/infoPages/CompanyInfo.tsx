@@ -74,7 +74,7 @@ function CompanyInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              accesstoken: accessToken,
+              "accesstoken": accessToken,
             },
           }
         );

@@ -78,7 +78,7 @@ function CreateJobpost() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          accesstoken: accessToken,
+          "accesstoken": accessToken,
         },
         body: JSON.stringify(jsonBody),
       });

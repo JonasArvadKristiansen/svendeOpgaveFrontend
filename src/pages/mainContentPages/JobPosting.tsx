@@ -30,7 +30,7 @@ function JobPosting() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            accesstoken: accessToken,
+            "accesstoken": accessToken,
           },
         });
 

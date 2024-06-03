@@ -139,7 +139,7 @@ function FilterHeader(prop: Props) {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          accesstoken: accessToken,
+          "accesstoken": accessToken,
         },
       });
 
