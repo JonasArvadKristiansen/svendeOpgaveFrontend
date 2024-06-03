@@ -70,9 +70,9 @@ function LoginPopUp(prop: Props) {
       }
 
       //Decides with fetch request it needs to run
-      let response;
-      if (isJobseeker) {
-        response = await fetch(`${endpoint.path}user/login`, {
+      const response = await fetch(
+        `${endpoint.path}${isJobseeker ? "user" : "company"}/login`,
+        {
           method: "POST",
           credentials: "include",
           headers: {
@@ -80,19 +80,9 @@ function LoginPopUp(prop: Props) {
             accesstoken: accessToken,
           },
           body: JSON.stringify(jsonBody),
-        });
-      } else {
-        response = await fetch(`${endpoint.path}company/login`, {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-            accesstoken: accessToken,
-          },
-          body: JSON.stringify(jsonBody),
-        });
-      }
-
+        }
+      );
+      
       const jsonData = await response.json();
 
       if (!response.ok) {
@@ -106,8 +96,8 @@ function LoginPopUp(prop: Props) {
         console.error(error);
         setLoginFailed({
           hasError: true,
-          errorMesseage: error.message
-        })
+          errorMesseage: error.message,
+        });
       }
     }
   };
@@ -131,7 +121,10 @@ function LoginPopUp(prop: Props) {
             />
           </div>
 
-          <ErrorMessage failed={loginFailed.hasError} erroMessage={loginFailed.errorMesseage}  />
+          <ErrorMessage
+            failed={loginFailed.hasError}
+            erroMessage={loginFailed.errorMesseage}
+          />
 
           <ToggleUserType
             isBoolean={isJobseeker}
@@ -166,7 +159,7 @@ function LoginPopUp(prop: Props) {
           <Link to="/updatePassword">Glemt adgangskode?</Link>
         </div>
 
-        <Link to="/registerUser">Opret en ny bruger</Link>
+        <Link to="/createUser">Opret en ny bruger</Link>
       </div>
     </ShowPopup>
   );

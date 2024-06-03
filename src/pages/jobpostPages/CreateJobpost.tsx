@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "../../scss/pages/createJobpost.scss";
+import "../../scss/pages/jobpost.scss";
 import endpoint from "../../config.json";
 
 import DeafultLayout from "../../layout/DeafultLayout";

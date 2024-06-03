@@ -1,7 +1,6 @@
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 
 import endpoint from "../../config.json";
 import "../../scss/pages/contentInfo.scss";
@@ -12,8 +11,6 @@ import JobPostingCard from "../../components/elementBlocks/contentCards/JobPosti
 
 import ApplicationPopup from "../../components/elementBlocks/popups/ApplicationPopup";
 import { Button } from "../../components/uiElements/Buttons";
-
-import cookieExist from "../../utility/cookieExist";
 
 interface CompanyObject {
   companyName: string;
@@ -41,7 +38,6 @@ function CompanyInfo() {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
   const [cookies] = useCookies();
   const params = useParams();
-  const navigate = useNavigate();
 
   //Enables popup to show
   const [showApplicationPopup, setShowApplicationPopup] =
@@ -67,40 +63,39 @@ function CompanyInfo() {
   });
 
   useEffect(() => {
-    const token = cookies["Authorization"];
-    if (cookieExist(token, navigate)) {
-      const getData = async () => {
-        try {
-          const response = await fetch(
-            `${endpoint.path}company/info?companyID=${params.id}`,
-            {
-              method: "GET",
-              credentials: "include",
-              headers: {
-                "Content-Type": "application/json",
-                accesstoken: accessToken,
-              },
-            }
-          );
-
-          const jsonData = await response.json();
-
-          if (!response.ok) {
-            throw new Error(jsonData);
+    //Gets information for joppost that matches the url parms id
+    const getData = async () => {
+      console.log('teet');
+      try {
+        const response = await fetch(
+          `${endpoint.path}company/info?companyID=${params.id}`,
+          {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              accesstoken: accessToken,
+            },
           }
+        );
 
-          setJobpostList(jsonData.jobpostingsData);
-          setCompanyList(jsonData.companyProfileData[0]);
-          setCompanyEmail(jsonData.companyProfileData[0].email);
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error(error.message);
-          }
+        const jsonData = await response.json();
+
+        if (!response.ok) {
+          throw new Error(jsonData);
+        }        
+
+        setJobpostList(jsonData.jobpostingsData);
+        setCompanyList(jsonData.companyProfileData[0]);
+        setCompanyEmail(jsonData.companyProfileData[0].email);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(error.message);
         }
-      };
+      }
+    };
+    getData();
 
-      getData();
-    }
   }, [cookies]);
 
   //Handles the toggle to show apply for aplication popup

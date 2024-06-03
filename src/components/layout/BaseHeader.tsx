@@ -3,15 +3,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 
-import "../../scss/header.scss";
+import "../../scss/layouts/header.scss";
 import profileIcon from "../../assets/profile.svg";
 import facebookIcon from "../../assets/facebook.svg";
 import googleIcon from "../../assets/google.svg";
 
 import { Button } from "../uiElements/Buttons";
 import LoginPopup from "../elementBlocks/popups/LoginPopUp";
-import cookieExist from "../../utility/cookieExist";
-
 
 interface Props {
   children?: React.ReactNode;
@@ -40,7 +38,7 @@ function BaseHeader(prop: Props) {
 
   useEffect(() => {
     const token = cookies["Authorization"];
-    if (cookieExist(token, navigate)) {
+    if (token) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
 
       if (
@@ -52,7 +50,6 @@ function BaseHeader(prop: Props) {
           "Facebook user",
         ].includes(decodeToken.user.type)
       ) {
-        
         setUserType(decodeToken.user.type);
         setIsLoggedIn(true);
       }
@@ -102,7 +99,9 @@ function BaseHeader(prop: Props) {
 
           {isLoggedIn ? (
             <div className="header__login">
-              {(userType == "Normal user" || userType == "Company user"  || userType == "Admin")  && (
+              {(userType == "Normal user" ||
+                userType == "Company user" ||
+                userType == "Admin") && (
                 <Link to="/profile">
                   <img src={profileIcon} alt="Profile ikon" />
                 </Link>

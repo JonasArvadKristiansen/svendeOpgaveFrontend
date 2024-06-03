@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import "../../scss/footer.scss";
+import "../../scss/layouts/footer.scss"
 import phoneIcon from '../../assets/phone.svg';
 import mailIcon from '../../assets/mail.svg';
 import locationIcod from '../../assets/location.svg';

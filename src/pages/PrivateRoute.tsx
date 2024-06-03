@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-
 import cookieExist from "../utility/cookieExist";
 
 interface Props {
@@ -18,12 +17,12 @@ interface ExtraJwtInfo {
 }
 
 function PrivateRoute(prop: Props) {
-   //Makes us able to use libary functions
+  //Makes us able to use libary functions
   const navigate = useNavigate();
   const [cookies] = useCookies();
   const token = cookies["Authorization"];
 
-  useEffect(() => {
+  useEffect(() => {    
     if (cookieExist(token, navigate)) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
       const isTypeCorrect = prop.roles?.includes(decodeToken.user.type);
@@ -34,13 +33,9 @@ function PrivateRoute(prop: Props) {
     } else {
       navigate("/");
     }
-  }, []);
+  }, [cookies]);
 
-  return (
-    <>
-      {prop.component}
-    </>
-  );
+  return <>{prop.component}</>;
 }
 
 export default PrivateRoute;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { json, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
 import "../scss/pages/registerUser.scss";
 import DeafultLayout from "../layout/DeafultLayout";
 

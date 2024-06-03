@@ -117,7 +117,7 @@ function Profile() {
                 url = "user/profile";
                 break;
               case "Company user":
-                url = "user/profile";
+                url = "company/profile";
                 break;
               default:
                 throw new Error(`Denne type ${userType} existere ikke`);

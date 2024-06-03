@@ -10,7 +10,7 @@ import JobPosting from "./pages/mainContentPages/JobPosting.tsx";
 import JobpostingInfo from "./pages/infoPages/JobpostingInfo.tsx";
 import CompanyInfo from "./pages/infoPages/CompanyInfo.tsx";
 
-import RegisterUser from "./pages/CreateUser.tsx";
+import CreateUser from "./pages/CreateUser.tsx";
 import UpdatePassword from "./pages/UpdatePassword.tsx";
 
 import Profile from "./pages/Profile.tsx";
@@ -31,8 +31,8 @@ const router = createBrowserRouter([
     element: <JobPosting />,
   },
   {
-    path: "registerUser",
-    element: <RegisterUser />,
+    path: "createUser",
+    element: <CreateUser />,
   },
   {
     path: "updatePassword",
