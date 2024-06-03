@@ -22,6 +22,11 @@ interface ErrorInfo {
   errorMesseage: string;
 }
 
+interface LoginInfo {
+  email: string;
+  password: string;
+}
+
 function LoginPopUp(prop: Props) {
   const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
 
@@ -49,20 +54,20 @@ function LoginPopUp(prop: Props) {
     //Make form data to key value format
     const target = new FormData(event.currentTarget);
 
-    type JsonBody = {
-      [key: string]: string | number | File;
+    const jsonBody: LoginInfo = {
+      email: "",
+      password: "",
     };
-    const jsonBody: JsonBody = {};
 
     try {
       //Add values from form inputs into jsonbbody
       for (const pair of target.entries()) {
         switch (pair[0]) {
           case "email":
-            jsonBody.email = pair[1];
+            jsonBody.email = String(pair[1]);
             break;
           case "password":
-            jsonBody.password = pair[1];
+            jsonBody.password = String(pair[1]);
             break;
           default:
             throw new Error(`Dette input ${pair[0]} existere ikke`);
@@ -77,12 +82,12 @@ function LoginPopUp(prop: Props) {
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "accesstoken": accessToken,
+            accesstoken: accessToken,
           },
           body: JSON.stringify(jsonBody),
         }
       );
-      
+
       const jsonData = await response.json();
 
       if (!response.ok) {
