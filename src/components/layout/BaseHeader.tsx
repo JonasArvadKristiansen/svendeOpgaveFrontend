@@ -60,7 +60,7 @@ function BaseHeader(prop: Props) {
   const handleLogout = () => {
     removeCookie("Authorization");
     setIsLoggedIn(false);
-    navigate("/");
+    navigate(0);
   };
 
   //Handles the toggle to show login popup
