@@ -156,13 +156,15 @@ function JobpostingInfo() {
   };
 
   return (
-    <DeafultLayout>
-      {showApplicationPopup && (
+    <>
+     {showApplicationPopup && (
         <ApplicationPopup
           reciverEmail={companyEmail}
           closePopup={handleTogglePopup}
         />
       )}
+     <DeafultLayout>
+     
 
         <h1 className="heading-1 title">{jobPostList.title}</h1>
         <h2 className="heading-2 title">Jobtype: {jobPostList.jobtype}</h2>
@@ -215,6 +217,8 @@ function JobpostingInfo() {
           <div className="grid-layout-job__item-3__button"></div>
         </div>
     </DeafultLayout>
+    </>
+   
   );
 }
 

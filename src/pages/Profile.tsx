@@ -11,8 +11,6 @@ import CompanyProfil from "../components/elementBlocks/profile/CompanyProfil";
 import UserProfil from "../components/elementBlocks/profile/UserProfil";
 import ShowPopup from "../components/elementBlocks/popups/ShowPopup";
 
-
-
 import endpoint from "../config.json";
 import "../scss/pages/profile.scss";
 import cookieExist from "../utility/cookieExist";
@@ -136,7 +134,7 @@ function Profile() {
               credentials: "include",
               headers: {
                 "Content-Type": "application/json",
-                "accesstoken": accessToken,
+                accesstoken: accessToken,
               },
             });
 
@@ -226,13 +224,15 @@ function Profile() {
       let response;
 
       response = await fetch(
-        `${endpoint.path}${userType == "Normal user" ? "user" : "company"}/delete`,
+        `${endpoint.path}${
+          userType == "Normal user" ? "user" : "company"
+        }/delete`,
         {
           method: "DELETE",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            "accesstoken": accessToken,
+            accesstoken: accessToken,
           },
         }
       );
@@ -279,7 +279,7 @@ function Profile() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "accesstoken": accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify({ email: adminSelectedEmail }),
       });
@@ -292,13 +292,14 @@ function Profile() {
 
       setAdminSucceed({
         hasSucceeded: true,
-        succeedMessage: `Du har succesfuldt ${crud == "POST"? 'bannede': 'slettet'} denne email: ${adminSelectedEmail}` 
-      })
+        succeedMessage: `Du har succesfuldt ${
+          crud == "POST" ? "bannede" : "slettet"
+        } denne email: ${adminSelectedEmail}`,
+      });
       setAdminFailed({
         hasError: false,
         errorMesseage: "",
       });
-
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error(error.message);
@@ -308,8 +309,8 @@ function Profile() {
         });
         setAdminSucceed({
           hasSucceeded: false,
-          succeedMessage: ""
-        })
+          succeedMessage: "",
+        });
       }
     } finally {
       handleAdminPopup();
@@ -322,8 +323,7 @@ function Profile() {
   };
 
   return (
-    <DeafultLayout>
-      <h1 className="heading-1 title">Profil</h1>
+    <>
       {showDeletePopup && (
         <ShowPopup>
           <div className="delete-user">
@@ -339,7 +339,6 @@ function Profile() {
           </div>
         </ShowPopup>
       )}
-
       {showEditPopup && (
         <ShowPopup>
           <div className="edit-user">
@@ -427,13 +426,17 @@ function Profile() {
         </ShowPopup>
       )}
 
-      <div className="profile">
-        {handleUserProfile()}
-        {(userType == "Normal user" || userType == "Company user") && (
-          <ChangePassword userType={userType}></ChangePassword>
-        )}
-      </div>
-    </DeafultLayout>
+      <DeafultLayout>
+        <h1 className="heading-1 title">Profil</h1>
+
+        <div className="profile">
+          {handleUserProfile()}
+          {(userType == "Normal user" || userType == "Company user") && (
+            <ChangePassword userType={userType}></ChangePassword>
+          )}
+        </div>
+      </DeafultLayout>
+    </>
   );
 }
 

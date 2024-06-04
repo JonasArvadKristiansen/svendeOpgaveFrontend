@@ -51,7 +51,7 @@ function Statistics() {
   return (
     <DeafultLayout>
       <div className="center-sta">
-        <h1 className="heading-1">Statestik</h1>
+        <h1 className="heading-1">Statistik</h1>
         <p>Her vises der data for hvor mange af Bruger, Virksomheder og Job opslag der eksistere i databasen</p>
         <BarChart
           width={500}

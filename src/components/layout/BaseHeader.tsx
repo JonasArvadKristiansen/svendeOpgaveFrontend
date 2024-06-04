@@ -90,7 +90,7 @@ function BaseHeader(prop: Props) {
               )}
               {userType == "Admin" && (
                 <li>
-                  <Link to="/statistic">Statestik</Link>
+                  <Link to="/statistic">Statistik</Link>
                 </li>
               )}
             </ul>
