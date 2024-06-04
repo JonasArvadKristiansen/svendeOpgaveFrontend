@@ -9,7 +9,9 @@ function DeafultLayout(prop: Props) {
   return (
     <>
       <Header/>
-        {prop.children}
+        <main className='content container-sm'>
+          {prop.children}
+        </main>
       <Footer/>
     </>
   )

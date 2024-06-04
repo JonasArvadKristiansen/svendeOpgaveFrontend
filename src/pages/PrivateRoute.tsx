@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -21,21 +21,26 @@ function PrivateRoute(prop: Props) {
   const navigate = useNavigate();
   const [cookies] = useCookies();
   const token = cookies["Authorization"];
+  const [isValied, setIsValid] = useState<boolean>(false);
 
-  useEffect(() => {    
+  useEffect(() => {
     if (cookieExist(token, navigate)) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
       const isTypeCorrect = prop.roles?.includes(decodeToken.user.type);
 
       if (!isTypeCorrect) {
         navigate("/");
+      } else {
+        setIsValid(true)
       }
     } else {
       navigate("/");
     }
   }, [cookies]);
 
-  return <>{prop.component}</>;
+  if (isValied) {
+    return <>{prop.component}</>;
+  }
 }
 
 export default PrivateRoute;

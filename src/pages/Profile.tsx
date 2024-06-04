@@ -323,6 +323,7 @@ function Profile() {
 
   return (
     <DeafultLayout>
+      <h1 className="heading-1 title">Profil</h1>
       {showDeletePopup && (
         <ShowPopup>
           <div className="delete-user">
@@ -426,7 +427,7 @@ function Profile() {
         </ShowPopup>
       )}
 
-      <div className="container-sm profile">
+      <div className="profile">
         {handleUserProfile()}
         {(userType == "Normal user" || userType == "Company user") && (
           <ChangePassword userType={userType}></ChangePassword>

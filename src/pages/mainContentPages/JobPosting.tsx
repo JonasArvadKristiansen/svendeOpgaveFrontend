@@ -59,7 +59,7 @@ function JobPosting() {
   return (
     <>
       <FilterHeader siteType='jobpost' serchOnClickJobtype={serchOnClick} />
-      <div className="container-sm content">
+      <main className="container-sm content">
         <h1 className="heading-1 title">Jobopslag</h1>
         <div className=" content__blocks">
           {Object.keys(jobpostList).length > 0 ? (
@@ -79,7 +79,7 @@ function JobPosting() {
             <NotFoundCard>Ingen jobopslag matcher dine filtre</NotFoundCard>
           )}
         </div>
-      </div>
+      </main>
       <Footer />
     </>
   );

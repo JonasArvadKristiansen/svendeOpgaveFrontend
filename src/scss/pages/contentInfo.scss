@@ -57,3 +57,10 @@
     gap: map-get($spacing, '4px' );
   }
 }
+
+.info-buttons {
+  display: flex;  
+  gap: map-get($spacing, "8px" );
+  justify-content: center;
+
+}

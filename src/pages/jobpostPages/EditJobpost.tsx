@@ -9,6 +9,7 @@ import DeafultLayout from "../../layout/DeafultLayout";
 import Input from "../../components/uiElements/Input";
 import { Button } from "../../components/uiElements/Buttons";
 import ErrorMessage from "../../components/uiElements/ErrorMessage";
+import Textarea from "../../components/uiElements/Textarea";
 
 interface JobPostingObject {
   title?: string;
@@ -69,13 +70,13 @@ function EditJobpost() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              "accesstoken": accessToken,
+              accesstoken: accessToken,
             },
           }
         );
 
         const jsonData = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(jsonData);
         }
@@ -145,7 +146,7 @@ function EditJobpost() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "accesstoken": accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify(jsonBody),
       });
@@ -168,8 +169,35 @@ function EditJobpost() {
     }
   };
 
+  //Makes it able to change textarea values after being given new ones
+  const onChangeTextareaValue = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    try {
+      const target = event.target;
+      const inputName = target.name;
+      const newValue = target.value;
+
+      switch (inputName) {
+        case "description":
+          setJobPostInfo({ ...jobPostInfo, description: newValue });
+          break;
+        default:
+          throw new Error(`Dette input ${inputName} existere ikke`);
+      }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setEditFailed({
+          hasError: true,
+          errorMesseage: error.message,
+        });
+        console.error(error.message);
+      }
+    }
+  };
+
   //Makes it able to change input values after being given new input value
-  const handleInputChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onchangeInputValues = (event: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const target = event.target;
       const inputName = target.name;
@@ -222,27 +250,28 @@ function EditJobpost() {
             placeholder="Software developer opsøges"
             required
             value={jobPostInfo.title}
-            onchange={handleInputChanges}
+            onchange={onchangeInputValues}
           >
             Title
           </Input>
-          <Input
-            type="text"
+
+          <Textarea
             name="description"
+            label="Beskrivelse"
+            onChange={onChangeTextareaValue}
             placeholder="Give en beskrivelse omkring hvad i leder efter og hvad medarbejdern skulle kunne..."
-            required
-            value={jobPostInfo.description}
-            onchange={handleInputChanges}
           >
-            Beskrivelse
-          </Input>
+            {jobPostInfo.description === undefined ? "" : jobPostInfo.description}
+          </Textarea>
+
+          
 
           <Input
             type="date"
             name="deadline"
             required
             value={jobPostInfo.deadline!.split("T")[0]}
-            onchange={handleInputChanges}
+            onchange={onchangeInputValues}
           >
             Udløbnings dato
           </Input>
@@ -253,7 +282,7 @@ function EditJobpost() {
             placeholder="Software developer"
             required
             value={jobPostInfo.jobtype}
-            onchange={handleInputChanges}
+            onchange={onchangeInputValues}
           >
             Job type
           </Input>
@@ -265,7 +294,7 @@ function EditJobpost() {
             placeholder="0 kr"
             required
             value={jobPostInfo.salary}
-            onchange={handleInputChanges}
+            onchange={onchangeInputValues}
           >
             Betaling (Pr månded ca)
           </Input>

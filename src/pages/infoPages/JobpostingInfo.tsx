@@ -87,7 +87,7 @@ function JobpostingInfo() {
           }
         );
 
-        const jsonData = await response.json();        
+        const jsonData = await response.json();
 
         if (!response.ok) {
           throw new Error(jsonData);
@@ -106,8 +106,6 @@ function JobpostingInfo() {
             decodeToken.user.type
           )
         );
-
-        
 
         //Sets the usestates to give them data from the fetch
         setJobPostList(jsonData.jobposting[0]);
@@ -145,7 +143,7 @@ function JobpostingInfo() {
       });
 
       const jsonData = await response.json();
-      navigate('/')
+      navigate("/");
 
       if (!response.ok) {
         throw new Error(jsonData);
@@ -166,7 +164,6 @@ function JobpostingInfo() {
         />
       )}
 
-      <div className="container-sm content">
         <h1 className="heading-1 title">{jobPostList.title}</h1>
         <h2 className="heading-2 title">Jobtype: {jobPostList.jobtype}</h2>
 
@@ -187,21 +184,24 @@ function JobpostingInfo() {
           </div>
         </div>
 
-        {isOwner && (
-          <>
-            <Button type="button" onClick={handleRedirectToEdit}>
-              Redigere jobopslaget
+        <div className="info-buttons">
+          {isOwner && (
+            <>
+              <Button type="button" onClick={handleRedirectToEdit}>
+                Redigere jobopslaget
+              </Button>
+              <Button delete type="button" onClick={handleDeleteJobpost}>
+                Slet jobopslaget
+              </Button>
+            </>
+          )}
+
+          {isCommonUser && (
+            <Button type="button" onClick={handleTogglePopup}>
+              Ansøg denne stilling
             </Button>
-            <Button delete type="button" onClick={handleDeleteJobpost}>
-              Slet jobopslaget
-            </Button>
-          </>
-        )}
-        {isCommonUser && (
-          <Button type="button" onClick={handleTogglePopup}>
-            Ansøg denne stilling
-          </Button>
-        )}
+          )}
+        </div>
 
         <h2 className="heading-2 title">Virksomhed</h2>
         <div className="content__blocks">
@@ -214,7 +214,6 @@ function JobpostingInfo() {
           />
           <div className="grid-layout-job__item-3__button"></div>
         </div>
-      </div>
     </DeafultLayout>
   );
 }

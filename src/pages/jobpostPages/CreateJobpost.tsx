@@ -6,6 +6,7 @@ import endpoint from "../../config.json";
 
 import DeafultLayout from "../../layout/DeafultLayout";
 import ErrorMessage from "../../components/uiElements/ErrorMessage";
+import Textarea from "../../components/uiElements/Textarea";
 import { Button } from "../../components/uiElements/Buttons";
 import Input from "../../components/uiElements/Input";
 
@@ -71,14 +72,14 @@ function CreateJobpost() {
             throw new Error(`Dette input ${pair[0]} existere ikke`);
         }
       }
-      
+
       //Send the post request to add jobpost
       const response = await fetch(`${endpoint.path}jobpost/create`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          "accesstoken": accessToken,
+          accesstoken: accessToken,
         },
         body: JSON.stringify(jsonBody),
       });
@@ -118,14 +119,20 @@ function CreateJobpost() {
           >
             Title
           </Input>
-          <Input
+          <Textarea
+            label="Beskrivelse"
+            name="description"
+            placeholder="Give en beskrivelse omkring hvad i leder efter og hvad medarbejdern skulle kunne..."
+            required
+          ></Textarea>
+          {/* <Input
             type="text"
             name="description"
             placeholder="Give en beskrivelse omkring hvad i leder efter og hvad medarbejdern skulle kunne..."
             required
           >
             Beskrivelse
-          </Input>
+          </Input> */}
           <Input type="date" name="deadline" required>
             Udløbnings dato
           </Input>

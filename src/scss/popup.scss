@@ -1,6 +1,7 @@
 @import "variables.scss";
 
 .popup {
+
   &__input {
     display: flex;
     flex-direction: column;
@@ -50,6 +51,7 @@
 
 //for Blackign out the backgorund and center the popup from top
 .blackout-back {
+  overflow-y: auto;
   position: fixed;
   z-index: 1;
   background-color: map-get($color, "blackout");
@@ -58,6 +60,7 @@
   height: 100%;
 
   &__popup {
+
     margin-top: map-get($spacing, "32px");
     display: flex;
     justify-content: center;

@@ -12,6 +12,9 @@ import JobPostingCard from "../../components/elementBlocks/contentCards/JobPosti
 
 import ApplicationPopup from "../../components/elementBlocks/popups/ApplicationPopup";
 import { Button } from "../../components/uiElements/Buttons";
+import NotFoundCard from "../../components/elementBlocks/contentCards/NotFoundCard";
+
+
 
 interface CompanyObject {
   companyName: string;
@@ -32,7 +35,7 @@ interface JobPostingObject {
   deadline: string;
   address: string;
   description: string;
-  jobtype: string
+  jobtype: string;
 }
 
 interface ExtraJwtInfo {
@@ -88,12 +91,12 @@ function CompanyInfo() {
             credentials: "include",
             headers: {
               "Content-Type": "application/json",
-              "accesstoken": accessToken,
+              accesstoken: accessToken,
             },
           }
         );
 
-        const jsonData = await response.json();        
+        const jsonData = await response.json();
 
         if (!response.ok) {
           throw new Error(jsonData);
@@ -131,63 +134,61 @@ function CompanyInfo() {
         />
       )}
 
-      <div className="container-sm content">
-        <h1 className="heading-1 title">{companyList.companyName}</h1>
+      <h1 className="heading-1 title">{companyList.companyName}</h1>
 
-        <div className="grid-layout-com">
-          <div className="grid-layout-com__1">
-            <TextSections header="Om us" text={companyList.description} />
+      <div className="grid-layout-com">
+        <div className="grid-layout-com__1">
+          <TextSections header="Om os" text={companyList.description} />
+        </div>
+
+        <div className="grid-layout-com__2">
+          <div className="grid-layout-com__2__item-1">
+            <TextSections header="Addresse" text={companyList.address} />
+          </div>
+          <div className="grid-layout-com__2__item-2">
+            <TextSections header="CVR nummer" text={companyList.cvrNumber} />
+          </div>
+          <div className="grid-layout-com__2__item-1">
+            <TextSections
+              header="Telefon nummer"
+              text={`45+ ${companyList.phonenumber}`}
+            />
           </div>
 
-          <div className="grid-layout-com__2">
-            <div className="grid-layout-com__2__item-1">
-              <TextSections header="Addresse" text={companyList.address} />
-            </div>
-            <div className="grid-layout-com__2__item-2">
-              <TextSections header="CVR nummer" text={companyList.cvrNumber} />
-            </div>
-            <div className="grid-layout-com__2__item-1">
-              <TextSections
-                header="Telefon nummer"
-                text={`45+ ${companyList.phonenumber}`}
-              />
-            </div>
-
-            <div className="grid-layout-com__2__item-2">
-              <TextSections
-                header="Medarbejder"
-                text={`ca. ${companyList.numberOfEmployees}`}
-              />
-            </div>
-            <div className="grid-layout-com__2__item-1">
-              <TextSections header="Email" text={companyList.email} />
-            </div>
+          <div className="grid-layout-com__2__item-2">
+            <TextSections
+              header="Medarbejder"
+              text={`ca. ${companyList.numberOfEmployees}`}
+            />
           </div>
-
-          <div className="grid-layout-com__3">
-            <TextSections header="Job tags" text="" />
-
-            {companyList.jobtypes.split(",").length > 1 ? (
-              companyList.jobtypes.split(",").map((type, index) => (
-                <div key={index} className="jobtype">
-                  <p>{type}</p>
-                </div>
-              ))
-            ) : (
-              <p>Der er ikke sat nogen jobtytper</p>
-            )}
+          <div className="grid-layout-com__2__item-1">
+            <TextSections header="Email" text={companyList.email} />
           </div>
         </div>
 
+        <div className="grid-layout-com__3">
+          <TextSections header="Job tags" text="" />
+
+          {companyList.jobtypes.split(",").map((type, index) => (
+            <div key={index} className="jobtype">
+              <p>{type}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="info-buttons">
         {isCommonUser && (
           <Button type="button" onClick={handleTogglePopup}>
             Ansøg uopfordret
           </Button>
         )}
+      </div>
+     
 
-        <h1 className="heading-1 title">Jobopslag</h1>
-        <div className="content__blocks">
-          {Object.keys(jobpostList).length > 0 &&
+      <h1 className="heading-1 title">Jobopslag</h1>
+      <div className="content__blocks">
+        {Object.keys(jobpostList).length > 0? (
             jobpostList.map((job, index) => (
               <JobPostingCard
                 key={index}
@@ -199,8 +200,11 @@ function CompanyInfo() {
                 description={job.description}
                 jobtype={job.jobtype}
               ></JobPostingCard>
-            ))}
-        </div>
+            ))
+          ): (
+            <NotFoundCard>Denne virksomhed har ikke oprettet nogen jobopslag</NotFoundCard>
+          )
+        }
       </div>
     </DeafultLayout>
   );

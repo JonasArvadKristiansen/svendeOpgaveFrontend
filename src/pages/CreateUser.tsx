@@ -275,7 +275,7 @@ function CreateUser() {
 
   return (
     <DeafultLayout>
-      <div className="container-sm reg-user">
+      <div className="reg-user">
         <div className="reg-user__container">
           <h1 className="heading-1 reg-user__container__title">Opret bruger</h1>
 

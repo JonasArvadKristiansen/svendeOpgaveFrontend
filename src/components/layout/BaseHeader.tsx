@@ -40,7 +40,6 @@ function BaseHeader(prop: Props) {
     const token = cookies["Authorization"];
     if (token) {
       const decodeToken = jwtDecode<ExtraJwtInfo>(token);
-
       if (
         [
           "Company user",
@@ -64,7 +63,7 @@ function BaseHeader(prop: Props) {
   };
 
   //Handles the toggle to show login popup
-  const handleTogglePopup = () => {
+  const handleToggleLoginPopup = () => {
     setShowLoginPopup(!showLoginPopup);
   };
 
@@ -123,7 +122,7 @@ function BaseHeader(prop: Props) {
               type="button"
               arialExpanded={showLoginPopup}
               arialHaspopup={true}
-              onClick={handleTogglePopup}
+              onClick={handleToggleLoginPopup}
             >
               Log ind
             </Button>
@@ -131,7 +130,7 @@ function BaseHeader(prop: Props) {
         </div>
         {prop.children}
       </header>
-      {showLoginPopup && <LoginPopup closePopup={handleTogglePopup} />}
+      {showLoginPopup && <LoginPopup closePopup={handleToggleLoginPopup} />}
     </>
   );
 }

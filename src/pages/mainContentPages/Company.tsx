@@ -33,11 +33,11 @@ function Company() {
           },
         });
 
-        const jsonData = await response.json();        
+        const jsonData = await response.json();
 
         if (!response.ok) {
           throw new Error(jsonData);
-        }        
+        }
 
         setCompanyList(jsonData.companys);
       } catch (error: unknown) {
@@ -56,8 +56,8 @@ function Company() {
 
   return (
     <>
-      <FilterHeader serchOnClickCompany={serchOnClick} siteType='company' />
-      <div className="container-sm content">
+      <FilterHeader serchOnClickCompany={serchOnClick} siteType="company" />
+      <main className="container-sm content">
         <h1 className="heading-1 title">Virksomheder</h1>
         <div className="content__blocks">
           {Object.keys(companyList).length > 0 ? (
@@ -75,7 +75,7 @@ function Company() {
             <NotFoundCard>Ingen virksomheder matcher dine filtre</NotFoundCard>
           )}
         </div>
-      </div>
+      </main>
       <Footer />
     </>
   );
