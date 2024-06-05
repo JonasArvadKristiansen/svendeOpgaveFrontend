@@ -1,3 +1,4 @@
 {
-  "path": " examble path"
+  "path": "your npm local path",
+  "socialLogin": "http://jonasarvad.com/api/" 
 }
